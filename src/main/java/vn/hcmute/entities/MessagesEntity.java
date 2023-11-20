@@ -1,6 +1,6 @@
 package vn.hcmute.entities;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
