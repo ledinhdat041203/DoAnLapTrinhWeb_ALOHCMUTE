@@ -41,6 +41,8 @@ public class UserController {
 	public String Showlogin(ModelMap model,HttpServletRequest request)
 	{
 		Cookie[] cookies = request.getCookies();
+		if (cookies != null)
+		{
 		for (Cookie c : cookies)
 		{
 			if(c.getName().equals("email"))
@@ -52,6 +54,7 @@ public class UserController {
 				model.addAttribute("passcookie", c.getValue());
 			}
 		}
+		}
 		
 		return "login";
 	}
@@ -60,7 +63,7 @@ public class UserController {
 	{
 		if (user_service.checkLogin(Email, pass))
 		{
-			//System.out.println(user_account.getEmail());
+			System.out.println(user_account.getEmail());
 			Cookie name = new Cookie("email", Email);
 			Cookie password = new Cookie("pass", pass);
 			name.setMaxAge(60);
@@ -71,9 +74,10 @@ public class UserController {
 				password.setMaxAge(0);
 			response.addCookie(name);
 			response.addCookie(password);
-			session.setAttribute("username",Email );
+			session.setAttribute("username",user_service.findByemailContaining(Email).get().getIdAccount());
 			return "user";
 		}
+
 		return "login";
 	}
 	@GetMapping("/logout")
