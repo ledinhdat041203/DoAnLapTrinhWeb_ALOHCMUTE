@@ -16,6 +16,7 @@ public interface IUserService {
 	<S extends UserEntity> S save(S entity);
 
 	
+	
 
 
 }

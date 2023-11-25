@@ -26,6 +26,16 @@ public class UserInfoServiceImple implements IUserInfoService{
 		return user_info.findByphoneNumberContaining(phoneNumber);
 	}
 
+	@Override
+	public Optional<UserInfoEntity> findByuserIDContaining(Long userID) {
+		return user_info.findByuserIDContaining(userID);
+	}
+
+	@Override
+	public Optional<UserInfoEntity> findByUserIDEquals(Long userID) {
+		return user_info.findByUserIDEquals(userID);
+	}
+	
 	
 	
 	

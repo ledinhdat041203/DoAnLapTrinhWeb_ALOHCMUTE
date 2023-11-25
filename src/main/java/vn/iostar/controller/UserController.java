@@ -74,8 +74,12 @@ public class UserController {
 				password.setMaxAge(0);
 			response.addCookie(name);
 			response.addCookie(password);
-			session.setAttribute("username",user_service.findByemailContaining(Email).get().getIdAccount());
-			return "user";
+			session.setAttribute("userID",user_service.findByemailContaining(Email).get().getIdAccount());
+			session.setAttribute("userInfoID",user_service.findByemailContaining(Email).get().getUserInfo().getUserID());
+			session.setAttribute("userFullName",user_service.findByemailContaining(Email).get().getUserInfo().getFullName());
+
+
+			return "redirect:/list_Conversation";
 		}
 
 		return "login";
@@ -83,13 +87,14 @@ public class UserController {
 	@GetMapping("/logout")
 	public ModelAndView Logout(HttpSession session,ModelMap model)
 	{
-		session.removeAttribute("username");
+		session.removeAttribute("userID");
+		session.removeAttribute("userInfoID");
+		session.removeAttribute("userFullName");
 		return new ModelAndView("redirect:/login",model);
 	}
 	@GetMapping("/registerOrFail")
 	public String Register()
 	{
-		
 		return "Register";
 	}
 	@PostMapping("/registerOrFail")
@@ -114,9 +119,6 @@ public class UserController {
 			user_service.save(user_entity);
 			return "redirect:/registerOrFail?success";
 		}
-
-
-
 	}
 	
 	
