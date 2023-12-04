@@ -1,10 +1,14 @@
 package vn.hcmute.controller;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,8 +33,6 @@ public class groupController {
 	
 	@Autowired
 	IUserInfoService userInfo;
-	
-	//UserInfoEntity user = new UserInfoEntity(3,"Lê Đình Đạt"); //hardcode
 	
 	@GetMapping("listgroup")
 	public String findAll(ModelMap model)
@@ -71,13 +73,84 @@ public class groupController {
 		groupMemberService.save(groupMember);
 		String result = String.format("<h2>Vô nhóm rồi</h2>"
 				+ "<a href=\"/group/%s\" >Xem nhóm</a>", groupID);
-		return ResponseEntity.ok(result); 
+		return ResponseEntity.ok(result);
 	}
+	
+	
+	
+	@GetMapping("/group/remove_member/{groupID}/{userID}")
+	public String removeMember(@PathVariable long groupID, HttpSession session, @PathVariable long userID, Model model) {
+		Long current_userid = (long) session.getAttribute("userInfoID");
+		int isAdmin = checkIsAdminGroup(groupID, current_userid);
+		System.out.println(isAdmin);
+		if(userID == current_userid) {
+			if(isAdmin == 1) {
+				return "redirect:/group/list_member/"+groupID;
+			}
+			else {
+				GroupMembersEntity groupMember = groupMemberService.findByUserMemberUserIDAndGroupGroupID(userID, groupID);
+				groupMemberService.delete(groupMember);
+				return "redirect:/listgroup";
+			}
+		}
+		else
+		{
+			if(isAdmin == 1) {
+				GroupMembersEntity groupMember = groupMemberService.findByUserMemberUserIDAndGroupGroupID(userID, groupID);
+				groupMemberService.delete(groupMember);
+				String message = "Đã xóa khỏi nhóm!";
+				model.addAttribute("message", message);
+				System.out.println("Xoa roi ma");
+				return "redirect:/group/list_member/"+groupID;
+			}
+			else {
+				return "redirect:/group/list_member/"+groupID;
+			}
+		}
+		
+	}	
 	
 	@GetMapping("/reload")
     public String reloadPage() {
-        // Chuyển hướng về trang hiện tại
         return "redirect:/";
     }
+	
+	
+	
+	@GetMapping("/group/list_member/{groupID}")
+	public String listMember(@PathVariable Long groupID, Model model, HttpSession session)
+	{
+		
+		List<GroupMembersEntity> listGroupMember = groupMemberService.findByGroupGroupID(groupID);
+		List<UserInfoEntity> listMember = new ArrayList<UserInfoEntity>();
+		for(GroupMembersEntity groupMember : listGroupMember) {
+			UserInfoEntity user = groupMember.getUserMember();
+			listMember.add(user);
+		}
+		Long current_userid = (long) session.getAttribute("userInfoID");
+		GroupEntity group = groupService.findById(groupID).get();
+		
+		int isAdmin = checkIsAdminGroup(groupID, current_userid);
+
+		model.addAttribute("isAdmin", isAdmin);
+		model.addAttribute("group", group);
+		model.addAttribute("listMember", listMember);
+		return "listMember";
+	}
+	
+	public int checkIsAdminGroup(Long groupID, Long userID) {
+	    Optional<GroupEntity> optionalGroup = groupService.findById(groupID);
+	    // Check if the optionalGroup has a value
+	    if (optionalGroup.isPresent()) {
+	        GroupEntity group = optionalGroup.get();
+	        // Check if the admin is present
+	        if (group.getAdmin() != null && group.getAdmin().getUserID() == userID) {
+	            return 1; 
+	        }
+	    }
+	    return 0;
+	}
+
+	
 
 }
