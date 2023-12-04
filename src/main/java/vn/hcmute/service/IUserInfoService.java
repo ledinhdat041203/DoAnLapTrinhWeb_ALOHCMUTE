@@ -1,9 +1,11 @@
 package vn.hcmute.service;
 
-import java.util.Optional;
+import org.springframework.stereotype.Service;
 
 import vn.hcmute.entities.UserInfoEntity;
 
+import java.util.List;
+import java.util.Optional;
 
 public interface IUserInfoService {
 
@@ -16,5 +18,10 @@ public interface IUserInfoService {
 	Optional<UserInfoEntity> findByUserIDEquals(Long userID);
 	
 	Optional<UserInfoEntity> findById(Long id);
+  
+  List<UserInfoEntity> findAll();
 
+	UserInfoEntity save(UserInfoEntity entity);
+
+	UserInfoEntity findById(Long id);
 }

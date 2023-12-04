@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Info</title>
+</head>
+<body>
+    <h1>User Info</h1>
+    
+    <div class="user-info">
+        <!-- <form th:action="@{/save}"></form> -->
+    </div>
+    
+    <div class="Info-Of-User">
+        <table border="1">
+            <tr>
+                <th>Avatar</th>
+                <th>User ID</th>
+                <th>Full name</th>
+                <th>Address</th>
+                <th>Date of birth</th>
+                <th>Phone number</th>
+            </tr>
+            
+            <tr th:each="userinfo: ${info}">
+                <td><span th:text="${userinfo.avata}"></span></td>
+                <td><span th:text="${userinfo.userID}"></span></td>
+                <td><span th:text="${userinfo.fullName}"></span></td>
+                <td><span th:text="${userinfo.address}"></span></td>
+                <td><span th:text="${userinfo.dateOfBirth}"></span></td>
+                <td><span th:text="${userinfo.phoneNumber}"></span></td>
+           
+                <td><a th:href="@{/info/update/{userid}(userid=${userinfo.userID})}">Edit Profile</a></td>
+            </tr>
+        </table>
+    </div>
+    
+
+     <tr th:each="post: ${listPosts}">
+                <td><span th:text="${post.content}"></span></td>
+               
+            </tr>
+    
+</body>
+</html>
