@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import vn.hcmute.Responsitory.GroupRepository;
 import vn.hcmute.entities.GroupEntity;
+import vn.hcmute.entities.UserInfoEntity;
 
 
 
@@ -25,6 +26,7 @@ public class GroupService implements IGroupService{
 	public Optional<GroupEntity> findById(Long id) {
 		return groupRepo.findById(id);
 	}
+
 	
 	
 	
