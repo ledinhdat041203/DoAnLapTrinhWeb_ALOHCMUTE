@@ -59,7 +59,6 @@ public class PostController {
 		} else {
 			System.out.println("Loi roi"); 
 		}
-
 		
 		PostEntity post = new PostEntity();
 		post.setUser(user);

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import jakarta.servlet.http.HttpSession;
 import vn.hcmute.entities.LikeEntity;
 import vn.hcmute.entities.PostEntity;
 import vn.hcmute.entities.UserInfoEntity;
@@ -34,9 +35,9 @@ public class LikeController {
 
 
 	 @PostMapping("/like/{postId}") 
-	 public ResponseEntity<Long> likePost(@PathVariable long postId) { 
+	 public ResponseEntity<Long> likePost(@PathVariable long postId, HttpSession session) { 
 		 System.out.print("Post id nha: "+ postId); 
-		 long userid = 3; // hardcode !!!!! 
+		 Long userid = (long) session.getAttribute("userInfoID");
 		 PostEntity post = postservice.findById(postId).get(); 
 		 UserInfoEntity user =userInfoService.findById(userid).get(); 
 		 LikeEntity LikeEntity = likeService.findLikeByPostAndUser(post, userid); 
