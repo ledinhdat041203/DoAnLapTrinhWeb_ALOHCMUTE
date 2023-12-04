@@ -2,10 +2,19 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Post</title>
+    <title>All Posts</title>
 </head>
 <body>
-	<h2>list ne</h2>
+	<a th:href="@{/post}"><button>Post</button></a>
+    <h1>All Posts</h1>
+
+    <!-- Hiển thị danh sách bài viết -->
+    <div th:each="post : ${list}">
+          
+        <p th:text="${post.content}"></p>
+        <p th:text="${#dates.format(post.postDate, 'yyyy-MM-dd')}"></p>
+        <!--<p th:text="${post.postDate}"></p>-->
+        <img th:src="${post.image}" alt="Uploaded Image" id="urlImage">
+    </div>
 </body>
 </html>
