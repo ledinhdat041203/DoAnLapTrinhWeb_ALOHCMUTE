@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Post</title>
+	<link rel="stylesheet" href="/css/PostStyle.css">
+</head>
+
+<body>
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+	<div class="container bootstrap snippets bootdey" id="Post-Container">
+		<div class="row">
+			<!--bắt đầu 1 post -->
+			<div th:each="post : ${list}" class="col-md-6">
+				<section class="widget">
+					<div class="widget-controls">
+						<a href="#"><i class="fa fa-refresh"></i></a>
+						<a href="#" data-widgster="close"><i class="glyphicon glyphicon-remove"></i></a>
+					</div>
+					<div class="widget-body">
+						<div class="widget-top-overflow text-white">
+							<img th:src="${post.imageURL}" alt="Post Image">
+							<ul class="tags text-white pull-right">
+								<li><a href="#">design</a></li>
+								<li><a href="#">white</a></li>
+							</ul>
+						</div>
+						<div class="post-user mt-sm">
+							<span class="thumb pull-left mr">
+								<img class="img-circle" src="https://bootdey.com/img/Content/user_1.jpg" alt="...">
+							</span>
+							<h5 class="mb-xs mt-xs" th:text="${post.userFullName}"><span class="fw-semi-bold"></h5>
+							<p class="fs-mini text-muted"><time th:text = "${post.postDate}"></time> &nbsp; <i class="fa fa-map-marker"></i>
+								&nbsp; near Amsterdam</p>
+						</div>
+						<p class="text-light fs-mini m" th:text="${post.content}"></p>
+					</div>
+					<footer class="bg-body-light">
+						<ul class="post-links no-separator">
+							<li>
+								<a role="button" th:onclick="'likePost(' + ${post.postID} + ')'"
+									th:id="'s' + ${post.postID}">
+									<i class="fa fa-heart" th:id="'likeButton' + ${post.postID}"></i>
+									<!--<i class="fa fa-heart"  ></i>-->
+									<span th:id="'likeCount' + ${post.postID}" th:text="${post.likeCount}"></span>
+								</a>
+							</li>
+							<li><a href="#"><i class="glyphicon glyphicon-comment"></i> 98</a></li>
+						</ul>
+					</footer>
+				</section>
+			</div>
+			<!--kết thúc 1 post -->
+		</div>
+	</div>
+
+
+	<!-----------------------------------------------------------script------------------------------------- -->
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+	<script defer>
+
+		function likePost(postId) {
+			$.ajax({
+				type: 'POST',
+				url: '/like/' + postId,
+				success: function (response) {
+					
+					const str = '#likeCount' + postId;
+					const likespan = $(str);
+					const likeicon = $('#likeButton' + postId);
+					likespan.text(response)
+					likespan.html(response)
+					likeicon.toggleClass("liked");
+				},
+				error: function () {
+					alert('Error liking post');
+				}
+			});
+		}
+	</script>
+	<!--<script>
+		function likePost(postId) {
+			$.ajax({
+				type: 'POST',
+				url: '/like/' + postId,
+				success: function (response) {
+					$('#Post-Container').html(response);
+				},
+				error: function () {
+					alert('Error liking post');
+				}
+			});
+		}
+		
+		
+	</script>
+	-->
+
+</body>
+
+</html>
