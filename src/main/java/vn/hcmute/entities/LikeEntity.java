@@ -29,5 +29,9 @@ public class LikeEntity {
 	private int status;
 	@Column(name = "likedate", columnDefinition = "DATE")
 	private long likeDate;
+	public boolean isStatus() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 }
