@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import jakarta.servlet.http.HttpSession;
 import vn.hcmute.entities.GroupEntity;
 import vn.hcmute.entities.GroupMembersEntity;
 import vn.hcmute.entities.UserInfoEntity;
 import vn.hcmute.service.IGroupMemberService;
 import vn.hcmute.service.IGroupService;
+import vn.hcmute.service.IUserInfoService;
 
 
 @Controller
@@ -25,8 +27,10 @@ public class groupController {
 	@Autowired
 	IGroupMemberService groupMemberService;
 	
+	@Autowired
+	IUserInfoService userInfo;
 	
-	UserInfoEntity user = new UserInfoEntity(3,"Lê Đình Đạt");
+	//UserInfoEntity user = new UserInfoEntity(3,"Lê Đình Đạt"); //hardcode
 	
 	@GetMapping("listgroup")
 	public String findAll(ModelMap model)
@@ -36,9 +40,10 @@ public class groupController {
 	}
 	
 	@GetMapping("group/{groupID}")
-	public String GroupDetail(ModelMap model, @PathVariable long groupID)
+	public String GroupDetail(ModelMap model, @PathVariable long groupID, HttpSession session)
 	{
-		GroupMembersEntity groupMember = groupMemberService.findByUserMemberUserIDAndGroupGroupID(user.getUserID(), groupID);
+		Long userid = (long) session.getAttribute("userInfoID");
+		GroupMembersEntity groupMember = groupMemberService.findByUserMemberUserIDAndGroupGroupID(userid, groupID);
 		if ( groupMember != null) {
 			GroupEntity group = groupService.findById(groupID).get();
 			model.addAttribute("group", group);
@@ -51,10 +56,10 @@ public class groupController {
 	}
 	
 	@PostMapping("/addToGroup/{groupID}")
-	public ResponseEntity<String> addToGroup(@PathVariable long groupID) {
+	public ResponseEntity<String> addToGroup(@PathVariable long groupID, HttpSession session) {
 		GroupEntity group = new GroupEntity();
-		
-		
+		Long userid = (long) session.getAttribute("userInfoID");
+		UserInfoEntity user = userInfo.findById(userid).get();
 		group.setGroupID(groupID);
 		
 		
