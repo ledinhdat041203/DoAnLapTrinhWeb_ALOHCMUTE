@@ -19,6 +19,7 @@ public class MessagesEntity {
 	@Column(name = "messageid", columnDefinition = "BIGINT")
 	private long messageID;
 	
+
 	@ManyToOne
     @JoinColumn(name = "senderid")
     private UserInfoEntity sender;
@@ -29,8 +30,5 @@ public class MessagesEntity {
 	
 	@Column(name = "content", columnDefinition = "text")
 	private String content;
-	
-	
-	
-	
+
 }

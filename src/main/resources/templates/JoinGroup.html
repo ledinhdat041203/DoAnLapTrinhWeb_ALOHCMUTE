@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Messages</title>
+</head>
+
+<body>
+	<h2>Chưa vô nhóm nha</h2>
+	<button type="submit" , th:onclick="'JoinGroup(' + ${groupID} + ')'">Vô nhóm ngay</button>
+	<div th:id="'JoinGroup' + ${groupID}"></div>
+
+
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+	<script defer>
+		function JoinGroup(groupID) {
+			$.ajax({
+				type: 'POST',
+				url: '/addToGroup/' + groupID,
+				success: function (response) {
+					
+					const joinGroupTag = $('#JoinGroup' + groupID);
+					joinGroupTag.html(response);
+					
+				},
+				error: function () {
+					alert('Error joining the group');
+				}
+			});
+		}
+	</script>
+</body>
+
+</html>

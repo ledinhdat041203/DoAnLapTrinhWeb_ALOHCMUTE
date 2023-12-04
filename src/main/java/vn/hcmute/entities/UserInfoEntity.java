@@ -3,8 +3,19 @@ package vn.hcmute.entities;
 import java.sql.Date;
 import java.util.List;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+
 
 @Data
 @AllArgsConstructor
@@ -14,7 +25,7 @@ import lombok.*;
 @Table(name = "UserInfo")
 public class UserInfoEntity {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	/* @GeneratedValue(strategy = GenerationType.IDENTITY) */
 	@Column(name = "userid", columnDefinition = "BIGINT")
 	private long userID;
 	@Column(name = "fullname", columnDefinition = "nvarchar(255)", nullable = false)
@@ -41,18 +52,21 @@ public class UserInfoEntity {
 	 @OneToMany(mappedBy = "user2", fetch = FetchType.LAZY)
 	 private List<FriendsEntity> listFriend2;
 	 
-	 @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-	 private List<PostEntity> listPosts;
-	 
 	 @OneToMany(mappedBy = "admin", fetch = FetchType.LAZY)
 	 private List<GroupEntity> listGroups;
 	 
-	 @OneToMany(mappedBy = "userLike", fetch = FetchType.LAZY)
-	 private List<LikeEntity> lisLikes;
-	 
-	 @OneToMany(mappedBy = "userComment", fetch = FetchType.LAZY)
-	 private List<CommentsEntity> listComments;
-	 
 	 @OneToMany(mappedBy = "userMember", fetch = FetchType.LAZY)
 	 private List<GroupMembersEntity> listGroupMembers;
+	 
+	public UserInfoEntity(long userID, String fullName) {
+	
+		this.userID = userID;
+		this.fullName = fullName;
+	}
+
+	 //@OneToOne(mappedBy = "userInfo", cascade = CascadeType.ALL)
+	 //private ImageEntity image;
+	 
+	 
+	
 }

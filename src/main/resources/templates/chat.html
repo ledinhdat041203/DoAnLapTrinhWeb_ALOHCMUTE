@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Messages</title>
+	<style>
+		body {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+			margin: 0;
+		}
+
+		#chat-container {
+
+			width: 100%;
+			height: 100%;
+			/* Đặt kích thước tối đa cho khung chat */
+			border: 1px solid #ccc;
+			padding: 10px;
+			overflow-y: auto;
+			/* Hiển thị thanh cuộn nếu có nhiều tin nhắn */
+			background-color: #f5f5f5;
+
+		}
+
+		#chat-container::-webkit-scrollbar {
+			display: none;
+			/* Ẩn thanh cuộn cho trình duyệt Chrome/Safari */
+		}
+
+
+		.sender1,
+		.sender2 {
+			margin-bottom: 10px;
+			/* Khoảng cách giữa các tin nhắn */
+			padding: 1px;
+			border-radius: 8px;
+			max-width: 70%;
+			/* Đặt chiều rộng tối đa cho tin nhắn */
+			word-wrap: break-word;
+			/* Chia từ nếu nội dung quá dài */
+
+		}
+
+		.sender1 {
+			margin-left: 30%;
+			text-align: right;
+			padding-right: 10px;
+			background-color: #98D8FF;
+			align-self: flex-end;
+		}
+
+		.sender2 {
+			text-align: left;
+			padding-left: 10px;
+			background-color: #FF9CF8;
+			align-self: flex-start;
+		}
+
+		#messageForm {
+			display: flex;
+			margin-top: 10px;
+			/* Khoảng cách giữa khung chat và form gửi tin nhắn */
+		}
+
+		#content {
+			flex: 1;
+			/* Đảm bảo nút gửi nằm cạnh ô nhập tin nhắn */
+			padding: 8px;
+		}
+
+		#sendButton {
+			padding: 8px;
+			cursor: pointer;
+		}
+	</style>
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+	<script type="module">
+		import {initializeApp} from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
+		import {getAnalytics} from "https://www.gstatic.com/firebasejs/10.6.0/firebase-analytics.js";
+		import {getDatabase, ref, onChildAdded, off} from "https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js";
+
+		const firebaseConfig = {
+			apiKey: "AIzaSyAktz6fBLYH1GcUykJi8JF5WHwI6dNncuY",
+			authDomain: "chatrealtime-7e7e8.firebaseapp.com",
+			databaseURL: "https://chatrealtime-7e7e8-default-rtdb.firebaseio.com",
+			projectId: "chatrealtime-7e7e8",
+			storageBucket: "chatrealtime-7e7e8.appspot.com",
+			messagingSenderId: "206925157542",
+			appId: "1:206925157542:web:7e254501d41af820ed9067",
+			measurementId: "G-0PDLXSS9SN"
+		};
+
+		const app = initializeApp(firebaseConfig);
+		const analytics = getAnalytics(app);
+		const conversationId = "[[${conversationId}]]";
+		console.log('Conversation ID:', conversationId);
+
+		const userid = document.getElementById('userid');
+		const userCurrent = userid.value;
+		
+		const database = getDatabase(app);
+		const messagesRef = ref(database, 'RealTimeChat/' + conversationId + '/messages');
+		off(messagesRef);
+		onChildAdded(messagesRef, (snapshot) => {
+			const message = snapshot.val();
+			const chatDiv = document.getElementById('chat');
+			const newMessage = document.createElement('div');
+
+			if (message.sender == userCurrent) {
+				newMessage.className = 'sender1';
+			} else {
+				newMessage.className = 'sender2';
+			}
+			newMessage.innerHTML = `
+                <p>${message.content}</p>
+            `;
+			chatDiv.appendChild(newMessage);
+			newMessage.scrollIntoView({behavior: 'smooth'});
+		});
+
+		const uid = localStorage.getItem('recvId');
+		const recvName = localStorage.getItem('recvName');
+		// Set giá trị recvName vào nội dung của thẻ p trong Receiver-Name
+		document.getElementById('Receiver-Name').innerHTML = `<p><strong>${recvName}</strong></p>`;
+		// Set giá trị uid vào thuộc tính data-userid của form
+		$('#messageForm').attr('data-userid', uid);
+	</script>
+	<script>
+		function sendMessage() {
+			// Lấy giá trị uid từ thuộc tính data-userid của form
+			var uid = $('#messageForm').data('userid');
+			var contentValue = $('#content').val().trim();
+
+			// Kiểm tra xem content có rỗng hay không
+			if (contentValue !== '') {
+				// Thêm giá trị uid vào FormData
+				var formData = $('#messageForm').serializeArray();
+				formData.push({name: 'uid', value: uid});
+				//var formData = $('#messageForm').serialize();
+
+				$.ajax({
+					type: 'POST',
+					url: '/send',
+					data: formData,
+					success: function () {
+						$('#content').val('');
+					},
+					error: function () {
+						// Handle error
+						alert('Error sending message');
+
+					}
+				});
+			}
+		}
+	</script>
+
+</head>
+
+<body>
+
+	<!-- Hiển thị tin nhắn từ Firebase và cơ sở dữ liệu JPA -->
+	<div id="Receiver-Name">
+	</div>
+	<div id="chat-container">
+
+		<div id="chat"></div>
+
+	</div>
+	<form id="messageForm" th:attr="data-userid=${userid}" onsubmit="sendMessage(); return false;">
+		<!-- Các trường khác của biểu mẫu -->
+		<input type="text" id="content" name="content" placeholder="Content" />
+		<button type="submit" id="sendButton">Send</button>
+	</form>
+	<div>
+		<input type="text" id="userid" name="userid" placeholder="userid" th:value="${session.userInfoID}" hidden/>
+	</div>
+</body>
+
+</html>
