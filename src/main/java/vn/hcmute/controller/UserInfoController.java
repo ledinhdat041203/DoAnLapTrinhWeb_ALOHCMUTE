@@ -38,10 +38,6 @@ public class UserInfoController {
 		List<PostModel> posts = postService.findByUserUserID(userID, 0, 2);
 		listpost.addAttribute("list", posts);
 
-		// Long userId = 3L; // Thay đổi userId theo logic của bạn
-		// List<PostModel> userPosts = postService.findByUserUserID(userId);
-		// postModelMap.addAttribute("listPosts", userPosts);
-
 		return "profile";
 	}
 
@@ -61,10 +57,10 @@ public class UserInfoController {
 	public String saveUserInfoUpdate(@ModelAttribute("userInfo") UserInfoEntity userInfo) {
 		if (userInfo != null) {
 			userInfoService.save(userInfo);
-			return "redirect:/info/list";
+			return "redirect:/profile";
 		} else {
 			// Xử lý trường hợp userInfo là null
-			return "redirect:/info/list";
+			return "redirect:/profile";
 		}
 	}
 }

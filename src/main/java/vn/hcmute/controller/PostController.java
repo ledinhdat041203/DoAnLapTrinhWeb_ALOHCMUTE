@@ -75,6 +75,7 @@ public class PostController {
         post.setPostDate(currentSQLDate);
         
 		postService.save(post);
+
 		return "redirect:/listpost";	
 	}
 	
@@ -106,3 +107,4 @@ public class PostController {
 
     }
 }
+
