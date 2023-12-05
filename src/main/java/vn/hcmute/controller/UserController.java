@@ -74,7 +74,7 @@ public class UserController {
 			session.setAttribute("userFullName",user_service.findByemailContaining(Email).get().getUserInfo().getFullName());
 
 
-			return "redirect:/list_Conversation";
+			return "redirect:/home";
 		}
 
 		return "login";

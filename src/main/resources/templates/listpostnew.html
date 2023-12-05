@@ -32,7 +32,7 @@
 								<img class="img-circle" src="https://bootdey.com/img/Content/user_1.jpg" alt="...">
 							</span>
 							<h5 class="mb-xs mt-xs" th:text="${post.userFullName}"><span class="fw-semi-bold"></h5>
-							<p class="fs-mini text-muted"><time>25 mins</time> &nbsp; <i class="fa fa-map-marker"></i>
+							<p class="fs-mini text-muted"><time th:text = "${post.postDate}"></time> &nbsp; <i class="fa fa-map-marker"></i>
 								&nbsp; near Amsterdam</p>
 						</div>
 						<p class="text-light fs-mini m" th:text="${post.content}"></p>
