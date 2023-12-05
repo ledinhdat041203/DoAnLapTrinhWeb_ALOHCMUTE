@@ -22,12 +22,12 @@ public class PostEntity {
 	private long postID;
 	
 	@ManyToOne
-    @JoinColumn(name = "groupid")
-    private GroupEntity groupPost;
+	@JoinColumn(name = "groupid")
+	private GroupEntity groupPost;
 	
 	@ManyToOne
-    @JoinColumn(name = "userid")
-    private UserInfoEntity user;
+	@JoinColumn(name = "userid")
+	private UserInfoEntity user;
 	
 	@Column(name = "content", columnDefinition = "text")
 	private String content;
@@ -36,11 +36,11 @@ public class PostEntity {
 	@Column(name = "postdate", columnDefinition = "DATE")
 	private Date postDate;
 	
-	 @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
-	 private List<LikeEntity> listLikes;
+	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
+	private List<LikeEntity> listLikes;
 	 
-	 @OneToMany(mappedBy = "postCommnent", fetch = FetchType.LAZY)
-	 private List<CommentsEntity> listComments;
+	@OneToMany(mappedBy = "postCommnent", fetch = FetchType.LAZY)
+	private List<CommentsEntity> listComments;
 	
 	
 }
