@@ -1,5 +1,7 @@
 package vn.hcmute.entities;
 
+import java.sql.Date;
+
 import jakarta.persistence.*;
 
 import lombok.AllArgsConstructor;
@@ -26,8 +28,8 @@ public class LikeEntity {
     private UserInfoEntity userLike;
 	
 	@Column(name = "status", columnDefinition = "bit")
-	private int status;
-	@Column(name = "likedate", columnDefinition = "DATE")
-	private long likeDate;
+	private boolean status;
+	@Column(name = "likedate", columnDefinition = "DATETIME")
+	private Date likeDate;
 	
 }

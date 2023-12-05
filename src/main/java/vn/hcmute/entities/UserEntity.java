@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 public class UserEntity implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	@Column(name = "idaccount", columnDefinition = "BIGINT")
 	private long idAccount;
 	@Column(name = "username", columnDefinition = "nvarchar(255)", nullable = false)
@@ -29,5 +29,6 @@ public class UserEntity implements Serializable{
 	
 	@OneToOne
     @JoinColumn(name = "User_info_id", referencedColumnName = "userid")
-    private UserInfoEntity userInfo;
+    private UserInfoEntity userInfo;	
+	
 }

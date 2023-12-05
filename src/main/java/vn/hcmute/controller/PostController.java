@@ -1,6 +1,7 @@
 package vn.hcmute.controller;
 
 import java.sql.Date;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,26 +11,32 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import vn.hcmute.Entity.PostEntity;
-import vn.hcmute.Entity.UserInfoEntity;
-import vn.hcmute.Models.PostModel;
-import vn.hcmute.Models.PostRequestModel;
-import vn.hcmute.Service.IPostService;
+import jakarta.servlet.http.HttpSession;
+import vn.hcmute.entities.PostEntity;
+import vn.hcmute.entities.UserInfoEntity;
+import vn.hcmute.model.PostModel;
+import vn.hcmute.service.IPostService;
+import vn.hcmute.service.IUserInfoService;
+import vn.hcmute.entities.GroupEntity;
+
 
 @Controller
 public class PostController {
+	
+	GroupEntity group = new GroupEntity(); //hardcode
 	@Autowired
 	IPostService postService;
 	
-	//UserInfoEntity user = new UserInfoEntity(3,"Lê Đình Đạt");
-	UserInfoEntity user = new UserInfoEntity(2,"Trần Văn Đại");
+	@Autowired
+	IUserInfoService userInfoService;
 	
 	@GetMapping("/listpost")
 	public String post(Model model) {
 		java.util.List<PostModel> list = postService.findAll();
 		
 		model.addAttribute("list", list);
-		return "listpost";
+
+		return "listpostnew";
 	}
 	
 	@GetMapping("/post")
@@ -39,10 +46,25 @@ public class PostController {
 	}
 	
 	@PostMapping(value = "/post", produces = "text/html;charset=UTF-8")
-	public String savePost(@RequestBody PostRequestModel request) {
+	public String savePost(@RequestBody PostModel request, HttpSession session) {
+		
+		//lay tu session
+		Long userID = (Long) session.getAttribute("userInfoID");
+		UserInfoEntity user = new UserInfoEntity();
+		//UserInfoEntity user = userInfoService.findByUserIDEquals(userID).get();
+
+		Optional<UserInfoEntity> userOptional =
+		userInfoService.findByUserIDEquals(userID); 
+		if (userOptional.isPresent()) {
+			user = userOptional.get(); 
+		} else {
+			System.out.println("Loi roi"); 
+		}
+		
 		PostEntity post = new PostEntity();
 		post.setUser(user);
-		post.setGroupID(1);
+		group.setGroupID(1);
+		post.setGroupPost(group);
 		post.setImage(request.getImageURL());
 		post.setContent(request.getContent());
 		       
@@ -51,7 +73,8 @@ public class PostController {
         post.setPostDate(currentSQLDate);
         
 		postService.save(post);
-		return "listpost";	
+
+		return "redirect:/listpost";	
 	}
 }
 
