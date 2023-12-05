@@ -102,7 +102,7 @@
 
 		const userid = document.getElementById('userid');
 		const userCurrent = userid.value;
-		
+
 		const database = getDatabase(app);
 		const messagesRef = ref(database, 'RealTimeChat/' + conversationId + '/messages');
 		off(messagesRef);
@@ -116,9 +116,22 @@
 			} else {
 				newMessage.className = 'sender2';
 			}
-			newMessage.innerHTML = `
-                <p>${message.content}</p>
-            `;
+			// Kiểm tra xem tin nhắn có chứa link ảnh hay không
+			const hasImage = message.content.includes('++');
+
+			if (hasImage) {
+				// Nếu có ảnh, tách nội dung và link ảnh
+				const [imageUrl, content] = message.content.split('++');
+				newMessage.innerHTML = `
+            <p>${content}</p>
+            <img src="${imageUrl}" alt="Attached Image" style="width: 300px; height: 200px;">
+        `;
+			} else {
+				// Nếu không có ảnh
+				newMessage.innerHTML = `
+            <p>${message.content}</p>
+        `;
+			}
 			chatDiv.appendChild(newMessage);
 			newMessage.scrollIntoView({behavior: 'smooth'});
 		});
@@ -128,36 +141,98 @@
 		// Set giá trị recvName vào nội dung của thẻ p trong Receiver-Name
 		document.getElementById('Receiver-Name').innerHTML = `<p><strong>${recvName}</strong></p>`;
 		// Set giá trị uid vào thuộc tính data-userid của form
-		$('#messageForm').attr('data-userid', uid);
+		$('#messageForm').attr('data-userid', uid);		
+	</script>
+	<script type="module">
+		import {initializeApp} from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
+		import {getStorage, ref, uploadBytes, getDownloadURL} from "https://www.gstatic.com/firebasejs/10.6.0/firebase-storage.js";
+
+		const storage = getStorage();
+
+		// Add event listener for file input change
+		const fileInput = document.getElementById("file");
+		const imageContainer = document.getElementById("imageContainer");
+
+		fileInput.addEventListener("change", async () => {
+			const file = fileInput.files[0];
+
+			// nếu file được chọn
+			if (file) {
+				// tải ảnh lên storage của firebase
+				const storageRef = ref(storage, file.name);
+				try {
+					const snapshot = await uploadBytes(storageRef, file);
+
+					//console.log("Uploaded:", snapshot.totalBytes);
+
+					// lấy đường dẫn tới ảnh 
+					const downloadURL = await getDownloadURL(storageRef);
+
+					// Hiển thị ảnh 
+					imageContainer.innerHTML = `<img src="${downloadURL}" alt="Uploaded Image" id="urlImage" style="width: 300px; height: 200px;">`;
+
+					alert('Successfully uploaded to Firebase Storage!');
+				} catch (error) {
+					console.error('Error uploading to Firebase Storage:', error);
+					alert('Error uploading to Firebase Storage. Please try again.');
+				}
+			} else {
+				alert('No file selected.');
+			}
+		});
 	</script>
 	<script>
 		function sendMessage() {
-			// Lấy giá trị uid từ thuộc tính data-userid của form
 			var uid = $('#messageForm').data('userid');
 			var contentValue = $('#content').val().trim();
 
-			// Kiểm tra xem content có rỗng hay không
-			if (contentValue !== '') {
+			const imageContainer = document.getElementById("imageContainer");
+			const imageURL = imageContainer.querySelector("#urlImage") ? imageContainer.querySelector("#urlImage").src : null;
+
+			const contentArea = document.getElementById("content");
+
+			// Kiểm tra xem content và imageURL có giá trị hay không
+			if (contentValue !== '' || contentValue != null || (imageURL !== "" && imageURL !== null)) {
+				// Nếu có nội dung và không có ảnh
+				if (contentValue !== '' && (imageURL == "" || imageURL == null)) {
+					contentArea.value = contentValue;
+					//alert("Nếu có nội dung và không có ảnh" + contentArea.value);
+				}
+				// Nếu có ảnh và không có nội dung
+				else if (contentValue == '' && (imageURL !== "" && imageURL !== null)) {
+					contentArea.value = imageURL + "++";
+					//alert("Nếu có ảnh và không có nội dung" + contentArea.value);
+				}
+				// Nếu cả hai đều có
+				else {
+					contentArea.value = imageURL + "++" + contentValue;
+					//alert("Nếu cả hai đều có" + contentArea.value);
+				}
+
 				// Thêm giá trị uid vào FormData
 				var formData = $('#messageForm').serializeArray();
 				formData.push({name: 'uid', value: uid});
-				//var formData = $('#messageForm').serialize();
 
 				$.ajax({
 					type: 'POST',
 					url: '/send',
 					data: formData,
 					success: function () {
-						$('#content').val('');
+						$('#content').val(''); // reset ô nhập tin nhắn 
+						$('#imageContainer').html(''); // reset ảnh  
 					},
 					error: function () {
-						// Handle error
+						// Xử lý lỗi
 						alert('Error sending message');
-
 					}
 				});
+			} else {
+				// Thông báo người dùng chưa nhập nội dung hoặc chọn ảnh
+				alert('Please enter a message or choose an image.');
 			}
 		}
+
+
 	</script>
 
 </head>
@@ -172,13 +247,16 @@
 		<div id="chat"></div>
 
 	</div>
+
+	<div id="imageContainer"></div>
 	<form id="messageForm" th:attr="data-userid=${userid}" onsubmit="sendMessage(); return false;">
 		<!-- Các trường khác của biểu mẫu -->
 		<input type="text" id="content" name="content" placeholder="Content" />
+		<input type="file" id="file" name="file">
 		<button type="submit" id="sendButton">Send</button>
 	</form>
 	<div>
-		<input type="text" id="userid" name="userid" placeholder="userid" th:value="${session.userInfoID}" hidden/>
+		<input type="text" id="userid" name="userid" placeholder="userid" th:value="${session.userInfoID}" hidden />
 	</div>
 </body>
 
