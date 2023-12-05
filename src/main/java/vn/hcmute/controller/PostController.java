@@ -47,8 +47,8 @@ public class PostController {
 		return "post";
 	}
 	
-	@PostMapping(value = "/post", produces = "text/html;charset=UTF-8")
-	public String savePost(@RequestBody PostModel request, HttpSession session) {
+	@PostMapping(value = "/post/{groupID}", produces = "text/html;charset=UTF-8")
+	public String savePost(@PathVariable long groupID,@RequestBody PostModel request, HttpSession session) {
 		
 		//lay tu session
 		Long userID = (Long) session.getAttribute("userInfoID");
@@ -65,7 +65,7 @@ public class PostController {
 		
 		PostEntity post = new PostEntity();
 		post.setUser(user);
-		group.setGroupID(1);
+		group.setGroupID(groupID);
 		post.setGroupPost(group);
 		post.setImage(request.getImageURL());
 		post.setContent(request.getContent());
