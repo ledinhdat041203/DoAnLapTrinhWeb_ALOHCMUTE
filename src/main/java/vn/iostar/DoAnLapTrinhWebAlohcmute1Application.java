@@ -15,13 +15,6 @@ public class DoAnLapTrinhWebAlohcmute1Application {
 	public static void main(String[] args) {
 		SpringApplication.run(DoAnLapTrinhWebAlohcmute1Application.class, args);
 	}
-	@Bean(name="UserAcount_Bean")
-	public UserAcountModel setAcountModel()
-	{
-		UserAcountModel u = new UserAcountModel();
-		u.setEmail("admin@gmail.com");
-		u.setPass("123");
-		return u;
-	}
+	
 
 }

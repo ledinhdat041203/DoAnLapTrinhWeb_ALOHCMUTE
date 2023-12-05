@@ -1,18 +1,23 @@
 package vn.iostar.service;
 
+import java.util.Calendar;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import vn.iostar.Responsitory.PasswordTokenResponsitory;
 import vn.iostar.Responsitory.UserResponsitory;
+import vn.iostar.entities.ResetPasswordEntity;
 import vn.iostar.entities.UserEntity;
 
 @Service
 public class UserServiceImple implements IUserService{
 	@Autowired
 	UserResponsitory userResponsitory;
-
+	@Autowired
+	PasswordTokenResponsitory passwordTokenResponsitory;
 	public UserServiceImple(UserResponsitory userResponsitory) {
 		this.userResponsitory = userResponsitory;
 	}
@@ -35,13 +40,60 @@ public class UserServiceImple implements IUserService{
 		return userResponsitory.save(entity);
 	}
 
+	@Override
+	public void createToken(UserEntity user, String token) {
+		ResetPasswordEntity reset = new ResetPasswordEntity(token, user);
+		passwordTokenResponsitory.save(reset);
+	}
 
-	
-	
-	
+	@Override
+	public void deleteById(Long id) {
+		passwordTokenResponsitory.deleteById(id);
+	}
+
+	@Override
+	public Optional<ResetPasswordEntity> findByUserResetPass(UserEntity user) {
+		return passwordTokenResponsitory.findByUserResetPass(user);
+	}
+
+	@Override
+	public List<ResetPasswordEntity> findAll() {
+		return passwordTokenResponsitory.findAll();
+	}
+
+	@Override
+	public void deleteByUserResetPass(UserEntity user) {
+		passwordTokenResponsitory.deleteByUserResetPass(user);
+	}
+	@Override
+	public String validToken(String token)
+	{
+		ResetPasswordEntity pass = passwordTokenResponsitory.findByToken(token);
+		return !isTokenFound(pass) ? "invalidToken"
+	            : isTokenExpired(pass) ? "expired"
+	            : null;
+	}
+	@Override
+	public boolean isTokenFound(ResetPasswordEntity pass) {
+	    return pass != null;
+	}
+	@Override
+	public boolean isTokenExpired(ResetPasswordEntity pass) {
+	    final Calendar cal = Calendar.getInstance();
+	    return pass.getExpireDate().before(cal.getTime());
+	}
+
+	@Override
+	public ResetPasswordEntity findByToken(String token) {
+		return passwordTokenResponsitory.findByToken(token);
+	}
+	@Override
+	public void changePass(UserEntity user,String pass)
+	{
+		user.setPass(pass);
+		userResponsitory.save(user);
+	}
 	
 
-	
-
-	
 }
+

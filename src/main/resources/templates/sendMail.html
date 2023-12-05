@@ -1,0 +1,30 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>SendEmail</title>
+</head>
+
+<body>
+	<h2>Send Email Form</h2>
+	<form action="send" method="post" enctype="multipart/form-data" modelAttribute="mail">
+		<div th:if="${param.wrong}">
+			<div class="alert alert-info">Email của bạn chưa được đăng ký vui lòng kiểm tra lại</div>
+		</div>
+		<div th:if="${param.yes}">
+			<div class="alert alert-info">Đã gửi thành công</div>
+		</div>
+		<div th:if="${param.no}">
+			<div class="alert alert-info">Gửi gmail thất bại</div>
+		</div>
+		<div>To:</div>
+		<input type="text" name="to" placeholder="receiver" th:value="${emailcookie != null ? emailcookie : ''}" />
+		<input type='submit' value='Send'>
+
+	</form>
+</body>
+
+</html>

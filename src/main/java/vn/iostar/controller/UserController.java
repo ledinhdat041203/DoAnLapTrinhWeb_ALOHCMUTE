@@ -1,6 +1,7 @@
 package vn.iostar.controller;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +21,14 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import vn.iostar.entities.ResetPasswordEntity;
 import vn.iostar.entities.UserEntity;
 import vn.iostar.entities.UserInfoEntity;
+import vn.iostar.model.EmailInfo;
 import vn.iostar.model.UserAcountModel;
 import vn.iostar.model.UserInfoModel;
+import vn.iostar.model.updatePassModel;
+import vn.iostar.service.IMailService;
 import vn.iostar.service.IUserInfoService;
 import vn.iostar.service.IUserService;
 import vn.iostar.service.UserServiceImple;
@@ -37,6 +42,8 @@ public class UserController {
 	IUserService user_service;
 	@Autowired
 	IUserInfoService user_info_service;
+	@Autowired
+	IMailService imail;
 	@RequestMapping("/login")
 	public String Showlogin(ModelMap model,HttpServletRequest request)
 	{
@@ -74,8 +81,12 @@ public class UserController {
 				password.setMaxAge(0);
 			response.addCookie(name);
 			response.addCookie(password);
-			session.setAttribute("username",user_service.findByemailContaining(Email).get().getIdAccount());
-			return "user";
+			session.setAttribute("userID",user_service.findByemailContaining(Email).get().getIdAccount());
+			session.setAttribute("userInfoID",user_service.findByemailContaining(Email).get().getUserInfo().getUserID());
+			session.setAttribute("userFullName",user_service.findByemailContaining(Email).get().getUserInfo().getFullName());
+
+
+			return "redirect:/list_Conversation";
 		}
 
 		return "login";
@@ -83,17 +94,18 @@ public class UserController {
 	@GetMapping("/logout")
 	public ModelAndView Logout(HttpSession session,ModelMap model)
 	{
-		session.removeAttribute("username");
+		session.removeAttribute("userID");
+		session.removeAttribute("userInfoID");
+		session.removeAttribute("userFullName");
 		return new ModelAndView("redirect:/login",model);
 	}
 	@GetMapping("/registerOrFail")
 	public String Register()
 	{
-		
 		return "Register";
 	}
 	@PostMapping("/registerOrFail")
-	public String Show(ModelMap model,@ModelAttribute UserAcountModel user_account, @ModelAttribute("user_info") UserInfoEntity user_info)
+	public String Show(ModelMap model,@ModelAttribute UserAcountModel user_account, @ModelAttribute UserInfoEntity user_info)
 	{
 		//user_account.setUserInfo(user_info);
 		UserEntity user_entity = new UserEntity();
@@ -114,10 +126,109 @@ public class UserController {
 			user_service.save(user_entity);
 			return "redirect:/registerOrFail?success";
 		}
+	}
 
-
-
+	@GetMapping("/forgot")
+	public String showFormMail(ModelMap model) {
+		model.addAttribute("mail", new EmailInfo());
+		return "sendMail";
 	}
 	
-	
+	@PostMapping("/send")
+	public String Send(HttpServletRequest request, ModelMap model, @ModelAttribute("mail") EmailInfo emailInfo) {
+		/*
+		 * try { Optional<UserEntity> user =
+		 * user_service.findByemailContaining(emailInfo.getTo());
+		 * imail.send(null,null,user.get()); } catch (Exception e) { return "wrong"; }
+		 * return "Correct";
+		 */
+		Optional<UserEntity> user = user_service.findByemailContaining(emailInfo.getTo());
+		if (user.isPresent()) {
+			String token = UUID.randomUUID().toString();
+			Optional<ResetPasswordEntity> resetPass = user_service.findByUserResetPass(user.get());
+			if (!resetPass.isEmpty())
+			{
+				user_service.deleteById(resetPass.get().getId());
+				System.out.print("da xoa");
+			}
+			user_service.createToken(user.get(), token);
+			try {
+				imail.constructResetTokenEmail(getAppUrl(request), token, user.get());
+
+			} catch (Exception e) {
+				return "redirect:forgot?no";
+			}
+		}
+		else 
+			return "redirect:forgot?wrong";
+		return "redirect:forgot?yes";
+	}
+
+	private String getAppUrl(HttpServletRequest request) {
+		String url = request.getRequestURL().toString();
+		return url.substring(0, url.length() - request.getRequestURI().length()) + request.getContextPath();
+	}
+	@GetMapping("/user/changePassword")
+	public String showChangePasswordPage(ModelMap model, 
+	  @RequestParam(name = "token") String token1)
+	{
+		String result = user_service.validToken(token1);
+		System.out.print(token1);
+		if (result!=null)
+			return "login";
+		else
+		{
+			model.addAttribute("tokenvalue", token1);
+			model.addAttribute("pass", new updatePassModel());
+			return "updatePass";
+		}
+	}
+	/*@GetMapping("updatePass")
+	public String Show(ModelMap model)
+	{
+		model.addAttribute("pass", new updatePassModel());
+		return "updatePass";
+	}*/
+	@PostMapping("user/updatePassword")
+	public String savePass(@ModelAttribute("pass") updatePassModel pass,HttpServletResponse response)
+	{
+		String result = user_service.validToken(pass.getToken());
+		if (result!=null)
+			return "redirect:updatePassword?fail";
+		Cookie name= new Cookie("token", pass.getToken());
+		name.setMaxAge(60);
+		response.addCookie(name);
+		UserEntity user = user_service.findByToken(pass.getToken()).getUserResetPass();
+		if(user!=null)
+		{
+			System.out.print(user);
+			if(pass.getNewPass().equals(pass.getConfirmPass()))
+			{
+				user_service.changePass(user, pass.getConfirmPass());
+				return "redirect:updatePassword?success";
+			}
+			else
+				return "redirect:updatePassword?wrong";
+		}
+		else
+			return "redirect:updatePassword?noexist";
+	}
+	@GetMapping("user/updatePassword")
+	public String show(HttpServletRequest request,ModelMap model)
+	{
+		Cookie[] c = request.getCookies();
+		if (c!=null)
+		{
+			for (Cookie cook: c)
+			{
+				if (cook.getName().equals("token"))
+				{
+					model.addAttribute("tokenvalue", cook.getValue());
+				}
+			}
+		}
+		return "updatePass";
+	}
+
 }
+

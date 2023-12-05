@@ -9,4 +9,9 @@ import vn.iostar.entities.UserInfoEntity;
 public interface UserInfoResponsitory extends JpaRepository<UserInfoEntity, Long>{
 
 	Optional<UserInfoEntity> findByphoneNumberContaining(String phoneNumber);
+	
+	Optional<UserInfoEntity> findByuserIDContaining(Long userID);
+	
+	Optional<UserInfoEntity> findByUserIDEquals(Long userID);
+
 }

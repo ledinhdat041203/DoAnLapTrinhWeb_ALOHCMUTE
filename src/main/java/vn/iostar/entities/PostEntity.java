@@ -20,26 +20,26 @@ public class PostEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "postid", columnDefinition = "BIGINT")
 	private long postID;
-
+	
+	@Column(name = "groupid", columnDefinition = "BIGINT")
+    private int groupID;
+	
 	@ManyToOne
-	@JoinColumn(name = "groupid")
-	private GroupEntity groupPost;
-
-	@ManyToOne
-	@JoinColumn(name = "userid")
-	private UserInfoEntity user;
-
+    @JoinColumn(name = "userid")
+    private UserInfoEntity user;
+	
 	@Column(name = "content", columnDefinition = "text")
 	private String content;
 	@Column(name = "image", columnDefinition = "nvarchar(255)")
 	private String image;
 	@Column(name = "postdate", columnDefinition = "DATE")
 	private Date postDate;
-
-	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
-	private List<LikeEntity> listLikes;
-
-	@OneToMany(mappedBy = "postCommnent", fetch = FetchType.LAZY)
-	private List<CommentsEntity> listComments;
-
+	
+	 @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
+	 private List<LikeEntity> listLikes;
+	 
+	 @OneToMany(mappedBy = "postCommnent", fetch = FetchType.LAZY)
+	 private List<CommentsEntity> listComments;
+	
+	
 }
