@@ -34,12 +34,14 @@ public class MessageController {
 	@GetMapping("/firebase")
 	public String showMessageFireBase(Model model, @RequestParam(name = "uid", required = false, defaultValue = "-1") Long user2, HttpSession session) {
 		Long user1 = (long) session.getAttribute("userInfoID");
+		
 		if (user2 == -1 ) {
 	        // Xử lý khi uid không được truyền, ví dụ chuyển hướng hoặc trả về một giá trị mặc định
-	        return "chat";
+	        return "conversation";
 	    } 
 		List<MessagesEntity> messages = messageService.getAllMessagesFromFirebase(user1, user2);
 		String conversationId = messageService.generateConversationId(user1, user2);
+		System.out.println(conversationId);
 		UserInfoEntity userInfo = userInfoService.findByUserIDEquals(user2).get();
 		System.out.println(userInfo.getPhoneNumber());
 		model.addAttribute("conversationId", conversationId);

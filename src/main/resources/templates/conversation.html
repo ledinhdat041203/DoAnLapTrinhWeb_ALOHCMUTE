@@ -13,38 +13,7 @@
 	<link rel="stylesheet" href="css/style.css">
 	<link rel="stylesheet" href="css/color.css">
 	<link rel="stylesheet" href="css/responsive.css">
-	<!--<style>
-		body {
-			display: flex;
-			/* Sử dụng flexbox để sắp xếp các phần tử */
-		}
-
-		table {
-			border-collapse: collapse;
-			width: 30%;
-		}
-
-		#chat-container {
-			width: 70%;
-			height: 90%;
-			padding: 8px;
-			overflow: hidden;
-			background-color: #f5f5f5;
-		}
-
-
-		th,
-		td {
-			border: 1px solid #dddddd;
-			text-align: left;
-			padding: 8px;
-		}
-
-		tr:hover {
-			background-color: #f5f5f5;
-			cursor: pointer;
-		}
-	</style>-->
+	
 	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 	<script>
 		localStorage.clear();
@@ -52,13 +21,11 @@
 			$(document).on('click', '.load-chat', function (event) {
 				// Bắt sự kiện click cho các liên kết
 				event.preventDefault();
+				
 				var recvId = $(this).data('recv-id');
 				var recvName = $(this).data('full-name');
 				localStorage.setItem('recvId', recvId);
 				localStorage.setItem('recvName', recvName);
-				//console.log(recvName);
-				//console.log(recvId);
-				
 				// Kiểm tra xem chat content đã được tải hay chưa
 				if ($('#chat-frame').attr('data-recv-id') === recvId.toString()) {
 					console.log('Chat content already loaded');
@@ -84,22 +51,7 @@
 </head>
 
 <body>
-	<!--<table>
-		<thead>
-			<tr>
-				<th>User ID</th>
-			</tr>
-		</thead>
-		<tbody>
-			 Sử dụng th:each để lặp qua danh sách User ID 
-			<tr th:each="item : ${list}" th:data-userid="${item.userID}">
-				<td>
-					<a class="load-chat" th:text="${item.fullName}"
-						th:attr="data-full-name=${item.fullName}, data-recv-id=${item.userID}"></a>
-				</td>
-			</tr>
-		</tbody>
-	</table>-->
+
 
 
 

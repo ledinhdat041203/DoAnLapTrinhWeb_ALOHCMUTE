@@ -45,12 +45,13 @@
 		chatDiv.appendChild(newMessage);
 		newMessage.scrollIntoView({behavior: 'smooth'});
 	});
-
+	
 	const uid = localStorage.getItem('recvId');
 	const recvName = localStorage.getItem('recvName');
 	// Set giá trị recvName vào nội dung của thẻ p trong Receiver-Name
 	document.getElementById('Receiver-Name').innerHTML = `<p><strong>${recvName}</strong></p>`;
 	document.getElementById('Receiver-Name-About').innerHTML = `<p><strong>${recvName}</strong></p>`;
+	
 	// Set giá trị uid vào thuộc tính data-userid của form
 	$('#messageForm').attr('data-userid', uid);
 </script>
@@ -73,7 +74,7 @@
 				data: formData,
 				success: function (response) {
 					$('#content').val('');
-					
+
 				},
 				error: function () {
 					// Handle error
@@ -96,7 +97,7 @@
 		document.getElementById('content').value = newContent;
 	}
 </script>
-
+</head>
 
 <div class="tab-pane active fade show " id="link1">
 	<div class="row merged">
@@ -136,7 +137,7 @@
 			</div>
 		</div>
 		<div class="col-lg-8 col-md-8">
-			<div class="mesge-area">
+			<div class="mesge-area with-background">
 				<ul id="chat" class="conversations ps-container ps-theme-default ps-active-x ps-active-y">
 
 				</ul>
@@ -249,11 +250,16 @@
 					<span>About</span>
 					<p>I love reading, traveling and discovering new things. You need to be happy in life.</p>
 					<ul>
-						<li><span>Phone:</span> +123976980</li>
-						<li><span>Email:</span> <a href="http://wpkixx.com/cdn-cgi/l/email-protection"
-								class="__cf_email__"
-								data-cfemail="a0d3c1cdd0ccc5e0c7cdc1c9cc8ec3cfcd">[email&#160;protected]</a></li>
-						<li><span>Address:</span> Ontario, Canada</li>
+						<li>
+							<span style="display: inline-block;">Phone: </span>
+							<span style="display: inline-block;" th:text="${recipientInfo.phoneNumber}"></span>
+						</li>
+						<li>
+							<span style="display: inline-block;">Address: </span>
+							<span style="display: inline-block;" th:text="${recipientInfo.address}"></span>
+						</li>
+
+						
 					</ul>
 					<div class="media">
 						<span>Media</span>
@@ -275,14 +281,6 @@
 		</div>
 	</div>
 </div>
-
-
-
-
-
-
-
-
-
-
-<!--<script data-cfasync="false" src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>-->
+<script src="js/main.min.js"></script>
+<script src="js/script.js"></script>
+</html>

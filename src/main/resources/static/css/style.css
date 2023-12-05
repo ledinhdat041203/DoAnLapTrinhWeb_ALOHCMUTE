@@ -107,6 +107,16 @@ img {
     z-index: 2;
 }
 
+
+/* Chủ đề có hình ảnh nền */
+.custom-chat-theme.with-background {
+    background-color: red;
+}
+
+/* Thêm chủ đề khác nếu cần thiết */
+
+
+
 .theme-layout {
     float: left;
     position: relative;
