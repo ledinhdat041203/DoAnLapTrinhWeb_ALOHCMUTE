@@ -90,4 +90,19 @@ public class PostController {
         return "listpost :: #listpost";
 
     }
+	
+	@GetMapping("/listpost/{page}")
+	public String getPostsByUserId(
+            @PathVariable int page,
+            @RequestParam(defaultValue = "2") int size,
+            Model model, 
+            HttpSession session) {
+		
+		long userID = (Long) session.getAttribute("userInfoID");
+		List<PostModel> posts = postService.findByUserUserID(userID, page, size);
+		System.out.println(page);
+		model.addAttribute("list", posts);
+        return "listpost :: #listpost";
+
+    }
 }

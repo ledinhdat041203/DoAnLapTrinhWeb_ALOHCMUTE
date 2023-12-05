@@ -3,13 +3,11 @@ package vn.hcmute.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 
 import vn.hcmute.Responsitory.PostRepository;
 import vn.hcmute.entities.LikeEntity;
@@ -17,21 +15,11 @@ import vn.hcmute.entities.PostEntity;
 import vn.hcmute.model.PostModel;
 
 
+
 @Service
 public class PostService implements IPostService{
 	@Autowired
-	PostRepository postRepo;
-
-
-
-	public List<PostModel> findAll() {
-		List<PostEntity> list = postRepo.findAll();
-		List<PostModel> listPostModel = new ArrayList<>();
-		 for (PostEntity post : list) {
-			 listPostModel.add(converEntityToModel(post));
-		 }
-		return listPostModel;
-	}
+	PostRepository postRepo;	
 	
 	private PostModel converEntityToModel(PostEntity post) {
 		 PostModel postModel = new PostModel();
@@ -52,9 +40,6 @@ public class PostService implements IPostService{
 		 postModel.setLikeCount(likeCount);
 		 return postModel;
 	}
-
-
-
 
 	@Override
 	public <S extends PostEntity> S save(S entity) {
@@ -77,4 +62,19 @@ public class PostService implements IPostService{
 		 }
 		return listPostModel;
     }
+
+	@Override
+	public List<PostModel> findByUserUserID(long userId, int page, int size) {
+		Pageable pageable = PageRequest.of(page, size);
+		Page<PostEntity> postPage = postRepo.findByUserUserID(userId, pageable);
+        List<PostEntity> posts = postPage.getContent();
+        List<PostModel> listPostModel = new ArrayList<>();
+		 for (PostEntity post : posts) {
+			 listPostModel.add(converEntityToModel(post));
+		 }
+		return listPostModel;
+	}
+	
+	
 }
+

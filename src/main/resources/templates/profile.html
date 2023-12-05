@@ -3,22 +3,43 @@
 
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Messages</title>
+	<title>User Info</title>
 	<link rel="stylesheet" href="/css/PostStyle.css">
 	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 
 <body>
-	<h2 th:text=" 'Group ID: ' + ${group.groupID}"></h2>
-	<h2 th:text="${'Group Name: ' + group.groupName}"></h2>
-	<h2 th:text="${'Description: ' + group.description}"></h2>
-	<h2 th:text="${'Admin: ' + group.admin.fullName}"></h2>
-	<h2><a th:href="'/group/list_member/' + ${group.groupID}">Thành viên nhóm</a></h2>
-	<br>
+	<h1>User Info</h1>
 
-	<form th:action=" '/post/' + ${group.groupID} " th:object="${post}" method="post"
-		th:onsubmit="saveImage(); return false;">
+	<div class="user-info">
+		<!-- <form th:action="@{/save}"></form> -->
+	</div>
+
+	<div class="Info-Of-User">
+		<table border="1">
+			<tr>
+				<th>Avatar</th>
+				<th>User ID</th>
+				<th>Full name</th>
+				<th>Address</th>
+				<th>Date of birth</th>
+				<th>Phone number</th>
+			</tr>
+
+			<tr th:each="userinfo: ${info}">
+				<td><span th:text="${userinfo.avata}"></span></td>
+				<td><span th:text="${userinfo.userID}"></span></td>
+				<td><span th:text="${userinfo.fullName}"></span></td>
+				<td><span th:text="${userinfo.address}"></span></td>
+				<td><span th:text="${userinfo.dateOfBirth}"></span></td>
+				<td><span th:text="${userinfo.phoneNumber}"></span></td>
+
+				<td><a th:href="@{/update/{userid}(userid=${userinfo.userID})}">Edit Profile</a></td>
+			</tr>
+		</table>
+	</div>
+	<br>
+	<form action="/post/1" th:object="${post}" method="post" onsubmit="saveImage(); return false;">
 
 		<label for="content">Nội dung:</label>
 
@@ -32,6 +53,7 @@
 
 		<input type="submit" value="Đăng bài" />
 	</form>
+	<br>
 
 	<div class="container bootstrap snippets bootdey" id="Post-Container">
 		<div class="row" id="listpost">
@@ -43,13 +65,7 @@
 		</div>
 	</div>
 
-
-
-
-
-
-
-	<!-----------------------------------------------------------script------------------------------------- -->
+	<!-- ------------------------scripts--------------------------- -->
 	<script type="module">
 		// Import the functions you need from the SDKs you need
 		import {initializeApp} from "https://www.gstatic.com/firebasejs/9.0.1/firebase-app.js";
@@ -111,12 +127,11 @@
 			const imageURL = image.src;
 			const tagContent = document.getElementById("content");
 			const content = tagContent.value;
-			const groupid = "[[${group.groupID}]]";
 
 			try {
 				$.ajax({
 					type: 'POST',
-					url: '/post/' + groupid,
+					url: "/post/1",
 					data: JSON.stringify({"imageURL": imageURL, "content": content}), //Ép kiểu string để tránh bị đôir / thành %
 					contentType: 'application/json',
 					success: function () {
@@ -133,7 +148,6 @@
 
 		}
 	</script>
-
 
 	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 	<script defer>
@@ -173,11 +187,10 @@
 		});
 
 		function loadAjax() {
-			const groupid = "[[${group.groupID}]]";
-			console.log("/listpost/group/" + page);
+			console.log("/listpost/" + page);
 			$.ajax({
 				type: 'GET',
-				url: '/listpost/postgroup/' + page + '?groupID=' + groupid,  // Thay đổi đường dẫn API và tham số theo nhu cầu của bạn
+				url: '/listpost/' + page,  // Thay đổi đường dẫn API và tham số theo nhu cầu của bạn
 
 				success: function (data) {
 					console.log(data);
@@ -201,7 +214,6 @@
 			});
 		}
 	</script>
-
 
 </body>
 
