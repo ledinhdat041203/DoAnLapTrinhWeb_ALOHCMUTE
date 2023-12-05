@@ -35,6 +35,7 @@ public class PostController {
 		java.util.List<PostModel> list = postService.findAll();
 		
 		model.addAttribute("list", list);
+
 		return "listpostnew";
 	}
 	
@@ -72,6 +73,8 @@ public class PostController {
         post.setPostDate(currentSQLDate);
         
 		postService.save(post);
+
 		return "redirect:/listpost";	
 	}
 }
+
