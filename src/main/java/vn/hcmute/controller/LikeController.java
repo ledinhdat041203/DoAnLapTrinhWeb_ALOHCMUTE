@@ -15,7 +15,6 @@ import vn.hcmute.entities.UserInfoEntity;
 import vn.hcmute.service.ILikeService;
 import vn.hcmute.service.IPostService;
 import vn.hcmute.service.IUserInfoService;
-import vn.hcmute.service.PostService;
 
 
 
@@ -30,7 +29,7 @@ public class LikeController {
 	IUserInfoService userInfoService;
 	
 	@Autowired
-	PostService postService;
+	IPostService postService;
 
 
 	 @PostMapping("/like/{postId}") 
