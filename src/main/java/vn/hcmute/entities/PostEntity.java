@@ -39,8 +39,9 @@ public class PostEntity {
 	 @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
 	 private List<LikeEntity> listLikes;
 	 
+
 	 //@OneToMany(mappedBy = "postCommnent", fetch = FetchType.LAZY)
 	 //private List<CommentsEntity> listComments;
 	
-	
 }
+

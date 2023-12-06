@@ -10,7 +10,7 @@
 <body>
 	<h2>Add Post</h2>
 
-	<form action="/post/1" th:object="${post}" method="post" onsubmit="saveImage(); return false;">
+	<form action="/post" th:object="${post}" method="post" onsubmit="saveImage(); return false;">
 
 		<label for="content">Nội dung:</label>
 		
@@ -25,12 +25,13 @@
 		<input type="submit" value="Đăng bài" />
 	</form>
 
-	<a th:href="@{/Category}"><button>Back to List</button></a>
-	<a href="/logout">logout</a>
+	<a th:href="@{/listpost}"><button>Back to List</button></a>
+
 
 
 
 	<script type="module">
+		// Import the functions you need from the SDKs you need
 		import {initializeApp} from "https://www.gstatic.com/firebasejs/9.0.1/firebase-app.js";
 		import {getStorage, ref, uploadBytes, getDownloadURL} from "https://www.gstatic.com/firebasejs/9.0.1/firebase-storage.js";
 
@@ -94,7 +95,7 @@
 			try {
 				$.ajax({
 					type: 'POST',
-					url: "/post/1",
+					url: "/post",
 					data: JSON.stringify({ "imageURL": imageURL, "content": content }), //Ép kiểu string để tránh bị đôir / thành %
 					contentType: 'application/json',
 					success: function () {
@@ -104,7 +105,6 @@
 						alert('Error save image');
 					}
 				});
-
 			} catch (error) {
 				console.error('Error uploading to Firebase Storage:', error);
 			}
