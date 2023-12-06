@@ -4,29 +4,20 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-
 		<groupId>org.springframework.boot</groupId>
-
 		<artifactId>spring-boot-starter-parent</artifactId>
-
 		<version>3.1.5</version>
-
 		<relativePath /> <!-- lookup parent from repository -->
-
 	</parent>
-
-	<groupId>vn.iotstar</groupId>
-
-	<artifactId>DemoSpring</artifactId>
-
+	<groupId>com.hcmute</groupId>
+	<artifactId>DemoRealTimeChat</artifactId>
 	<version>1.0</version>
-
 	<packaging>war</packaging>
-
-	<name>DemoSpring</name>
-
-	<description>Spring Boot with CSRF</description>
-
+	<name>DemoRealTimeChat</name>
+	<description>Demo project for Spring Boot</description>
+	<properties>
+		<java.version>17</java.version>
+	</properties>
 	<dependencies>
 		<!--
 		https://mvnrepository.com/artifact/com.google.cloud/google-cloud-storage -->
@@ -40,19 +31,10 @@
 			<artifactId>firebase-admin</artifactId>
 			<version>9.2.0</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -76,23 +58,13 @@
 		<dependency>
 			<groupId>com.microsoft.sqlserver</groupId>
 			<artifactId>mssql-jdbc</artifactId>
-			<version>9.4.1.jre11</version>
+			<version>8.4.0.jre11</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger-ui</artifactId>
-			<version>3.0.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-			<version>2.0.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -104,34 +76,22 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
+
+		<!-- Google Cloud Storage SDK -->
+		<dependency>
+			<groupId>com.google.cloud</groupId>
+			<artifactId>google-cloud-storage</artifactId>
+			<version>2.29.1</version>
+		</dependency>
+
 
 		<dependency>
-
 			<groupId>com.h2database</groupId>
-
 			<artifactId>h2</artifactId>
-
-		</dependency>
-		<!--template sitemesh decorator-->
-
-		<dependency>
-
-			<groupId>org.sitemesh</groupId>
-
-			<artifactId>sitemesh</artifactId>
-
-			<version>3.2.0-M2</version>
-
+			<scope>runtime</scope>
 		</dependency>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-mail</artifactId>
-		</dependency>
 	</dependencies>
 
 	<build>
@@ -153,6 +113,5 @@
 			</plugin>
 		</plugins>
 	</build>
-
 
 </project>
