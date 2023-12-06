@@ -10,4 +10,5 @@ import vn.hcmute.entities.UserEntity;
 public interface UserResponsitory extends JpaRepository<UserEntity, Long>{
 
 	Optional<UserEntity> findByemailContaining(String email);
+	
 }

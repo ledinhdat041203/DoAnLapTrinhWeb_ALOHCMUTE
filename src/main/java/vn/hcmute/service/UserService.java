@@ -9,11 +9,11 @@ import vn.hcmute.Responsitory.UserResponsitory;
 import vn.hcmute.entities.UserEntity;
 
 @Service
-public class UserServiceImple implements IUserService{
+public class UserService implements IUserService{
 	@Autowired
 	UserResponsitory userResponsitory;
 
-	public UserServiceImple(UserResponsitory userResponsitory) {
+	public UserService(UserResponsitory userResponsitory) {
 		this.userResponsitory = userResponsitory;
 	}
 
@@ -33,6 +33,11 @@ public class UserServiceImple implements IUserService{
 	@Override
 	public <S extends UserEntity> S save(S entity) {
 		return userResponsitory.save(entity);
+	}
+
+	@Override
+	public long count() {
+		return userResponsitory.count();
 	}
 
 

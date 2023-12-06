@@ -1,5 +1,7 @@
 package vn.hcmute.entities;
 
+import java.sql.Date;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,26 +19,31 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 
 @Entity
-@Table(name = "Friends")
-public class FriendsEntity {
+@Table(name = "Notification")
+public class NotificationEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "friendid", columnDefinition = "BIGINT")
-	private long friendID;
-
+	@Column(name = "notifyid", columnDefinition = "BIGINT")
+	private long notifyID;
+	
+	@Column(name = "content", columnDefinition =  "text")
+	private String content;
+	
+	@Column(name = "time", columnDefinition = "Date")
+	private Date timeNotify;
 	
 	@ManyToOne
-    @JoinColumn(name = "user1")
-    private UserInfoEntity user1;
+    @JoinColumn(name = "userid")
+    private UserInfoEntity user;
 	
-	@ManyToOne
-    @JoinColumn(name = "user2")
-    private UserInfoEntity user2;
-	
-	@Column(name = "friendshipdate", columnDefinition = "DATE")
-	private java.util.Date friendshipDate;
-	
-	// Bao gồm các trạng thái đã follow hoặc unfollow
 	@Column(name = "status", columnDefinition = "bit")
 	private boolean status;
+	
+	@Column(name = "type", columnDefinition = "INT")
+	private int type;
+	
+	@Column(name = "link", columnDefinition = "text")
+	private String link;
+	
+
 }
