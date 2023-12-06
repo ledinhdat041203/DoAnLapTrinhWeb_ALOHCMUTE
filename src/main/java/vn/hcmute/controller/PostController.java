@@ -2,6 +2,7 @@ package vn.hcmute.controller;
 
 import java.sql.Date;
 import java.util.List;
+
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,12 +24,11 @@ import vn.hcmute.model.PostModel;
 import vn.hcmute.service.IPostService;
 import vn.hcmute.service.IUserInfoService;
 
-
 @Controller
 public class PostController {
 	
-	GroupEntity group = new GroupEntity(); //hardcode
-	@Autowired
+	GroupEntity group = new GroupEntity()
+;	@Autowired
 	IPostService postService;
 	
 	@Autowired
@@ -36,7 +37,7 @@ public class PostController {
 	@GetMapping("/listpost")
 	public String post(Model model) {
 		List<PostModel> posts = postService.getPostsByGroupId(1, 0, 2);
-		
+	
 		model.addAttribute("list", posts);
 		return "listpost";
 	}
@@ -49,7 +50,6 @@ public class PostController {
 	
 	@PostMapping(value = "/post/{groupID}", produces = "text/html;charset=UTF-8")
 	public String savePost(@PathVariable long groupID,@RequestBody PostModel request, HttpSession session) {
-		
 		//lay tu session
 		Long userID = (Long) session.getAttribute("userInfoID");
 		UserInfoEntity user = new UserInfoEntity();
@@ -62,11 +62,11 @@ public class PostController {
 		} else {
 			System.out.println("Loi roi"); 
 		}
-		
 		PostEntity post = new PostEntity();
 		post.setUser(user);
 		group.setGroupID(groupID);
 		post.setGroupPost(group);
+
 		post.setImage(request.getImageURL());
 		post.setContent(request.getContent());
 		       
@@ -75,7 +75,6 @@ public class PostController {
         post.setPostDate(currentSQLDate);
         
 		postService.save(post);
-
 		return "redirect:/listpost";	
 	}
 	

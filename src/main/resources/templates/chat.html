@@ -102,7 +102,7 @@
 
 		const userid = document.getElementById('userid');
 		const userCurrent = userid.value;
-		
+
 		const database = getDatabase(app);
 		const messagesRef = ref(database, 'RealTimeChat/' + conversationId + '/messages');
 		off(messagesRef);
@@ -116,9 +116,22 @@
 			} else {
 				newMessage.className = 'sender2';
 			}
-			newMessage.innerHTML = `
-                <p>${message.content}</p>
-            `;
+			// Kiểm tra xem tin nhắn có chứa link ảnh hay không
+			const hasImage = message.content.includes('++');
+
+			if (hasImage) {
+				// Nếu có ảnh, tách nội dung và link ảnh
+				const [imageUrl, content] = message.content.split('++');
+				newMessage.innerHTML = `
+            <div class="text-box"><p>${content}</p>
+             <img src="${imageUrl}" alt="Attached Image" style="width: 300px; height: 200px;"></div>
+        `;
+			} else {
+				// Nếu không có ảnh
+				newMessage.innerHTML = `
+            <div class="text-box"><p>${message.content}</p></div>
+        `;
+			}
 			chatDiv.appendChild(newMessage);
 			newMessage.scrollIntoView({behavior: 'smooth'});
 		});
@@ -178,7 +191,7 @@
 		<button type="submit" id="sendButton">Send</button>
 	</form>
 	<div>
-		<input type="text" id="userid" name="userid" placeholder="userid" th:value="${session.userInfoID}" hidden/>
+		<input type="text" id="userid" name="userid" placeholder="userid" th:value="${session.userInfoID}" hidden />
 	</div>
 </body>
 
