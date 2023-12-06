@@ -60,6 +60,9 @@ public class UserInfoEntity {
 	 @OneToMany(mappedBy = "userMember", fetch = FetchType.LAZY)
 	 private List<GroupMembersEntity> listGroupMembers;
 	 
+	 @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	 private List<NotificationEntity> listNotify;
+	 
 	public UserInfoEntity(long userID, String fullName) {
 	
 		this.userID = userID;

@@ -29,8 +29,8 @@ public class NotificationEntity {
 	@Column(name = "content", columnDefinition =  "text")
 	private String content;
 	
-	@Column(name = "time", columnDefinition = "Date")
-	private Date timeNotify;
+	@Column(name = "date", columnDefinition = "Date")
+	private Date dateNotify;
 	
 	@ManyToOne
     @JoinColumn(name = "userid")
@@ -39,11 +39,7 @@ public class NotificationEntity {
 	@Column(name = "status", columnDefinition = "bit")
 	private boolean status;
 	
-	@Column(name = "type", columnDefinition = "INT")
-	private int type;
-	
 	@Column(name = "link", columnDefinition = "text")
 	private String link;
 	
-
 }
