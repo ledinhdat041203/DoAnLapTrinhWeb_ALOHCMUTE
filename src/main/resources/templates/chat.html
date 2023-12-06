@@ -61,7 +61,8 @@
         `;
 			}
 			chatDiv.appendChild(newMessage);
-			newMessage.scrollIntoView({behavior: 'smooth'});
+			chatDiv.scrollTop = chatDiv.scrollHeight;
+			//newMessage.scrollIntoView({behavior: 'smooth'});
 		});
 
 		const uid = localStorage.getItem('recvId');
@@ -175,36 +176,6 @@
 </head>
 
 <body>
-
-	<!-- Hiển thị tin nhắn từ Firebase và cơ sở dữ liệu JPA -->
-	<!--	<div id="Receiver-Name">
-	</div>
-	<div id="chat-container">
-
-		<div id="chat"></div>
-
-	</div>
-
-	<div id="imageContainer"></div>
-	<form id="messageForm" th:attr="data-userid=${userid}" onsubmit="sendMessage(); return false;">
-		 Các trường khác của biểu mẫu 
-		<input type="text" id="content" name="content" placeholder="Content" />
-		<input type="file" id="file" name="file">
-		<button type="submit" id="sendButton">Send</button>
-	</form>
-	<div>
-		<input type="text" id="userid" name="userid" placeholder="userid" th:value="${session.userInfoID}" hidden />
-	</div>
-	
-	
-	-->
-
-
-
-
-
-
-
 	<div class="tab-pane active fade show " id="link1">
 		<div class="row merged">
 			<div class="col-lg-12">
@@ -254,10 +225,10 @@
 				
 				<div class="message-writing-box">
 					<div id="imageContainer"></div>
-					<form id="messageForm" th:attr="data-userid=${userid}" onsubmit="sendMessage(); return false;">
+					<form id="messageForm" th:attr="data-userid=${userid}">
 						<div class="text-area">
 							<input type="text" id="content" name="content" placeholder="write your message here..">
-							<button type="submit" id="sendButton"><i class="fa fa-paper-plane-o"></i></button>
+							<button onclick="sendMessage(); return false;"><i class="fa fa-paper-plane-o"></i></button>
 						</div>
 
 						<div class="emojies">

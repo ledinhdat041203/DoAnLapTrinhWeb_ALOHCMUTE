@@ -1,5 +1,6 @@
 package vn.hcmute.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,13 @@ public class UserInfoServiceImple implements IUserInfoService{
 		
 		return user_info.findById(id);
 	}
+
+	@Override
+	public List<UserInfoEntity> findByFullNameContaining(String name) {
+		return user_info.findByFullNameContaining(name);
+	}
+
+	
 	
 	
 	

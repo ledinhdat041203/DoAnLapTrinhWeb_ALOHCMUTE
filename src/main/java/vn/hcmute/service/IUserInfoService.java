@@ -1,7 +1,7 @@
 package vn.hcmute.service;
 
 import java.util.Optional;
-
+import java.util.List;
 import vn.hcmute.entities.UserInfoEntity;
 
 
@@ -16,5 +16,8 @@ public interface IUserInfoService {
 	Optional<UserInfoEntity> findByUserIDEquals(Long userID);
 	
 	Optional<UserInfoEntity> findById(Long id);
+
+	List<UserInfoEntity> findByFullNameContaining(String name);
+
 
 }
