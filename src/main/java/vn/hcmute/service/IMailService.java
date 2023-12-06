@@ -1,7 +1,5 @@
 package vn.hcmute.service;
 
-import org.springframework.stereotype.Service;
-
 import jakarta.mail.MessagingException;
 import vn.hcmute.entities.UserEntity;
 import vn.hcmute.model.EmailInfo;
