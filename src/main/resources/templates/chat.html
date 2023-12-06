@@ -214,10 +214,10 @@
 			<div id="imageContainer"></div>
 			<div class="message-writing-box">
 				
-				<form id="messageForm" th:attr="data-userid=${userid}" onsubmit="sendMessage(); return false;">
+				<form id="messageForm" th:attr="data-userid=${userid}" >
 					<div class="text-area">
 						<input type="text" id="content" name="content" placeholder="write your message here..">
-						<button type="submit" id="sendButton"><i class="fa fa-paper-plane-o"></i></button>
+						<button  id="sendButton" onclick="sendMessage(); return false;"><i class="fa fa-paper-plane-o"></i></button>
 					</div>
 
 					<div class="emojies">
