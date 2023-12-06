@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Title Here</title>
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+
+	<div class="container mt-4">
+		<!-- Iterate over the list of friends and display their information -->
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Avatar</th>
+					<th>User ID</th>
+					<th>Full Name</th>
+					<th>Action</th>
+					<!-- Add other fields as needed -->
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="user : ${userList}">
+					<td th:text="${user.avata}"></td>
+					<td th:text="${user.userID}"></td>
+					<td th:text="${user.fullName}"></td>
+					<!-- Thêm class "btn-follow" và thuộc tính data-user-id để lưu trữ userId -->
+					<td>
+                        <button class="btn btn-primary btn-follow"
+                            th:data-user-id="${user.userID}"
+                            data-follow-status="false"
+                            onclick="followUser(this)">Theo dõi</button>
+                    </td>
+					<!-- Add other fields as needed -->
+				</tr>
+			</tbody>
+		</table>
+		<a class="btn btn-primary" th:href="@{'./following-list'}"
+			th:text="'Xem danh sách đang theo dõi'"></a>
+	</div>
+
+	<!-- Bootstrap JS and dependencies (optional) -->
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>	
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+	<script>
+		$(document).ready(function() {
+			$(".btn-follow").click(function() {
+				var userId = $(this).data("user-id");
+				var followStatus = $(this).data("follow-status");
+				$.ajax({
+					type : "GET",
+					url : "./follow/" + userId,
+					success : function(respone) {
+						// Xử lý phản hồi từ server
+						//alert(respone);
+					},
+					error : function(error) {
+						alert(error);
+						console.error("Error:", error);
+					}
+				});
+			});
+		});
+	</script>
+	
+	<script>
+        function followUser(button) {
+            if(button.innerText === 'Theo dõi') {
+            	button.innerText = 'Đang theo dõi';
+                button.classList.remove('btn-primary');
+                button.classList.add('btn-success');	
+            } else {
+            	button.innerText = 'Theo dõi';
+                button.classList.remove('btn-success');
+                button.classList.add('btn-primary');
+            }
+        }
+    </script>
+    
+</body>
+</html>
