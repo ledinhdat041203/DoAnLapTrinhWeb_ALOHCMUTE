@@ -19,6 +19,8 @@ public interface IUserInfoService {
   
 	List<UserInfoEntity> findAll();
 
-
 	//UserInfoEntity findById(Long id);
+
+	List<UserInfoEntity> findByFullNameContaining(String name);
+
 }

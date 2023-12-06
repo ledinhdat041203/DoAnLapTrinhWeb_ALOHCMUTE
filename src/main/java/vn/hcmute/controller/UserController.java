@@ -1,11 +1,13 @@
 package vn.hcmute.controller;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -209,4 +211,10 @@ public class UserController {
 		return "updatePass";
 	}
 
+	@GetMapping("/findByName")
+	public String findByName(Model model,@RequestParam(name = "nameSearch") String name) {
+		List<UserInfoEntity> listUser = user_info_service.findByFullNameContaining(name);	
+		model.addAttribute("listUser", listUser);
+		return "listUser";
+	}
 }
