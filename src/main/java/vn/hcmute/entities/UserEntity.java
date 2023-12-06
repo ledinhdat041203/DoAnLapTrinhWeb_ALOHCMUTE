@@ -30,5 +30,6 @@ public class UserEntity implements Serializable{
 	@OneToOne
     @JoinColumn(name = "User_info_id", referencedColumnName = "userid")
     private UserInfoEntity userInfo;	
+
 	
 }

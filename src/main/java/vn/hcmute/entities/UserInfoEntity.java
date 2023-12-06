@@ -70,7 +70,6 @@ public class UserInfoEntity {
 	 //@OneToOne(mappedBy = "userInfo", cascade = CascadeType.ALL)
 	 //private ImageEntity image;
 	 
-	 
 	
 }
 
