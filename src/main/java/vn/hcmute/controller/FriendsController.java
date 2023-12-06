@@ -12,12 +12,12 @@ import jakarta.servlet.http.HttpSession;
 
 import java.util.*;
 
-import vn.hcmute.entities.FriendsEntity;
-import vn.hcmute.entities.UserInfoEntity;
-import vn.hcmute.service.IFriendsService;
-import vn.hcmute.service.INotificationService;
-import vn.hcmute.service.IUserInfoService;
-import vn.hcmute.service.IUserService;
+import vn.hcmute.Entity.FriendsEntity;
+import vn.hcmute.Entity.UserInfoEntity;
+import vn.hcmute.Service.IFriendsService;
+import vn.hcmute.Service.INotificationService;
+import vn.hcmute.Service.IUserInfoService;
+import vn.hcmute.Service.IUserService;
 
 @Controller
 @RequestMapping("/friends")

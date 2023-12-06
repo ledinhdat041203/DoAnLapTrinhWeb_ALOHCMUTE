@@ -1,7 +1,9 @@
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 
 <head>
 	<meta charset="UTF-8">
@@ -16,13 +18,13 @@
 					<!-- Email input -->
 					<div class="form-group">
 						<label for="form2Example1">Email address</label> <input type="text" id="form2Example1"
-							th:value="${emailcookie != null ? emailcookie : ''}" name="email" class="form-control" />
+						th:value="${emailcookie != null ? emailcookie : ''}"	name="email"  class="form-control" />
 					</div>
 
 					<!-- Password input -->
 					<div class="form-group">
 						<label for="form2Example2">Password</label> <input type="password" name="password"
-							th:value="${passcookie != null ? passcookie : ''}" class="form-control" />
+						th:value="${passcookie != null ? passcookie : ''}"	id="form2Example2" class="form-control" />
 					</div>
 
 					<!-- Checkbox and Forgot Password Link -->

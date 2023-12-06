@@ -22,6 +22,7 @@ public class FirebaseConfig {
         FirebaseApp app;
 
         if (firebaseApps.isEmpty()) {
+
             FileInputStream serviceAccount = new FileInputStream("src/main/resources/static/chatrealtime-7e7e8-firebase-adminsdk-512k7-6a7ab2885d.json");
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
