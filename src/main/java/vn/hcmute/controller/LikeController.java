@@ -53,7 +53,7 @@ public class LikeController {
 			 LikeEntity like = new LikeEntity(); like.setLikeDate(new
 			 Date(System.currentTimeMillis())); like.setStatus(true); like.setPost(post);
 			 like.setUserLike(user);
-			 likeService.save(like); 
+			 likeService.save(like);
 		 }
 	  
 		 List<LikeEntity> listLike = postservice.findById(postId).get().getListLikes(); 
