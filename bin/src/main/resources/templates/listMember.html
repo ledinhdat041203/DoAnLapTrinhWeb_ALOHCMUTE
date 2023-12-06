@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Group Members</title>
+</head>
+
+<body>
+	<h2 th:text="${'Thành viên trong nhóm: ' + group.groupName}"></h2>
+	<div th:if="${message}">
+		<p th:text="${message}"></p>
+	</div>
+	<div th:each="member : ${listMember}">
+		<a th:href="'profile/' + ${member.userID}">
+			<h2 th:text="${member.fullName}"></h2>
+		</a>
+
+		<!-- Display delete button only when isAdmin is 1 -->
+		<div th:if="${isAdmin == 1}">
+			<form th:action="'/group/remove_member/' + ${group.groupID} + '/' + ${member.userID}" method="get">
+				<button type="submit">Xóa khỏi nhóm</button>
+			</form>
+		</div>
+	</div>
+
+	<div th:if="${isAdmin != 1}">
+		<form th:action="'/group/remove_member/' + ${group.groupID} + '/' + ${session.userID}" method="get">
+			<button type="submit">Rời khỏi nhóm này</button>
+		</form>
+	</div>
+</body>
+
+</html>
