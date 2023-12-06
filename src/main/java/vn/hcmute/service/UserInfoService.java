@@ -49,5 +49,10 @@ public class UserInfoService implements IUserInfoService{
 		
 		return user_info.findAll();
 	}
+
+	public List<UserInfoEntity> findByFullNameContaining(String name) {
+		return user_info.findByFullNameContaining(name);
+	}
+
 	
 }

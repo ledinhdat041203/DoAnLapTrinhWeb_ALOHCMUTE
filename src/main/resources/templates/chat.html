@@ -5,79 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Messages</title>
-	<style>
-		body {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			height: 100vh;
-			margin: 0;
-		}
-
-		#chat-container {
-
-			width: 100%;
-			height: 100%;
-			/* Đặt kích thước tối đa cho khung chat */
-			border: 1px solid #ccc;
-			padding: 10px;
-			overflow-y: auto;
-			/* Hiển thị thanh cuộn nếu có nhiều tin nhắn */
-			background-color: #f5f5f5;
-
-		}
-
-		#chat-container::-webkit-scrollbar {
-			display: none;
-			/* Ẩn thanh cuộn cho trình duyệt Chrome/Safari */
-		}
-
-
-		.sender1,
-		.sender2 {
-			margin-bottom: 10px;
-			/* Khoảng cách giữa các tin nhắn */
-			padding: 1px;
-			border-radius: 8px;
-			max-width: 70%;
-			/* Đặt chiều rộng tối đa cho tin nhắn */
-			word-wrap: break-word;
-			/* Chia từ nếu nội dung quá dài */
-
-		}
-
-		.sender1 {
-			margin-left: 30%;
-			text-align: right;
-			padding-right: 10px;
-			background-color: #98D8FF;
-			align-self: flex-end;
-		}
-
-		.sender2 {
-			text-align: left;
-			padding-left: 10px;
-			background-color: #FF9CF8;
-			align-self: flex-start;
-		}
-
-		#messageForm {
-			display: flex;
-			margin-top: 10px;
-			/* Khoảng cách giữa khung chat và form gửi tin nhắn */
-		}
-
-		#content {
-			flex: 1;
-			/* Đảm bảo nút gửi nằm cạnh ô nhập tin nhắn */
-			padding: 8px;
-		}
-
-		#sendButton {
-			padding: 8px;
-			cursor: pointer;
-		}
-	</style>
+	
 	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 	<script type="module">
 		import {initializeApp} from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
@@ -109,12 +37,12 @@
 		onChildAdded(messagesRef, (snapshot) => {
 			const message = snapshot.val();
 			const chatDiv = document.getElementById('chat');
-			const newMessage = document.createElement('div');
+			const newMessage = document.createElement('li');
 
 			if (message.sender == userCurrent) {
-				newMessage.className = 'sender1';
+				newMessage.className = 'me';
 			} else {
-				newMessage.className = 'sender2';
+				newMessage.className = 'you';
 			}
 			// Kiểm tra xem tin nhắn có chứa link ảnh hay không
 			const hasImage = message.content.includes('++');
@@ -133,66 +61,308 @@
         `;
 			}
 			chatDiv.appendChild(newMessage);
-			newMessage.scrollIntoView({behavior: 'smooth'});
+			chatDiv.scrollTop = chatDiv.scrollHeight;
+			//newMessage.scrollIntoView({behavior: 'smooth'});
 		});
 
 		const uid = localStorage.getItem('recvId');
 		const recvName = localStorage.getItem('recvName');
 		// Set giá trị recvName vào nội dung của thẻ p trong Receiver-Name
 		document.getElementById('Receiver-Name').innerHTML = `<p><strong>${recvName}</strong></p>`;
+		document.getElementById('Receiver-Name-About').innerHTML = `<p><strong>${recvName}</strong></p>`;
 		// Set giá trị uid vào thuộc tính data-userid của form
-		$('#messageForm').attr('data-userid', uid);
+		$('#messageForm').attr('data-userid', uid);		
+	</script>
+	<script type="module">
+		import {initializeApp} from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
+		import {getStorage, ref, uploadBytes, getDownloadURL} from "https://www.gstatic.com/firebasejs/10.6.0/firebase-storage.js";
+
+		const storage = getStorage();
+
+		// Add event listener for file input change
+		const fileInput = document.getElementById("file");
+		const imageContainer = document.getElementById("imageContainer");
+
+		fileInput.addEventListener("change", async () => {
+			const file = fileInput.files[0];
+
+			// nếu file được chọn
+			if (file) {
+				// tải ảnh lên storage của firebase
+				const storageRef = ref(storage, file.name);
+				try {
+					const snapshot = await uploadBytes(storageRef, file);
+
+					// lấy đường dẫn tới ảnh 
+					const downloadURL = await getDownloadURL(storageRef);
+
+					// Hiển thị ảnh 
+					imageContainer.innerHTML = `<img src="${downloadURL}" alt="Uploaded Image" id="urlImage" style="width: 300px; height: 200px;">`;
+						alert('Successfully uploaded to Firebase Storage!');
+				} catch (error) {
+					console.error('Error uploading to Firebase Storage:', error);
+					alert('Error uploading to Firebase Storage. Please try again.');
+				}
+			} else {
+				alert('No file selected.');
+			}
+		});
 	</script>
 	<script>
 		function sendMessage() {
-			// Lấy giá trị uid từ thuộc tính data-userid của form
 			var uid = $('#messageForm').data('userid');
 			var contentValue = $('#content').val().trim();
 
-			// Kiểm tra xem content có rỗng hay không
-			if (contentValue !== '') {
+			const imageContainer = document.getElementById("imageContainer");
+			const imageURL = imageContainer.querySelector("#urlImage") ? imageContainer.querySelector("#urlImage").src : null;
+
+			const contentArea = document.getElementById("content");
+
+			// Kiểm tra xem content và imageURL có giá trị hay không
+			if (contentValue !== '' || contentValue != null || (imageURL !== "" && imageURL !== null)) {
+				// Nếu có nội dung và không có ảnh
+				if (contentValue !== '' && (imageURL == "" || imageURL == null)) {
+					contentArea.value = contentValue;
+					//alert("Nếu có nội dung và không có ảnh" + contentArea.value);
+				}
+				// Nếu có ảnh và không có nội dung
+				else if (contentValue == '' && (imageURL !== "" && imageURL !== null)) {
+					contentArea.value = imageURL + "++";
+					//alert("Nếu có ảnh và không có nội dung" + contentArea.value);
+				}
+				// Nếu cả hai đều có
+				else {
+					contentArea.value = imageURL + "++" + contentValue;
+					//alert("Nếu cả hai đều có" + contentArea.value);
+				}
+
 				// Thêm giá trị uid vào FormData
 				var formData = $('#messageForm').serializeArray();
 				formData.push({name: 'uid', value: uid});
-				//var formData = $('#messageForm').serialize();
 
 				$.ajax({
 					type: 'POST',
 					url: '/send',
 					data: formData,
 					success: function () {
-						$('#content').val('');
+						$('#content').val(''); // reset ô nhập tin nhắn 
+						$('#imageContainer').html(''); // reset ảnh  
 					},
 					error: function () {
-						// Handle error
+						// Xử lý lỗi
 						alert('Error sending message');
-
 					}
 				});
+			} else {
+				// Thông báo người dùng chưa nhập nội dung hoặc chọn ảnh
+				alert('Please enter a message or choose an image.');
 			}
+		}
+
+
+	</script>
+	<script>
+		// Thêm hàm để xử lý sự kiện click vào icon
+		function addEmojiToContent(emoji) {
+			// Lấy giá trị hiện tại của nội dung
+			var currentContent = document.getElementById('content').value;
+			// Thêm emoji vào nội dung
+			var newContent = currentContent + emoji;
+			// Gán giá trị mới cho nội dung
+			document.getElementById('content').value = newContent;
 		}
 	</script>
 
 </head>
 
 <body>
+	<div class="tab-pane active fade show " id="link1">
+		<div class="row merged">
+			<div class="col-lg-12">
+				<div class="mesg-area-head">
+					<div class="active-user">
+						<figure><img src="images/resources/friend-avatar3.jpg" alt="">
+							<span class="status f-online"></span>
+						</figure>
+						<div>
+							<h6 class="unread" id="Receiver-Name"></h6>
+							<span>Online</span>
+						</div>
+					</div>
+					<ul class="live-calls">
+						<li class="audio-call"><span class="fa fa-phone"></span></li>
+						<li class="video-call"><span class="fa fa-video"></span></li>
+						<li class="uzr-info"><span class="fa fa-info-circle"></span></li>
+						<li>
+							<div class="dropdown">
+								<button class="btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<i class="ti-view-grid"></i>
+								</button>
+								<div class="dropdown-menu dropdown-menu-right">
+									<a class="dropdown-item audio-call" href="#"><i class="ti-headphone-alt"></i>Voice
+										Call</a>
+									<a href="#" class="dropdown-item video-call"><i class="ti-video-camera"></i>Video
+										Call</a>
+									<hr>
+									<a href="#" class="dropdown-item"><i class="ti-server"></i>Clear History</a>
+									<a href="#" class="dropdown-item"><i class="ti-hand-stop"></i>Block Contact</a>
+									<a href="#" class="dropdown-item"><i class="ti-trash"></i>Delete Contact</a>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="col-lg-8 col-md-8">
+				<div class="mesge-area with-background">
+					<ul id="chat" class="conversations ps-container ps-theme-default ps-active-x ps-active-y">
 
-	<!-- Hiển thị tin nhắn từ Firebase và cơ sở dữ liệu JPA -->
-	<div id="Receiver-Name">
-	</div>
-	<div id="chat-container">
+					</ul>
 
-		<div id="chat"></div>
+				</div>
 
+
+				
+				<div class="message-writing-box">
+					<div id="imageContainer"></div>
+					<form id="messageForm" th:attr="data-userid=${userid}">
+						<div class="text-area">
+							<input type="text" id="content" name="content" placeholder="write your message here..">
+							<button onclick="sendMessage(); return false;"><i class="fa fa-paper-plane-o"></i></button>
+						</div>
+
+						<div class="emojies">
+							<i><img src="images/smiles/happy-3.png" alt=""></i>
+							<ul class="emojies-list">
+								<li><a title="" onclick="addEmojiToContent('😢')" role="button"><img
+											src="images/smiles/unhappy.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😛')" role="button"><img
+											src="images/smiles/tongue-out-1.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😒')" role="button"><img
+											src="images/smiles/suspicious.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😊')" role="button"><img
+											src="images/smiles/smiling.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😜')" role="button"><img
+											src="images/smiles/wink.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😐')" role="button"><img
+											src="images/smiles/bored.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😡')" role="button"><img
+											src="images/smiles/angry-1.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😠')" role="button"><img
+											src="images/smiles/angry.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😕')" role="button"><img
+											src="images/smiles/bored-1.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😑')" role="button"><img
+											src="images/smiles/bored-2.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😕')" role="button"><img
+											src="images/smiles/confused-1.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😖')" role="button"><img
+											src="images/smiles/confused.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😭')" role="button"><img
+											src="images/smiles/crying-1.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😢')" role="button"><img
+											src="images/smiles/crying.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😳')" role="button"><img
+											src="images/smiles/embarrassed.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😀')" role="button"><img
+											src="images/smiles/emoticons.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😃')" role="button"><img
+											src="images/smiles/happy-1.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😄')" role="button"><img
+											src="images/smiles/happy-2.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😊')" role="button"><img
+											src="images/smiles/happy-3.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😆')" role="button"><img
+											src="images/smiles/happy-4.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😷')" role="button"><img
+											src="images/smiles/ill.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😍')" role="button"><img
+											src="images/smiles/in-love.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😘')" role="button"><img
+											src="images/smiles/kissing.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😠')" role="button"><img
+											src="images/smiles/mad.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('🤓')" role="button"><img
+											src="images/smiles/nerd.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('👺')" role="button"><img
+											src="images/smiles/ninja.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😶')" role="button"><img
+											src="images/smiles/quiet.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😞')" role="button"><img
+											src="images/smiles/sad.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('🤫')" role="button"><img
+											src="images/smiles/secret.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😊')" role="button"><img
+											src="images/smiles/smile.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😯')" role="button"><img
+											src="images/smiles/surprised-1.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😋')" role="button"><img
+											src="images/smiles/tongue-out.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😢')" role="button"><img
+											src="images/smiles/unhappy.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😒')" role="button"><img
+											src="images/smiles/suspicious.png" alt=""></a></li>
+
+							</ul>
+						</div>
+						<div class="attach-file">
+							<label class="fileContainer">
+								<i class="ti-clip"></i>
+								<input type="file" id="file" name="file">
+							</label>
+						</div>
+					</form>
+				</div>
+				<div>
+					<input type="text" id="userid" name="userid" placeholder="userid" th:value="${session.userInfoID}"
+						hidden />
+				</div>
+
+			</div>
+			<div class="col-lg-4 col-md-4">
+				<div class="chater-info">
+					<figure><img src="images/resources/chatuser1.jpg" alt=""></figure>
+					<h6 id="Receiver-Name-About"></h6>
+					<span>Online</span>
+					<div class="userabout">
+						<span>About</span>
+						<p>I love reading, traveling and discovering new things. You need to be happy in life.</p>
+						<ul>
+							<li>
+								<span style="display: inline-block;">Phone: </span>
+								<span style="display: inline-block;" th:text="${recipientInfo.phoneNumber}"></span>
+							</li>
+							<li>
+								<span style="display: inline-block;">Address: </span>
+								<span style="display: inline-block;" th:text="${recipientInfo.address}"></span>
+							</li>
+
+
+						</ul>
+						<div class="media">
+							<span>Media</span>
+							<ul>
+								<li><img src="images/resources/audio-user1.jpg" alt=""></li>
+								<li><img src="images/resources/audio-user2.jpg" alt=""></li>
+								<li><img src="images/resources/audio-user3.jpg" alt=""></li>
+								<li><img src="images/resources/audio-user4.jpg" alt=""></li>
+								<li><img src="images/resources/audio-user5.jpg" alt=""></li>
+								<li><img src="images/resources/audio-user6.jpg" alt=""></li>
+								<li><img src="images/resources/admin2.jpg" alt=""></li>
+								<li><img src="images/resources/audio-user1.jpg" alt=""></li>
+								<li><img src="images/resources/audio-user4.jpg" alt=""></li>
+								<li><img src="images/resources/audio-user3.jpg" alt=""></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
-	<form id="messageForm" th:attr="data-userid=${userid}" onsubmit="sendMessage(); return false;">
-		<!-- Các trường khác của biểu mẫu -->
-		<input type="text" id="content" name="content" placeholder="Content" />
-		<button type="submit" id="sendButton">Send</button>
-	</form>
-	<div>
-		<input type="text" id="userid" name="userid" placeholder="userid" th:value="${session.userInfoID}" hidden />
-	</div>
+	<script src="js/main.min.js"></script>
+	<script src="js/script.js"></script>
+
+
 </body>
 
 </html>
