@@ -1,5 +1,6 @@
 package vn.hcmute.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,12 @@ public class UserInfoService implements IUserInfoService{
 	@Override
 	public Optional<UserInfoEntity> findById(Long id) {		
 		return user_info.findById(id);
+	}
+
+	@Override
+	public List<UserInfoEntity> findAll() {
+		
+		return user_info.findAll();
 	}
 	
 }

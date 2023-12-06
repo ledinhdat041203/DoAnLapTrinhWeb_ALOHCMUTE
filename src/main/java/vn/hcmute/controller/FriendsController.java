@@ -1,5 +1,9 @@
 package vn.hcmute.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -9,10 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.servlet.http.HttpSession;
-import jakarta.websocket.Session;
-
-import java.util.*;
-
 import vn.hcmute.entities.FriendsEntity;
 import vn.hcmute.entities.UserInfoEntity;
 import vn.hcmute.service.IFriendsService;
