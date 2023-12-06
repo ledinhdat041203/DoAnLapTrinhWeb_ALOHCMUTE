@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Post</title>
+<link rel="stylesheet" href="/css/PostStyle.css">
+<style>
+.comment-section {
+	position: relative;
+}
+
+.comment-list li {
+	margin-bottom: 10px;
+}
+
+.comment-content {
+	display: block;
+	font-size: 14px;
+}
+
+.comment-date {
+	font-size: 12px;
+	color: gray;
+	display: block;
+	margin-top: 5px;
+}
+
+.time-diff {
+	font-size: 12px;
+	color: gray;
+	display: block;
+	margin-top: 5px;
+}
+
+.create-comment {
+	margin-top: 10px;
+}
+</style>
+</head>
+
+<body>
+	<link
+		href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"
+		rel="stylesheet">
+	<div class="container bootstrap snippets bootdey" id="Post-Container">
+		<div class="row">
+			<!-- Bắt đầu vòng lặp qua tất cả bài viết -->
+			<div th:each="post : ${list}" class="col-md-6">
+				<section class="widget">
+					<div class="widget-controls">
+						<a href="#"><i class="fa fa-refresh"></i></a> <a href="#"
+							data-widgster="close"><i class="glyphicon glyphicon-remove"></i></a>
+					</div>
+					<div class="widget-body">
+						<div class="widget-top-overflow text-white">
+							<img th:src="${post.imageURL}" alt="Post Image">
+							<ul class="tags text-white pull-right">
+								<li><a href="#">design</a></li>
+								<li><a href="#">white</a></li>
+							</ul>
+						</div>
+						<div class="post-user mt-sm">
+							<span class="thumb pull-left mr"> <img class="img-circle"
+								src="https://bootdey.com/img/Content/user_1.jpg" alt="...">
+							</span>
+							<h5 class="mb-xs mt-xs" th:text="${post.userFullName}"></h5>
+							<p class="fs-mini text-muted">
+								<time>25 mins</time>
+								&nbsp; <i class="fa fa-map-marker"></i> &nbsp; near Amsterdam
+							</p>
+						</div>
+						<p class="text-light fs-mini m" th:text="${post.content}"></p>
+
+						<!-- Comment Section -->
+						<div class="comment-section">
+							<input type="text" class="comment-input"
+								placeholder="Add a comment..."
+								th:id="'commentInput-' + ${post.postID}" />
+							<button th:onclick="'loadComments(\'' + ${post.postID} + '\')'"
+								class="comment-button">Load Comments</button>
+
+
+							<!-- Display comments -->
+							<ul class="comment-list" th:id="'commentList-' + ${post.postID}">
+								<!-- Comments will be loaded dynamically using Thymeleaf -->
+								<li th:each="comment : ${response}"><span
+									class="comment-content" th:text="${comment.content}"></span> <span
+									class="comment-date" th:text="${comment.commentDate}"></span> <span
+									class="time-diff"></span></li>
+							</ul>
+
+							<!-- Create Comment Section -->
+							<div class="create-comment">
+								<input type="text" class="create-comment-input"
+									placeholder="Your comment..."
+									th:id="'createCommentInput-' + ${post.postID}" />
+								<button th:onclick="createComment('${post.postID}')"
+									class="create-comment-button">Create Comment</button>
+
+
+
+							</div>
+						</div>
+					</div>
+					<footer class="bg-body-light">
+						<ul class="post-links no-separator">
+							<li><a role="button"
+								th:onclick="'likePost(' + ${post.postID} + ')'"
+								th:id="'s' + ${post.postID}"> <i class="fa fa-heart"
+									th:id="'likeButton' + ${post.postID}"></i> <span
+									th:id="'likeCount' + ${post.postID}"
+									th:text="${post.likeCount}"></span>
+							</a></li>
+							<li><a href="#"><i class="glyphicon glyphicon-comment"></i>
+									98</a></li>
+						</ul>
+					</footer>
+				</section>
+			</div>
+			<!-- Kết thúc vòng lặp -->
+		</div>
+	</div>
+
+	<!-- -----------------------------------------------------------script------------------------------------- -->
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+	<script defer>
+		function likePost(postId) {
+			$.ajax({
+				type : 'POST',
+				url : '/like/' + postId,
+				success : function(response) {
+
+					const str = '#likeCount' + postId;
+					const likespan = $(str);
+					const likeicon = $('#likeButton' + postId);
+					likespan.text(response)
+					likespan.html(response)
+					likeicon.toggleClass("liked");
+				},
+				error : function() {
+					alert('Error liking post');
+				}
+			});
+		}
+		function loadComments(postId) {
+			const postIdNumeric = parseInt(postId);
+
+			if (!isNaN(postIdNumeric)) {
+				$
+						.ajax({
+							type : 'GET',
+							url : '/comment/' + postIdNumeric,
+							success : function(response) {
+								const commentList = $('#commentList-' + postId);
+								commentList.empty();
+
+								response
+										.forEach(function(comment) {
+											var commentElement = $('<li><span class="comment-content"></span><span class="comment-date"></span><span class="time-diff"></span></li>');
+											commentElement
+													.find(
+															'span.comment-content')
+													.text(
+															comment.userName
+																	+ ': '
+																	+ comment.content);
+											commentElement.find(
+													'span.comment-date').text(
+													comment.commentDate);
+
+											// Calculate and display the time difference
+											var timeDiffElement = commentElement
+													.find('span.time-diff');
+											var commentDate = new Date(
+													comment.commentDate);
+											var now = new Date();
+
+											var timeDiff = now - commentDate;
+											var seconds = Math
+													.floor(timeDiff / 1000);
+											var minutes = Math
+													.floor(seconds / 60);
+											var hours = Math
+													.floor(minutes / 60);
+											var days = Math.floor(hours / 24);
+
+											if (days > 0) {
+												timeDiffElement.text(days
+														+ ' days ago');
+											} else if (hours > 0) {
+												timeDiffElement.text(hours
+														+ ' hours ago');
+											} else if (minutes > 0) {
+												timeDiffElement.text(minutes
+														+ ' minutes ago');
+											} else {
+												timeDiffElement
+														.text('Just now');
+											}
+
+											commentList.append(commentElement);
+										});
+							},
+							error : function(xhr, status, error) {
+								console.error("Error loading comments: ",
+										xhr.responseText);
+								alert('Error loading comments');
+							}
+						});
+			} else {
+				alert('Invalid post ID.');
+			}
+		}
+
+		async function createComment(postId) {
+		    const postIdNumeric = parseInt(postId);
+		    const createCommentInput = $('#createCommentInput-' + postId);
+
+		    if (isNaN(postIdNumeric)) {
+		        alert('Invalid post ID.');
+		        return;
+		    }
+
+		    try {
+		        const response = await fetch(`/comment/create/${postIdNumeric}`, {
+		            method: 'POST',
+		            headers: {
+		                'Content-Type': 'application/json',
+		            },
+		            body: JSON.stringify({
+		                content: createCommentInput.val(),
+		            }),
+		        });
+
+		        if (response.ok) {
+		            const createdComment = await response.json();
+		            // Assuming you have a function to display comments
+		            displayComment(createdComment);
+		            createCommentInput.val('');
+		        } else {
+		            // Handle error response
+		            const errorMessage = await response.text();
+		            console.error('Error creating comment:', errorMessage);
+		            alert('Error creating comment');
+		        }
+		    } catch (error) {
+		        console.error('Error creating comment:', error);
+		        alert('Error creating comment');
+		    }
+		}
+
+		function displayComment(comment) {
+		    // Assuming you have a function to display the comment on the UI
+		    // Modify this function based on how you want to display comments
+		    console.log(comment);
+		
+		}
+
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages</title>
+</head>
+<body>
+	 <h2 th:text=" 'Group ID: ' + ${group.groupID}"></h2>
+    <h2 th:text="${'Group Name: ' + group.groupName}"></h2>
+    <h2 th:text="${'Description: ' + group.description}"></h2>
+    <h2 th:text="${'Admin: ' + group.admin.fullName}"></h2>
+</body>
+</html>
