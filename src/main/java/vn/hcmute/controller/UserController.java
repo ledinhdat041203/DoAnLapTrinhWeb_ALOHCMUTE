@@ -22,6 +22,8 @@ import jakarta.servlet.http.HttpSession;
 import vn.hcmute.entities.UserEntity;
 import vn.hcmute.entities.UserInfoEntity;
 import vn.hcmute.model.UserAcountModel;
+
+
 import vn.hcmute.service.IUserInfoService;
 import vn.hcmute.service.IUserService;
 
@@ -33,7 +35,6 @@ public class UserController {
 	IUserService user_service;
 	@Autowired
 	IUserInfoService user_info_service;
-
 
 
 	@RequestMapping("/login")
@@ -116,6 +117,7 @@ public class UserController {
 			return "redirect:/registerOrFail?success";
 		}
 	}
+
 
 
 	@GetMapping("/findByName")
