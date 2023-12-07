@@ -1,5 +1,6 @@
 package vn.hcmute.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,8 @@ public class MessageController {
 	
 	@Autowired
 	private  IUserInfoService userInfoService;
+	
+
 
 	
 
@@ -68,12 +71,37 @@ public class MessageController {
 	}
 	
 	@GetMapping("/delete-chat")
-	public ResponseEntity<String> deleteChat(@RequestParam(name = "uid") Long uid,HttpSession session)
+	public String deleteChat(Model model,@RequestParam(name = "uid") Long uid,HttpSession session)
 	{
 		Long user1 = (long) session.getAttribute("userInfoID");
 		messageService.deleteConversation(user1, uid);
-		return ResponseEntity.ok("ok");
+		
+		List<UserInfoEntity> listUser = new ArrayList<UserInfoEntity>();
+		List<Long> listUserID = messageService.findAllUserIdsInConversations(user1);
+		listUser = messageService.listInfoReceiverByIdAccount(listUserID);
+		model.addAttribute("listUser", listUser);
+		
+		
+		
+		return "listUser";
 	}
-	
+	@GetMapping("/findByName")
+	public String findByName(Model model,@RequestParam(name = "nameSearch") String name , @RequestParam(name = "action") Integer action, HttpSession session) {
+		List<UserInfoEntity> listUser = new ArrayList<UserInfoEntity>();
+		if (action == 1){
+			if(name != ""){
+			listUser = userInfoService.findByFullNameContaining(name);
+			}
+		}
+		else
+		{
+			Long user1 = (long) session.getAttribute("userInfoID");
+			List<Long> listUserID = messageService.findAllUserIdsInConversations(user1);
+			listUser = messageService.listInfoReceiverByIdAccount(listUserID);
+		}
+			
+		model.addAttribute("listUser", listUser);
+		return "listUser";
+	}
 	
 }

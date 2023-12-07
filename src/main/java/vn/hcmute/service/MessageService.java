@@ -245,7 +245,7 @@ public class MessageService {
 	public void deleteConversation(Long userId1, Long userId2) {
 	    String conversationId = generateConversationId(userId1, userId2);
 	    DatabaseReference conversationRef = firebaseDatabase.getReference("RealTimeChat").child(conversationId);
-
+	    
 	    conversationRef.removeValue(new DatabaseReference.CompletionListener() {
 	        @Override
 	        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {

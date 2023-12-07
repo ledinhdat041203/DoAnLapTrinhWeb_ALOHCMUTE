@@ -26,7 +26,7 @@
 				var recvName = $(this).data('full-name');
 				localStorage.setItem('recvId', recvId);
 				localStorage.setItem('recvName', recvName);
-				console.log(localStorage.getItem('data'));
+				//console.log(localStorage.getItem('data'));
 				// Kiểm tra xem chat content đã được tải hay chưa
 				if ($('#chat-frame').attr('data-recv-id') === recvId.toString()) {
 						console.log('Chat content already loaded');
@@ -40,7 +40,6 @@
 					success: function (data) {
 						// Thay đổi nội dung của #chat-container và cập nhật data-recv-id
 						$('#chat-frame').html(data).attr('data-recv-id', recvId);
-						
 					},
 					error: function () {
 						alert('Error loading chat');
@@ -51,10 +50,8 @@
 		});
 	</script>
 	<script>
-		$(document).ready(function () {
-			$(document).on('click', '.delete-chat', function (event) {
+	 function deleteChat() {
 				// Bắt sự kiện click cho các liên kết
-				event.preventDefault();
 				const recvId = localStorage.getItem('recvId');
 				
 				$.ajax({
@@ -62,15 +59,17 @@
 					url: '/delete-chat',
 					data: {uid: recvId},
 					success: function (response) {
-						alter("Delete Chat Successfull");
+					console.log("Delete Chat Successfully");
+					$('#chat-frame').empty();
+					$('#listPeople').html(response);
+					
 					},
 					error: function () {
 						alert('Error delete chat');
 					}
 				});
 
-			});
-		});
+			};
 	</script>
 	<script>
 		function findByName() {
@@ -80,12 +79,34 @@
 			$.ajax({
 				type: 'GET',
 				url: '/findByName',
-				data: {nameSearch: name},
+				data: {nameSearch: name, action : 1},
 				success: function (data) {
 					//alert("Được rồi");
-					console.log(data),
 						// Thay đổi nội dung của #chat-container và cập nhật data-recv-id
+						$('#chat-frame').empty();
 						$('#listPeople').html(data);
+						$('#nameSearch').val('');
+				},
+				error: function (error) {
+					alert("Looix roi");
+				}
+			});
+		}
+
+	</script>
+	<script>
+		function findListPeople() {
+			const nameArea = document.getElementsByName("nameSearch");
+			const name = nameArea[0].value;
+			//alert(name);
+			$.ajax({
+				type: 'GET',
+				url: '/findByName',
+				data: {nameSearch: name, action : 0},
+				success: function (data) {
+						// Thay đổi nội dung của #chat-container và cập nhật data-recv-id
+				$('#listPeople').html(data);
+				$('#nameSearch').val('');
 				},
 				error: function (error) {
 					alert("Looix roi");
@@ -123,23 +144,23 @@
 								</div>
 								<div class="message-people-srch">
 									<form onsubmit="findByName(); return false;">
-										<input type="text" placeholder="Search Friend.." name="nameSearch">
+										<input type="text" placeholder="Search Friend.." id="nameSearch" name="nameSearch">
 										<button><i class="fa fa-search"></i></button>
 									</form>
-									<div class="btn-group add-group" role="group">
+									<div onclick="findListPeople();return false;" class="btn-group add-group" role="group">
 										<button id="btnGroupDrop2" type="button"
-											class="btn group dropdown-toggle user-filter" data-toggle="dropdown"
+											class="btn group dropdown-toggle user-filter" 
 											aria-haspopup="true" aria-expanded="false">
 											All
 										</button>
 										<div class="dropdown-menu" aria-labelledby="btnGroupDrop2">
-											<a class="dropdown-item" href="#">Online</a>
+											<!--<a class="dropdown-item" href="#">Online</a>
 											<a class="dropdown-item" href="#">Away</a>
 											<a class="dropdown-item" href="#">unread</a>
-											<a class="dropdown-item" href="#">archive</a>
+											<a class="dropdown-item" href="#">archive</a>-->
 										</div>
 									</div>
-									<div class="btn-group add-group align-right" role="group">
+									<!--<div class="btn-group add-group align-right" role="group">
 										<button id="btnGroupDrop1" type="button" class="btn group dropdown-toggle"
 											data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 											Create+
@@ -149,12 +170,12 @@
 											<a class="dropdown-item" href="#">New Group +</a>
 											<a class="dropdown-item" href="#">Private Chat +</a>
 										</div>
-									</div>
+									</div>-->
 								</div>
 								<div id="listPeople" class="mesg-peple">
 									<ul class="nav nav-tabs nav-tabs--vertical msg-pepl-list">
 										<li class="nav-item " th:each="item : ${list}" th:data-userid="${item.userID}">
-											<a class="active load-chat" data-toggle="tab"
+											<a class="load-chat" data-toggle="tab"
 												th:attr="data-full-name=${item.fullName}, data-recv-id=${item.userID}">
 												<figure><img src="images/resources/friend-avatar3.jpg" alt="">
 													<span class="status f-online"></span>
@@ -166,9 +187,7 @@
 												<div class="more">
 													<div class="more-post-optns"><i class="ti-more-alt"></i>
 														<ul>
-															<li><i class="fa fa-bell-slash-o"></i>Mute</li>
-															<li class="delete-chat"><i class="ti-trash "></i>Delete</li>
-															<li><i class="fa fa-folder-open-o"></i>Archive</li>
+															<li onclick="deleteChat();return false;"><i class="ti-trash "></i>Delete</li>
 														</ul>
 													</div>
 												</div>

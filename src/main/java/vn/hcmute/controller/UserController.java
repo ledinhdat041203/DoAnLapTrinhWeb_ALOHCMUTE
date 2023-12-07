@@ -1,5 +1,6 @@
 package vn.hcmute.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +26,6 @@ import vn.hcmute.model.UserAcountModel;
 import vn.hcmute.service.IUserInfoService;
 import vn.hcmute.service.IUserService;
 
-
 @Controller
 public class UserController {
 	@Autowired
@@ -34,66 +34,63 @@ public class UserController {
 	IUserService user_service;
 	@Autowired
 	IUserInfoService user_info_service;
+
 	@RequestMapping("/login")
-	public String Showlogin(ModelMap model,HttpServletRequest request)
-	{
+	public String Showlogin(ModelMap model, HttpServletRequest request) {
 		Cookie[] cookies = request.getCookies();
-		if (cookies != null)
-		{
-		for (Cookie c : cookies)
-		{
-			if(c.getName().equals("email"))
-			{
-				model.addAttribute("emailcookie", c.getValue());
-			}
-			else if(c.getName().equals("pass"))
-			{
-				model.addAttribute("passcookie", c.getValue());
+		if (cookies != null) {
+			for (Cookie c : cookies) {
+				if (c.getName().equals("email")) {
+					model.addAttribute("emailcookie", c.getValue());
+				} else if (c.getName().equals("pass")) {
+					model.addAttribute("passcookie", c.getValue());
+				}
 			}
 		}
-		}
-		
+
 		return "login";
 	}
+
 	@PostMapping("/checklogin")
-	public String CheckLoginn(HttpServletResponse response,ModelMap model,@RequestParam("email")String Email,@RequestParam("password")String pass,HttpSession session,@ModelAttribute UserAcountModel user_account)
-	{
-		if (user_service.checkLogin(Email, pass))
-		{
+	public String CheckLoginn(HttpServletResponse response, ModelMap model, @RequestParam("email") String Email,
+			@RequestParam("password") String pass, HttpSession session, @ModelAttribute UserAcountModel user_account) {
+		if (user_service.checkLogin(Email, pass)) {
 			System.out.println(user_account.getEmail());
 			Cookie name = new Cookie("email", Email);
 			Cookie password = new Cookie("pass", pass);
 			name.setMaxAge(60);
-			//System.out.println(user_account.isRemember());
-			if(user_account.isRemember()==true)
+			// System.out.println(user_account.isRemember());
+			if (user_account.isRemember() == true)
 				password.setMaxAge(10);
 			else
 				password.setMaxAge(0);
 			response.addCookie(name);
 			response.addCookie(password);
-			session.setAttribute("userID",user_service.findByemailContaining(Email).get().getIdAccount());
-			session.setAttribute("userInfoID",user_service.findByemailContaining(Email).get().getUserInfo().getUserID());
-			session.setAttribute("userFullName",user_service.findByemailContaining(Email).get().getUserInfo().getFullName());
-
+			session.setAttribute("userID", user_service.findByemailContaining(Email).get().getIdAccount());
+			session.setAttribute("userInfoID",
+					user_service.findByemailContaining(Email).get().getUserInfo().getUserID());
+			session.setAttribute("userFullName",
+					user_service.findByemailContaining(Email).get().getUserInfo().getFullName());
 
 			return "redirect:/home";
 		}
 
 		return "login";
 	}
+
 	@GetMapping("/logout")
-	public ModelAndView Logout(HttpSession session,ModelMap model)
-	{
+	public ModelAndView Logout(HttpSession session, ModelMap model) {
 		session.removeAttribute("userID");
 		session.removeAttribute("userInfoID");
 		session.removeAttribute("userFullName");
-		return new ModelAndView("redirect:/login",model);
+		return new ModelAndView("redirect:/login", model);
 	}
+
 	@GetMapping("/registerOrFail")
-	public String Register()
-	{
+	public String Register() {
 		return "Register";
 	}
+
 	@PostMapping("/registerOrFail")
 	public String Show(ModelMap model,@ModelAttribute UserAcountModel user_account, @ModelAttribute("user_info") UserInfoEntity user_info)
 	{
@@ -117,13 +114,8 @@ public class UserController {
 			return "redirect:/registerOrFail?success";
 		}
 	}
+
 	
-	@GetMapping("/findByName")
-	public String findByName(Model model,@RequestParam(name = "nameSearch") String name) {
-		List<UserInfoEntity> listUser = user_info_service.findByFullNameContaining(name);	
-		model.addAttribute("listUser", listUser);
-		return "listUser";
-	}
 	
 	
 }
