@@ -10,7 +10,11 @@
 <body>
 	<h2>Add Post</h2>
 
+<<<<<<< HEAD
+	<form action="/post/1" th:object="${post}" method="post" onsubmit="saveImage(); return false;">
+=======
 	<form action="/post" th:object="${post}" method="post" onsubmit="saveImage(); return false;">
+>>>>>>> 4b48ff427eb6b38fc6f864ff9b5884a14575f35e
 
 		<label for="content">Nội dung:</label>
 		
@@ -25,13 +29,19 @@
 		<input type="submit" value="Đăng bài" />
 	</form>
 
-	<a th:href="@{/Category}"><button>Back to List</button></a>
+	<a th:href="@{/listpost}"><button>Back to List</button></a>
 	<a href="/logout">logout</a>
 
 
 
 	<script type="module">
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
 		// Import the functions you need from the SDKs you need
+>>>>>>> 4b48ff427eb6b38fc6f864ff9b5884a14575f35e
+=======
+>>>>>>> ea39b194ba737d0963947b6903bab892c79a6478
 		import {initializeApp} from "https://www.gstatic.com/firebasejs/9.0.1/firebase-app.js";
 		import {getStorage, ref, uploadBytes, getDownloadURL} from "https://www.gstatic.com/firebasejs/9.0.1/firebase-storage.js";
 
@@ -65,7 +75,7 @@
 				try {
 					const snapshot = await uploadBytes(storageRef, file);
 
-					console.log("Uploaded:", snapshot.totalBytes);
+					//console.log("Uploaded:", snapshot.totalBytes);
 
 					// Get the download URL of the uploaded image
 					const downloadURL = await getDownloadURL(storageRef);
@@ -95,7 +105,11 @@
 			try {
 				$.ajax({
 					type: 'POST',
+<<<<<<< HEAD
+					url: "/post/1",
+=======
 					url: "/post",
+>>>>>>> 4b48ff427eb6b38fc6f864ff9b5884a14575f35e
 					data: JSON.stringify({ "imageURL": imageURL, "content": content }), //Ép kiểu string để tránh bị đôir / thành %
 					contentType: 'application/json',
 					success: function () {

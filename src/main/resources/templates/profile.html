@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>User Info</title>
+	<link rel="stylesheet" href="/css/PostStyle.css">
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+
+<body>
+	<h1>User Info</h1>
+
+	<div class="user-info">
+		<!-- <form th:action="@{/save}"></form> -->
+	</div>
+
+	<div class="Info-Of-User">
+		<table border="1">
+			<tr>
+				<th>Avatar</th>
+				<th>User ID</th>
+				<th>Full name</th>
+				<th>Address</th>
+				<th>Date of birth</th>
+				<th>Phone number</th>
+			</tr>
+
+			<tr th:each="userinfo: ${info}">
+				<td><span th:text="${userinfo.avata}"></span></td>
+				<td><span th:text="${userinfo.userID}"></span></td>
+				<td><span th:text="${userinfo.fullName}"></span></td>
+				<td><span th:text="${userinfo.address}"></span></td>
+				<td><span th:text="${userinfo.dateOfBirth}"></span></td>
+				<td><span th:text="${userinfo.phoneNumber}"></span></td>
+
+				<td><a th:href="@{/update/{userid}(userid=${userinfo.userID})}">Edit Profile</a></td>
+			</tr>
+		</table>
+	</div>
+	<br>
+	<form action="/post/1" th:object="${post}" method="post" onsubmit="saveImage(); return false;">
+
+		<label for="content">Nội dung:</label>
+
+		<input type="text" id="content" name="content" rows="4" cols="50" th:field="*{content}" required>
+
+		<br />
+		<div id="imageContainer"></div>
+		<label for="image">Chọn ảnh:</label>
+		<input type="file" id="file" name="file" accept="image/*" required>
+		<br />
+
+		<input type="submit" value="Đăng bài" />
+	</form>
+	<br>
+
+	<div class="container bootstrap snippets bootdey" id="Post-Container">
+		<div class="row" id="listpost">
+			<!--bắt đầu 1 post -->
+			<div th:each="post : ${list}" class="col-md-6">
+				<div th:replace="~{post_template::post_template(${post})}"></div>
+			</div>
+			<!--kết thúc 1 post -->
+		</div>
+	</div>
+
+	<!-- ------------------------scripts--------------------------- -->
+	<script type="module">
+		// Import the functions you need from the SDKs you need
+		import {initializeApp} from "https://www.gstatic.com/firebasejs/9.0.1/firebase-app.js";
+		import {getStorage, ref, uploadBytes, getDownloadURL} from "https://www.gstatic.com/firebasejs/9.0.1/firebase-storage.js";
+
+		const firebaseConfig = {
+			key: "AIzaSyAktz6fBLYH1GcUykJi8JF5WHwI6dNncuY",
+			apiKey: "AIzaSyAktz6fBLYH1GcUykJi8JF5WHwI6dNncuY",
+			authDomain: "chatrealtime-7e7e8.firebaseapp.com",
+			databaseURL: "https://chatrealtime-7e7e8-default-rtdb.firebaseio.com",
+			projectId: "chatrealtime-7e7e8",
+			storageBucket: "chatrealtime-7e7e8.appspot.com",
+			messagingSenderId: "206925157542",
+			appId: "1:206925157542:web:7e254501d41af820ed9067",
+			measurementId: "G-0PDLXSS9SN",
+		};
+
+		// Initialize Firebase
+		const app = initializeApp(firebaseConfig);
+		const storage = getStorage();
+
+		// Add event listener for file input change
+		const fileInput = document.getElementById("file");
+		const imageContainer = document.getElementById("imageContainer");
+
+		fileInput.addEventListener("change", async () => {
+			const file = fileInput.files[0];
+
+			// Check if a file is selected
+			if (file) {
+				// Upload the selected file to Firebase Storage
+				const storageRef = ref(storage, file.name);
+				try {
+					const snapshot = await uploadBytes(storageRef, file);
+
+					console.log("Uploaded:", snapshot.totalBytes);
+
+					// Get the download URL of the uploaded image
+					const downloadURL = await getDownloadURL(storageRef);
+
+					// Display the image on the page
+					imageContainer.innerHTML = `<img src="${downloadURL}" alt="Uploaded Image" id = "urlImage">`;
+
+					alert('Successfully uploaded to Firebase Storage!');
+				} catch (error) {
+					console.error('Error uploading to Firebase Storage:', error);
+					alert('Error uploading to Firebase Storage. Please try again.');
+				}
+			} else {
+				alert('No file selected.');
+			}
+		});
+	</script>
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+	<script>
+		function saveImage() {
+
+			const image = document.getElementById("urlImage");
+			const imageURL = image.src;
+			const tagContent = document.getElementById("content");
+			const content = tagContent.value;
+
+			try {
+				$.ajax({
+					type: 'POST',
+					url: "/post/1",
+					data: JSON.stringify({"imageURL": imageURL, "content": content}), //Ép kiểu string để tránh bị đôir / thành %
+					contentType: 'application/json',
+					success: function () {
+						alert('Save successfully');
+					},
+					error: function () {
+						alert('Error save image');
+					}
+				});
+
+			} catch (error) {
+				console.error('Error uploading to Firebase Storage:', error);
+			}
+
+		}
+	</script>
+
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+	<script defer>
+
+		function likePost(postId) {
+			$.ajax({
+				type: 'POST',
+				url: '/like/' + postId,
+				success: function (response) {
+
+					const str = '#likeCount' + postId;
+					const likespan = $(str);
+					const likeicon = $('#likeButton' + postId);
+					likespan.text(response)
+					likespan.html(response)
+					likeicon.toggleClass("liked");
+				},
+				error: function () {
+					alert('Error liking post');
+				}
+			});
+		}
+
+		var page = 1;
+		var loading = true;
+		$(window).scroll(function () {
+			var windowHeight = $(window).height();
+			var documentHeight = $(document).height();
+			var scrollTop = $(window).scrollTop();
+
+			// Kiểm tra xem cuộn đến cuối trang
+			if (scrollTop + windowHeight >= documentHeight - 50 && loading) {
+				loading = false;
+				console.log("Đã cuộn xuống cuối trang");
+				loadAjax();
+			}
+		});
+
+		function loadAjax() {
+			console.log("/listpost/" + page);
+			$.ajax({
+				type: 'GET',
+				url: '/listpost/' + page,  // Thay đổi đường dẫn API và tham số theo nhu cầu của bạn
+
+				success: function (data) {
+					console.log(data);
+					if (data.trim() !== "") {
+						console.log("data k null");
+						loading = true;
+						page++;
+					} else {
+
+						loading = false;
+					}
+					console.log(page);
+
+					$("#listpost").append(data);
+				},
+				error: function (error) {
+					alert("error")
+					console.error('Error loading data:', error);
+					loading = false;
+				}
+			});
+		}
+	</script>
+
+</body>
+
+</html>

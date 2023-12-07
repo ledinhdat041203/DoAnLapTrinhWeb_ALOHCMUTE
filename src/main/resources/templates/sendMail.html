@@ -10,7 +10,7 @@
 
 <body>
 	<h2>Send Email Form</h2>
-	<form action="send" method="post" enctype="multipart/form-data" modelAttribute="mail">
+	<form action="sendmail" method="post" enctype="multipart/form-data" modelAttribute="mail">
 		<div th:if="${param.wrong}">
 			<div class="alert alert-info">Email của bạn chưa được đăng ký vui lòng kiểm tra lại</div>
 		</div>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ALOHCMUTE</title>
+</head>
+<body>
+
+<header>
+    <h1>Chào mừng bạn đến với ALOHCMUTE</h1>
+</header>
+
+<nav>
+    <ul>
+        <li><a href ="/profile" th:text="'Xin chào: '+${session.userFullName}"></a></li>
+        <li><a href="list_Conversation">Nhắn tin</a></li>
+        <li><a href="post">Đăng bài viết</a></li>
+        <li><a href="listpost">Bài viết</a></li>
+        <li><a href="listgroup">Nhóm</a></li>
+        <li><a href="/logout">Đăng xuất</a></li>
+        <li><a href="/friends/following-list">Xem danh sách đang theo dõi</a>
+    </ul>
+</nav>
+
+</body>
+</html>
