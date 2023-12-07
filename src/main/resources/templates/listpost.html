@@ -1,19 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-
 <head>
-
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Post</title>
-	<!--<link rel="stylesheet" href="/css/PostStyle.css">-->
 	<link rel="stylesheet" href="/css/PostStyle.css">
 	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-	<link
-      rel="stylesheet"
-      href="/css/all.min.css"
-    />
 </head>
 
 <body>
@@ -22,7 +15,7 @@
 		<div class="row" id="listpost">
 			<!--bắt đầu 1 post -->
 			<div th:each="post : ${list}" class="col-md-6">
-				<div th:replace="~{postTemplate::post(${post})}"></div>
+				<div th:replace="~{post_template::post_template(${post})}"></div>
 			</div>
 			<!--kết thúc 1 post -->
 		</div>
@@ -34,6 +27,7 @@
 	<script defer>
 
 		function likePost(postId) {
+			alert(postId)
 			$.ajax({
 				type: 'POST',
 				url: '/like/' + postId,
@@ -100,4 +94,3 @@
 </body>
 
 </html>
-

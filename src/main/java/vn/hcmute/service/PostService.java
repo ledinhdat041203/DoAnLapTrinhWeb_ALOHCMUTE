@@ -39,15 +39,18 @@ public class PostService implements IPostService {
 		return postModel;
 	}
 
+
 	@Override
 	public List<PostEntity> findAll() {
 		return postRepo.findAll();
 	}
 
+
 	@Override
 	public <S extends PostEntity> S save(S entity) {
 		return postRepo.save(entity);
 	}
+
 
 	@Override
 	public Optional<PostEntity> findById(Long id) {
