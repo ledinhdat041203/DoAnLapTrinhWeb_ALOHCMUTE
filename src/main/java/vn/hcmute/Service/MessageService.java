@@ -164,14 +164,9 @@ public class MessageService {
     
 	/* Create Conversation id */
     public String generateConversationId(long userId1, long userId2) {
-    	if(userId1 < userId2) {
-    		List<String> userIds = Arrays.asList(String.valueOf(userId1), String.valueOf(userId2));
-    		return String.join("_", userIds);
-    	}
-    	else {
-    		List<String> userIds = Arrays.asList(String.valueOf(userId2), String.valueOf(userId1));
-    		return String.join("_", userIds);
-    	}
+        List<String> userIds = Arrays.asList(String.valueOf(userId1), String.valueOf(userId2));
+        Collections.sort(userIds);
+        return String.join("_", userIds);
     }
     //---------------------------------------------------------
     

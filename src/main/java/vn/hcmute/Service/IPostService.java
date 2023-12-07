@@ -10,7 +10,8 @@ import vn.hcmute.model.PostModel;
 
 public interface IPostService {
 
-	List<PostModel> findByUserUserID(long userId, int page, int size);
+	<S extends PostEntity> S save(S entity);
+
 	
 	Optional<PostEntity> findById(Long id);
 
@@ -18,9 +19,8 @@ public interface IPostService {
 	List<PostModel> getPostsByGroupId(long groupId, int page, int size);
 
 
+	List<PostModel> findByUserUserID(long userId, int page, int size);
+
 	List<PostEntity> findAll();
-
-
-	<S extends PostEntity> S save(S entity);
 
 }

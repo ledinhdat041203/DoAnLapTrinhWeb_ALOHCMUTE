@@ -116,6 +116,24 @@ public class CommentService implements ICommentService{
 
 
 
+	@Override
+	public CommentEntity findByPostCommnentAndUserCommentUserID(PostEntity postCommnent, long userComment) {
+		
+		return commentRepo.findByPostCommnentAndUserCommentUserID(postCommnent, userComment);
+	}
+
+
+
+	@Override
+	public Long countCommentsByPostId(long postId) {
+		return commentRepo.countCommentsByPostId(postId);
+	}
+
+
+
+
+
+
 
 	
 }
