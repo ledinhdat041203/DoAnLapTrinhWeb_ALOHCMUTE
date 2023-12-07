@@ -117,9 +117,9 @@
 			const imageURL = imageContainer.querySelector("#urlImage") ? imageContainer.querySelector("#urlImage").src : null;
 
 			const contentArea = document.getElementById("content");
-
+			
 			// Kiểm tra xem content và imageURL có giá trị hay không
-			if (contentValue !== '' || contentValue != null || (imageURL !== "" && imageURL !== null)) {
+			if ((contentValue != '' && contentValue != null) || (imageURL !== "" && imageURL !== null)) {
 				// Nếu có nội dung và không có ảnh
 				if (contentValue !== '' && (imageURL == "" || imageURL == null)) {
 					contentArea.value = contentValue;
@@ -158,8 +158,6 @@
 				alert('Please enter a message or choose an image.');
 			}
 		}
-
-
 	</script>
 	<script>
 		// Thêm hàm để xử lý sự kiện click vào icon

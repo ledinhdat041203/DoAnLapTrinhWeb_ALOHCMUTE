@@ -18,6 +18,7 @@ import vn.hcmute.service.INotificationService;
 import vn.hcmute.service.IPostService;
 import vn.hcmute.service.IUserInfoService;
 
+
 @Controller
 public class LikeController {
 
@@ -27,11 +28,11 @@ public class LikeController {
 	IPostService postservice;
 	@Autowired
 	IUserInfoService userInfoService;
-
 	@Autowired
 	IPostService postService;
 	@Autowired
 	INotificationService notificationService;
+
 
 	@PostMapping("/like/{postId}")
 	public ResponseEntity<Long> likePost(@PathVariable long postId, HttpSession session) {
@@ -57,6 +58,7 @@ public class LikeController {
 			likeService.save(like);
 		}
 
+
 		// Xử lí thông báo
 		if (LikeEntity.isStatus()) {
 			// Chưa xong khúc này (chưa có link)
@@ -77,5 +79,4 @@ public class LikeController {
 		System.out.println(likeCount);
 		return ResponseEntity.ok(likeCount);
 	}
-
 }

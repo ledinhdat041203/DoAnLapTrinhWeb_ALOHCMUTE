@@ -1,7 +1,9 @@
 package vn.hcmute.controller;
 
 import java.util.ArrayList;
+
 import java.util.Iterator;
+
 import java.util.List;
 import java.util.Random;
 
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.servlet.http.HttpSession;
+
 import vn.hcmute.service.INotificationService;
 import vn.hcmute.entities.FriendsEntity;
 import vn.hcmute.entities.UserInfoEntity;

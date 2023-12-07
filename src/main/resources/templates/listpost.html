@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
+
 <head>
+
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Post</title>
 	<link rel="stylesheet" href="/css/PostStyle.css">
+<<<<<<< HEAD
 	<style>
 		.comment-section {
 			position: relative;
@@ -129,11 +132,15 @@
 			border-radius: 5px;
 		}
 	</style>
+=======
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+>>>>>>> d3d09010e919429435fdeac48f653e84c0e5f5cc
 </head>
 
 <body>
-	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
 	<div class="container bootstrap snippets bootdey" id="Post-Container">
+<<<<<<< HEAD
 		<div class="row">
 			<!-- Bắt đầu vòng lặp qua tất cả bài viết -->
 			<div th:each="post : ${list}" class="col-md-6">
@@ -225,6 +232,12 @@
 						</ul>
 					</footer>
 				</section>
+=======
+		<div class="row" id="listpost">
+			<!--bắt đầu 1 post -->
+			<div th:each="post : ${list}" class="col-md-6">
+				<div th:replace="~{post_template::post_template(${post})}"></div>
+>>>>>>> d3d09010e919429435fdeac48f653e84c0e5f5cc
 			</div>
 			<!-- Kết thúc vòng lặp -->
 		</div>
@@ -331,6 +344,7 @@
 			});
 		}
 	</script>
+<<<<<<< HEAD
 	<script defer>
 		function loadComments(postId) {
 			const postIdNumeric = parseInt(postId);
@@ -530,8 +544,11 @@
 					$('.cancel-comment-button').remove();
 				}
 	</script>
+=======
+>>>>>>> d3d09010e919429435fdeac48f653e84c0e5f5cc
 
 
 </body>
 
 </html>
+
