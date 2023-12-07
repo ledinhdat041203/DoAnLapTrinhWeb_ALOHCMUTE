@@ -2,7 +2,6 @@ package vn.hcmute.controller;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +19,10 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import vn.hcmute.entities.ResetPasswordEntity;
 import vn.hcmute.entities.UserEntity;
 import vn.hcmute.entities.UserInfoEntity;
-import vn.hcmute.model.EmailInfo;
 import vn.hcmute.model.UserAcountModel;
-import vn.hcmute.model.updatePassModel;
+
 
 import vn.hcmute.service.IUserInfoService;
 import vn.hcmute.service.IUserService;
@@ -121,45 +118,7 @@ public class UserController {
 		}
 	}
 
-	@GetMapping("/forgot")
-	public String showFormMail(ModelMap model) {
-		model.addAttribute("mail", new EmailInfo());
-		return "sendMail";
-	}
 
-
-	@PostMapping("user/updatePassword")
-	public String savePass(@ModelAttribute("pass") updatePassModel pass, HttpServletResponse response) {
-		String result = user_service.validToken(pass.getToken());
-		if (result != null)
-			return "redirect:updatePassword?fail";
-		Cookie name = new Cookie("token", pass.getToken());
-		name.setMaxAge(60);
-		response.addCookie(name);
-		UserEntity user = user_service.findByToken(pass.getToken()).getUserResetPass();
-		if (user != null) {
-			System.out.print(user);
-			if (pass.getNewPass().equals(pass.getConfirmPass())) {
-				user_service.changePass(user, pass.getConfirmPass());
-				return "redirect:updatePassword?success";
-			} else
-				return "redirect:updatePassword?wrong";
-		} else
-			return "redirect:updatePassword?noexist";
-	}
-
-	@GetMapping("user/updatePassword")
-	public String show(HttpServletRequest request, ModelMap model) {
-		Cookie[] c = request.getCookies();
-		if (c != null) {
-			for (Cookie cook : c) {
-				if (cook.getName().equals("token")) {
-					model.addAttribute("tokenvalue", cook.getValue());
-				}
-			}
-		}
-		return "updatePass";
-	}
 
 	@GetMapping("/findByName")
 	public String findByName(Model model,@RequestParam(name = "nameSearch") String name) {
