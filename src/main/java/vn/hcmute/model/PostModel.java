@@ -18,6 +18,7 @@ public class PostModel {
 	    private Date postDate;
 	    private long likeCount;
 	    private String userFullName;
+	    private boolean liked;
 
 }
 

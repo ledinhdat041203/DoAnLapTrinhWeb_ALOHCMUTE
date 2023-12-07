@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
 import vn.hcmute.entities.GroupEntity;
+import vn.hcmute.entities.LikeEntity;
 import vn.hcmute.entities.PostEntity;
 import vn.hcmute.entities.UserInfoEntity;
 import vn.hcmute.model.PostModel;
@@ -35,8 +36,9 @@ public class PostController {
 	IUserInfoService userInfoService;
 	
 	@GetMapping("/listpost")
-	public String post(Model model) {
-		List<PostModel> posts = postService.getPostsByGroupId(1, 0, 2);
+	public String post(Model model, HttpSession session) {
+		Long userid = (long) session.getAttribute("userInfoID");
+		List<PostModel> posts = postService.getPostsByGroupId(1, 0, 2, userid);
 	
 		model.addAttribute("list", posts);
 		return "listpost";
@@ -82,9 +84,10 @@ public class PostController {
     public String getPostsByGroupId(
             @PathVariable int page,
             @RequestParam(defaultValue = "2") int size,
-            Model model) {
-		
-		List<PostModel> posts = postService.getPostsByGroupId(1, page, size);
+            Model model,
+            HttpSession session) {
+		Long userid = (long) session.getAttribute("userInfoID");
+		List<PostModel> posts = postService.getPostsByGroupId(1, page, size, userid);
 		System.out.println(page);
 		model.addAttribute("list", posts);
         return "listpost :: #listpost";

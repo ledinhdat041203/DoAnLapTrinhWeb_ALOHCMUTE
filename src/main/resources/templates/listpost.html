@@ -2,24 +2,27 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<meta charset="UTF-8">
+	<meta charset="UTF-8" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Post</title>
-	<link rel="stylesheet" href="/css/PostStyle.css">
-	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+	<title>ALOHCMUTE</title>
+
+	<link rel="stylesheet" href="/fontawesome-free-6.5.1-web/css/all.min.css" />
+	<link rel="stylesheet" href="/fontawesome-free-6.5.1-web/css/styleAll.css" />
 </head>
 
 <body>
-
-	<div class="container bootstrap snippets bootdey" id="Post-Container">
-		<div class="row" id="listpost">
+	<div class="homePage">
+		<div th:replace="~{menu::menu}"></div>
+		<div id="listpost">
 			<!--bắt đầu 1 post -->
-			<div th:each="post : ${list}" class="col-md-6">
-				<div th:replace="~{post_template::post_template(${post})}"></div>
+			<div th:each="post : ${list}">
+				<div th:replace="~{postTemplate::post(${post})}"></div>
 			</div>
 			<!--kết thúc 1 post -->
 		</div>
+		<div th:replace="~{asideMenu::asideMenu}"></div>
 	</div>
+
 
 
 	<!-----------------------------------------------------------script------------------------------------- -->
@@ -27,7 +30,7 @@
 	<script defer>
 
 		function likePost(postId) {
-			alert(postId)
+			
 			$.ajax({
 				type: 'POST',
 				url: '/like/' + postId,
@@ -36,9 +39,9 @@
 					const str = '#likeCount' + postId;
 					const likespan = $(str);
 					const likeicon = $('#likeButton' + postId);
-					likespan.text(response)
-					likespan.html(response)
-					likeicon.toggleClass("liked");
+					likespan.text(response + "Likes")
+					likespan.html(response+" Likes")
+					likeicon.toggleClass("tym");
 				},
 				error: function () {
 					alert('Error liking post');

@@ -22,9 +22,21 @@ h5 {
     border-right: solid 1px rgb(219, 219, 219);
 }
 
+.logo {
+    width: 100px;
+    height: 100px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.logo > img {
+    width: 100%;
+    height: 100%;
+}
+
 .sidebar {
     height: 100vh;
-    padding: 8px 20px 12px 12px;
+    padding: 10px 20px 12px 12px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -233,6 +245,74 @@ h5 {
     justify-content: space-between;
     padding: 15px 20px;
     border-bottom: 1px solid rgb(219, 219, 219);
+}
+/*Form Thông báo*/
+
+.notification {
+    border: 1px solid rgb(219, 219, 219);
+    position: absolute;
+    left: 100%;
+    bottom: 47%;
+    width: 404px;
+    background-color: #fff;
+    transform-origin: bottom left;
+    animation: notifyHeaderGrowth ease-in 0.25s;
+    -webkit-animation: notifyHeaderGrowth ease-in 0.25s;
+    display: none;
+}
+
+.has-noti:hover .notification {
+    display: block;
+}
+
+.notify-header > h2 {
+    padding: 20px 0;
+    border-bottom: 1px solid rgb(219, 219, 219);
+}
+
+.notify-item {
+    list-style: none;
+    display: flex;
+    border-bottom: 1px solid rgb(219, 219, 219);
+}
+
+.notify-item:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.notify-item > img {
+    height: 44px;
+    width: 44px;
+    border-radius: 50%;
+    margin: 10px 10px 10px 20px;
+}
+
+@keyframes notifyHeaderGrowth {
+    from {
+        opacity: 0;
+        transform: scale(0);
+        -webkit-transform: scale(0);
+        -moz-transform: scale(0);
+        -ms-transform: scale(0);
+        -o-transform: scale(0);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+        -webkit-transform: scale(1);
+        -moz-transform: scale(1);
+        -ms-transform: scale(1);
+        -o-transform: scale(1);
+    }
+}
+
+.description {
+    margin-bottom: auto;
+    margin-top: auto;
+}
+
+.description > h5 {
+    display: inline;
 }
 
 /*Post*/
