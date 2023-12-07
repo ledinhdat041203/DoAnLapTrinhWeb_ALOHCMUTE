@@ -26,7 +26,7 @@ public class NotificationEntity {
 	@Column(name = "notifyid", columnDefinition = "BIGINT")
 	private long notifyID;
 	
-	@Column(name = "content", columnDefinition =  "nvarchar(MAX)")
+	@Column(name = "content", columnDefinition =  "NTEXT")
 	private String content;
 	
 	@Column(name = "time", columnDefinition = "Date")

@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="viewport" >
 	<title>Post</title>
 </head>
 
@@ -14,30 +14,30 @@
             <div class="post-info">
               <div class="post-account">
                 <img
-                  src="./photo/avatar.jpeg"
-                  alt="avatar con mèo"
+                  th:src="${post.imageURL}" alt="Post Image"
+                  
                   class="avatar"
                 />
                 <div class="account-name">
-                  <h5>xiaoluan_2011</h5>
+                  <h5 th:text="${post.userFullName}"></h5th>
                 </div>
               </div>
               <i class="fa-solid fa-ellipsis"></i>
             </div>
             <div class="post-img">
-              <img src="./photo/post.jpeg" alt="genshin" />
+              <img th:src="${post.imageURL}" alt="Post Image" class="postimg"/>
             </div>
             <div>
               <div class="post-icon">
-                <i class="fa-regular fa-heart"></i>
+                <i th:classappend="${post.liked} ? 'fa fa-heart tym' : 'fa fa-heart'" th:onclick="'likePost(' + ${post.postID} + ')'" th:id="'likeButton' + ${post.postID}"></i>
                 <i class="fa-regular fa-comment"></i>
               </div>
               <div class="post-like">
-                <p>62 likes</p>
+                <p th:text=" ${post.likeCount}+' Likes' " th:id="'likeCount' + ${post.postID}"></p>
               </div>
               <div class="post-comment">
                 <h5>xiaoluan_2011</h5>
-                <p>Truyền thuyết thủy thần</p>
+                <p th:text="${post.content}"></p>
               </div>
               <textarea
                 name="comment"
@@ -48,47 +48,6 @@
               ></textarea>
             </div>
           </article>
-        </div>
-        <div class="container">
-          <article>
-            <div class="post-info">
-              <div class="post-account">
-                <img
-                  src="./photo/avatar.jpeg"
-                  alt="avatar con mèo"
-                  class="avatar"
-                />
-                <div class="account-name">
-                  <h5>xiaoluan_2011</h5>
-                </div>
-              </div>
-              <i class="fa-solid fa-ellipsis"></i>
-            </div>
-            <div class="post-img">
-              <img src="./photo/post.jpeg" alt="genshin" />
-            </div>
-            <div>
-              <div class="post-icon">
-                <i class="fa-regular fa-heart"></i>
-                <i class="fa-regular fa-comment"></i>
-              </div>
-              <div class="post-like">
-                <p>62 likes</p>
-              </div>
-              <div class="post-comment">
-                <h5>xiaoluan_2011</h5>
-                <p>Truyền thuyết thủy thần</p>
-              </div>
-              <textarea
-                name="comment"
-                id="comment"
-                placeholder="Add a comment..."
-                rows="2"
-                cols="50"
-              ></textarea>
-            </div>
-          </article>
-        </div>
       </div>
 	</div>
 </body>

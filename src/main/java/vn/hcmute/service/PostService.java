@@ -3,6 +3,7 @@ package vn.hcmute.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,14 +13,21 @@ import org.springframework.stereotype.Service;
 import vn.hcmute.Responsitory.PostRepository;
 import vn.hcmute.entities.LikeEntity;
 import vn.hcmute.entities.PostEntity;
+import vn.hcmute.entities.UserInfoEntity;
 import vn.hcmute.model.PostModel;
 
 @Service
 public class PostService implements IPostService {
 	@Autowired
 	PostRepository postRepo;
+	
+	@Autowired
+	IUserInfoService userInfoService;
+	
+	@Autowired
+	ILikeService likeService;
 
-	private PostModel converEntityToModel(PostEntity post) {
+	private PostModel converEntityToModel(PostEntity post, long userid) {
 		PostModel postModel = new PostModel();
 		postModel.setPostID(post.getPostID());
 		postModel.setContent(post.getContent());
@@ -36,6 +44,13 @@ public class PostService implements IPostService {
 			}
 		}
 		postModel.setLikeCount(likeCount);
+		
+		UserInfoEntity user = userInfoService.findById(userid).get();
+		LikeEntity LikeEntity = likeService.findLikeByPostAndUser(post, userid);
+		if (LikeEntity == null || !LikeEntity.isStatus())
+			postModel.setLiked(false);
+		else
+			postModel.setLiked(true);
 		return postModel;
 	}
 
@@ -58,13 +73,13 @@ public class PostService implements IPostService {
 	}
 
 	@Override
-	public List<PostModel> getPostsByGroupId(long groupId, int page, int size) {
+	public List<PostModel> getPostsByGroupId(long groupId, int page, int size, long userid) {
 		Pageable pageable = PageRequest.of(page, size);
 		Page<PostEntity> postPage = postRepo.findByGroupPostGroupID(groupId, pageable);
 		List<PostEntity> posts = postPage.getContent();
 		List<PostModel> listPostModel = new ArrayList<>();
 		for (PostEntity post : posts) {
-			listPostModel.add(converEntityToModel(post));
+			listPostModel.add(converEntityToModel(post,userid));
 		}
 		return listPostModel;
 	}
@@ -76,7 +91,7 @@ public class PostService implements IPostService {
 		List<PostEntity> posts = postPage.getContent();
 		List<PostModel> listPostModel = new ArrayList<>();
 		for (PostEntity post : posts) {
-			listPostModel.add(converEntityToModel(post));
+			listPostModel.add(converEntityToModel(post,userId));
 		}
 		return listPostModel;
 	}

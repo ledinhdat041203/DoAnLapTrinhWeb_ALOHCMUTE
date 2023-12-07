@@ -15,7 +15,7 @@ public interface IPostService {
 	Optional<PostEntity> findById(Long id);
 
 
-	List<PostModel> getPostsByGroupId(long groupId, int page, int size);
+	List<PostModel> getPostsByGroupId(long groupId, int page, int size, long userid);
 
 
 	List<PostEntity> findAll();
