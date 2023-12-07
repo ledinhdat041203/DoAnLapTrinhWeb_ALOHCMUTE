@@ -2,8 +2,10 @@ package vn.hcmute.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -11,9 +13,9 @@ import org.springframework.stereotype.Service;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.validation.constraints.Email;
 import vn.hcmute.entities.UserEntity;
 import vn.hcmute.model.EmailInfo;
-
 
 @Service
 public class MailService implements IMailService {
@@ -29,15 +31,27 @@ public class MailService implements IMailService {
 		this.queue("Reset Password", message + " \r\n" + url, user);
 	}
 
+	@Override
+	public void constructCreateCode(int code, UserEntity user) throws MessagingException {
+		String message = "Code của bạn là: ";
+		this.queue("Create Code", message + code, user);
+	}
+
 	public void send(EmailInfo email) throws MessagingException {
 		// TODO Auto-generated method stub
-
-		MimeMessage message = mailSender.createMimeMessage();
-		MimeMessageHelper helper = new MimeMessageHelper(message, true);
-		helper.setTo(email.getTo());
-		helper.setSubject(email.getSubject());
-		helper.setText(email.getBody(), true);
-		mailSender.send(message);
+		try
+		{
+			MimeMessage message = mailSender.createMimeMessage();
+			MimeMessageHelper helper = new MimeMessageHelper(message, true);
+			helper.setTo("tuandatt2003@gmail.com");
+			helper.setSubject(email.getSubject());
+			helper.setText(email.getBody(), true);
+			mailSender.send(message);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	@Override
@@ -56,7 +70,7 @@ public class MailService implements IMailService {
 	}
 
 	@Override
-	public void queue(String subject, String body, UserEntity user)  {
+	public void queue(String subject, String body, UserEntity user) {
 		EmailInfo mail = new EmailInfo();
 		mail.setTo(user.getEmail());
 		mail.setBody(body);

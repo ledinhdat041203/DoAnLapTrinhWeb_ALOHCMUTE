@@ -18,11 +18,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
-
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-
 @Entity
 @Table(name = "UserInfo")
 public class UserInfoEntity {
@@ -60,16 +55,134 @@ public class UserInfoEntity {
 	 @OneToMany(mappedBy = "userMember", fetch = FetchType.LAZY)
 	 private List<GroupMembersEntity> listGroupMembers;
 
-	 
-	public UserInfoEntity(long userID, String fullName) {
-	
+	public UserInfoEntity(Long userID, String fullName, Date dateOfBirth, String avata, String address,
+			String phoneNumber, UserEntity userAccount, List<MessagesEntity> messageSender,
+			List<MessagesEntity> messageReceiver, List<FriendsEntity> listFriend1, List<FriendsEntity> listFriend2,
+			List<GroupEntity> listGroups, List<GroupMembersEntity> listGroupMembers) {
 		this.userID = userID;
+		this.fullName = fullName;
+		this.dateOfBirth = dateOfBirth;
+		this.avata = avata;
+		this.address = address;
+		this.phoneNumber = phoneNumber;
+		this.userAccount = userAccount;
+		this.messageSender = messageSender;
+		this.messageReceiver = messageReceiver;
+		this.listFriend1 = listFriend1;
+		this.listFriend2 = listFriend2;
+		this.listGroups = listGroups;
+		this.listGroupMembers = listGroupMembers;
+	}
+
+	public UserInfoEntity() {
+	}
+
+	public Long getUserID() {
+		return userID;
+	}
+
+	public void setUserID(Long userID) {
+		this.userID = userID;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
 		this.fullName = fullName;
 	}
 
+	public Date getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+
+	public String getAvata() {
+		return avata;
+	}
+
+	public void setAvata(String avata) {
+		this.avata = avata;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public UserEntity getUserAccount() {
+		return userAccount;
+	}
+
+	public void setUserAccount(UserEntity userAccount) {
+		this.userAccount = userAccount;
+	}
+
+	public List<MessagesEntity> getMessageSender() {
+		return messageSender;
+	}
+
+	public void setMessageSender(List<MessagesEntity> messageSender) {
+		this.messageSender = messageSender;
+	}
+
+	public List<MessagesEntity> getMessageReceiver() {
+		return messageReceiver;
+	}
+
+	public void setMessageReceiver(List<MessagesEntity> messageReceiver) {
+		this.messageReceiver = messageReceiver;
+	}
+
+	public List<FriendsEntity> getListFriend1() {
+		return listFriend1;
+	}
+
+	public void setListFriend1(List<FriendsEntity> listFriend1) {
+		this.listFriend1 = listFriend1;
+	}
+
+	public List<FriendsEntity> getListFriend2() {
+		return listFriend2;
+	}
+
+	public void setListFriend2(List<FriendsEntity> listFriend2) {
+		this.listFriend2 = listFriend2;
+	}
+
+	public List<GroupEntity> getListGroups() {
+		return listGroups;
+	}
+
+	public void setListGroups(List<GroupEntity> listGroups) {
+		this.listGroups = listGroups;
+	}
+
+	public List<GroupMembersEntity> getListGroupMembers() {
+		return listGroupMembers;
+	}
+
+	public void setListGroupMembers(List<GroupMembersEntity> listGroupMembers) {
+		this.listGroupMembers = listGroupMembers;
+	}
+
+	 
+
 	 //@OneToOne(mappedBy = "userInfo", cascade = CascadeType.ALL)
 	 //private ImageEntity image;
-	 
-	
 }
-
