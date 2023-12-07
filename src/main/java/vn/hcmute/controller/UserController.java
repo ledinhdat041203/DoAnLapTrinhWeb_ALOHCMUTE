@@ -118,8 +118,6 @@ public class UserController {
 		}
 	}
 
-
-
 	@GetMapping("/findByName")
 	public String findByName(Model model,@RequestParam(name = "nameSearch") String name) {
 		List<UserInfoEntity> listUser = user_info_service.findByFullNameContaining(name);	
