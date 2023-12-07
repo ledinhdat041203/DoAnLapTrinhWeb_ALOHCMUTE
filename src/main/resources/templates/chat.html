@@ -9,7 +9,7 @@
 	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 	<script type="module">
 		import {initializeApp} from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
-		import {getAnalytics} from "https://www.gstatic.com/firebasejs/10.6.0/firebase-analytics.js";
+		//import {getAnalytics} from "https://www.gstatic.com/firebasejs/10.6.0/firebase-analytics.js";
 		import {getDatabase, ref, onChildAdded, off} from "https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js";
 
 		const firebaseConfig = {
@@ -24,7 +24,8 @@
 		};
 
 		const app = initializeApp(firebaseConfig);
-		const analytics = getAnalytics(app);
+		
+		//const analytics = getAnalytics(app);
 		const conversationId = "[[${conversationId}]]";
 		console.log('Conversation ID:', conversationId);
 
@@ -77,6 +78,7 @@
 		import {initializeApp} from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
 		import {getStorage, ref, uploadBytes, getDownloadURL} from "https://www.gstatic.com/firebasejs/10.6.0/firebase-storage.js";
 
+		
 		const storage = getStorage();
 
 		// Add event listener for file input change
@@ -139,7 +141,6 @@
 				// Thêm giá trị uid vào FormData
 				var formData = $('#messageForm').serializeArray();
 				formData.push({name: 'uid', value: uid});
-
 				$.ajax({
 					type: 'POST',
 					url: '/send',
@@ -172,6 +173,7 @@
 			document.getElementById('content').value = newContent;
 		}
 	</script>
+
 	<script>
 		// Thêm hàm để xử lý sự kiện click vào icon
 		function addEmojiToContent(emoji) {
@@ -209,16 +211,6 @@
 								<button class="btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 									<i class="ti-view-grid"></i>
 								</button>
-								<div class="dropdown-menu dropdown-menu-right">
-									<a class="dropdown-item audio-call" href="#"><i class="ti-headphone-alt"></i>Voice
-										Call</a>
-									<a href="#" class="dropdown-item video-call"><i class="ti-video-camera"></i>Video
-										Call</a>
-									<hr>
-									<a href="#" class="dropdown-item"><i class="ti-server"></i>Clear History</a>
-									<a href="#" class="dropdown-item"><i class="ti-hand-stop"></i>Block Contact</a>
-									<a href="#" class="dropdown-item"><i class="ti-trash"></i>Delete Contact</a>
-								</div>
 							</div>
 						</li>
 					</ul>
@@ -229,8 +221,6 @@
 					<ul id="chat" class="conversations ps-container ps-theme-default ps-active-x ps-active-y">
 					</ul>
 				</div>
-
-
 				
 				<div class="message-writing-box">
 					<div id="imageContainer"></div>

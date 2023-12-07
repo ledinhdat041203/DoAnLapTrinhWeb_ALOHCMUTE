@@ -1,5 +1,6 @@
 package vn.hcmute.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,8 +36,7 @@ public class UserController {
 	IUserService user_service;
 	@Autowired
 	IUserInfoService user_info_service;
-
-
+	
 	@RequestMapping("/login")
 	public String Showlogin(ModelMap model, HttpServletRequest request) {
 		Cookie[] cookies = request.getCookies();
@@ -118,10 +118,5 @@ public class UserController {
 		}
 	}
 
-	@GetMapping("/findByName")
-	public String findByName(Model model,@RequestParam(name = "nameSearch") String name) {
-		List<UserInfoEntity> listUser = user_info_service.findByFullNameContaining(name);	
-		model.addAttribute("listUser", listUser);
-		return "listUser";
-	}
+
 }
