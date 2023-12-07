@@ -1,7 +1,14 @@
 package vn.hcmute.model;
 
 import java.io.Serializable;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class MessageModel implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -9,25 +16,6 @@ public class MessageModel implements Serializable{
 	public String content;
 	
 	
-	public long getSender() {
-		return sender;
-	}
-	public void setSender(long sender) {
-		this.sender = sender;
-	}
-	public String getContent() {
-		return content;
-	}
-	public void setContent(String content) {
-		this.content = content;
-	}
-	public MessageModel(long sender, String content) {
-		this.sender = sender;
-		this.content = content;
-	}
-	public MessageModel() {
-		super();
-	}
 	
 	
 }

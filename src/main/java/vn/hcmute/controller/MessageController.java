@@ -1,8 +1,10 @@
 package vn.hcmute.controller;
 
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,41 +16,48 @@ import jakarta.servlet.http.HttpSession;
 import vn.hcmute.entities.MessagesEntity;
 import vn.hcmute.entities.UserInfoEntity;
 import vn.hcmute.model.MessageModel;
+import vn.hcmute.service.IUserInfoService;
 import vn.hcmute.service.MessageService;
+
 
 
 
 @Controller
 public class MessageController {
+	
+	@Autowired
+	private  MessageService messageService;
+	
+	@Autowired
+	private  IUserInfoService userInfoService;
 
-	private final MessageService messageService;
 	
 
-	@Autowired
-	public MessageController(MessageService messageService) {
-		this.messageService = messageService;
-	}
-
 	@GetMapping("/firebase")
-	public String showMessageFireBase(Model model, @RequestParam(name = "uid", required = false, defaultValue = "0") Long user2, HttpSession session) {
+	public String showMessageFireBase(Model model, @RequestParam(name = "uid", required = false, defaultValue = "-1") Long user2, HttpSession session) {
 		Long user1 = (long) session.getAttribute("userInfoID");
-		if (user2 == 0 ) {
+		
+		if (user2 == -1 ) {
 	        // Xử lý khi uid không được truyền, ví dụ chuyển hướng hoặc trả về một giá trị mặc định
-	        return "redirect:/list_Conversation";
-	    }
+	        return "conversation";
+	    } 
 		List<MessagesEntity> messages = messageService.getAllMessagesFromFirebase(user1, user2);
 		String conversationId = messageService.generateConversationId(user1, user2);
+		//System.out.println(conversationId);
+		UserInfoEntity userInfo = userInfoService.findByUserIDEquals(user2).get();
+		//System.out.println(userInfo.getPhoneNumber());
 		model.addAttribute("conversationId", conversationId);
 		model.addAttribute("messages", messages);
+		model.addAttribute("recipientInfo", userInfo);
 		return "chat";
 	}
 
 	@PostMapping("/send")
-	public String sendMessage(@ModelAttribute("message") MessageModel message, @RequestParam(name = "uid") Long user2, HttpSession session) {
+	public ResponseEntity<String> sendMessage(@ModelAttribute("message") MessageModel message, @RequestParam(name = "uid") Long user2, HttpSession session) {
 		Long user1 = (long) session.getAttribute("userInfoID");
 		message.setSender(user1);
 		messageService.sendMessage(message, user1, user2);
-		return "redirect:/firebase?uid="+user2;
+		return ResponseEntity.ok("ok");
 	}
 
 	@GetMapping("/list_Conversation")

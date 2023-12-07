@@ -2,43 +2,29 @@ package vn.hcmute.model;
 
 import java.sql.Date;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import jakarta.validation.constraints.NotEmpty;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+
 public class UserInfoModel {
+	private long userID;
+	@NotEmpty
 	private String fullName;
 	private Date dateOfBirth;
 	private String avata;
+	private String address;
 	private String phoneNumber;
-	public UserInfoModel(String fullName, Date dateOfBirth, String avata, String phoneNumber) {
-		this.fullName = fullName;
-		this.dateOfBirth = dateOfBirth;
-		this.avata = avata;
-		this.phoneNumber = phoneNumber;
-	}
-	public UserInfoModel() {
-	}
-	public String getFullName() {
-		return fullName;
-	}
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
-	}
-	public Date getDateOfBirth() {
-		return dateOfBirth;
-	}
-	public void setDateOfBirth(Date dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
-	}
-	public String getAvata() {
-		return avata;
-	}
-	public void setAvata(String avata) {
-		this.avata = avata;
-	}
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
+
 	
-	
+	private MultipartFile imageFile;
+	private Boolean isEdit=false;
+
 }

@@ -17,7 +17,6 @@ import vn.hcmute.service.ILikeService;
 import vn.hcmute.service.INotificationService;
 import vn.hcmute.service.IPostService;
 import vn.hcmute.service.IUserInfoService;
-import vn.hcmute.service.PostService;
 
 @Controller
 public class LikeController {
@@ -28,33 +27,34 @@ public class LikeController {
 	IPostService postservice;
 	@Autowired
 	IUserInfoService userInfoService;
+
+	@Autowired
+	IPostService postService;
 	@Autowired
 	INotificationService notificationService;
 
-	@Autowired
-	PostService postService;
-
 	@PostMapping("/like/{postId}")
 	public ResponseEntity<Long> likePost(@PathVariable long postId, HttpSession session) {
-		
+		System.out.print("Post id nha: " + postId);
 		Long userid = (long) session.getAttribute("userInfoID");
 		PostEntity post = postservice.findById(postId).get();
 		UserInfoEntity user = userInfoService.findById(userid).get();
 		LikeEntity LikeEntity = likeService.findLikeByPostAndUser(post, userid);
-		
 		if (LikeEntity != null) {
+			System.out.println("Toi Day roi!!!!");
 			if (LikeEntity.isStatus())
 				LikeEntity.setStatus(false);
 			else
 				LikeEntity.setStatus(true);
 			likeService.save(LikeEntity);
 		} else {
-			LikeEntity = new LikeEntity();
-			LikeEntity.setLikeDate(new Date(System.currentTimeMillis()));
-			LikeEntity.setStatus(true);
-			LikeEntity.setPost(post);
-			LikeEntity.setUserLike(user);
-			likeService.save(LikeEntity);
+			System.out.println("Loi nayy!!");
+			LikeEntity like = new LikeEntity();
+			like.setLikeDate(new Date(System.currentTimeMillis()));
+			like.setStatus(true);
+			like.setPost(post);
+			like.setUserLike(user);
+			likeService.save(like);
 		}
 
 		// Xử lí thông báo
@@ -63,9 +63,10 @@ public class LikeController {
 			String link = "Chưa có gì cả";
 			String content = user.getFullName() + " đã thả tim bài viết của bạn";
 			UserInfoEntity user2 = post.getUser();
-			notificationService.createNotification(user2, link, content);
+			notificationService.createNotification(user2, link, content, user.getAvata());
 		}
-		
+		////////////////////////////
+
 		List<LikeEntity> listLike = postservice.findById(postId).get().getListLikes();
 		Long likeCount = (long) 0;
 		for (LikeEntity like : listLike) {
@@ -74,7 +75,6 @@ public class LikeController {
 				likeCount++;
 		}
 		System.out.println(likeCount);
-		
 		return ResponseEntity.ok(likeCount);
 	}
 

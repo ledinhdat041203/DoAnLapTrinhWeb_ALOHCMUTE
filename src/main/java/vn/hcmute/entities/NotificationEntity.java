@@ -26,11 +26,11 @@ public class NotificationEntity {
 	@Column(name = "notifyid", columnDefinition = "BIGINT")
 	private long notifyID;
 	
-	@Column(name = "content", columnDefinition =  "text")
+	@Column(name = "content", columnDefinition =  "nvarchar(MAX)")
 	private String content;
 	
-	@Column(name = "date", columnDefinition = "Date")
-	private Date dateNotify;
+	@Column(name = "time", columnDefinition = "Date")
+	private Date timeNotify;
 	
 	@ManyToOne
     @JoinColumn(name = "userid")
@@ -42,4 +42,8 @@ public class NotificationEntity {
 	@Column(name = "link", columnDefinition = "text")
 	private String link;
 	
+	@Column(name = "image", columnDefinition = "nvarchar(255)")
+	private String image;
+	
+
 }

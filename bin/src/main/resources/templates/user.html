@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+</head>
+
+<body>
+	<p>
+		<label th:text="'hello: '+${session.userID}"></label>
+		<label th:text="'hello: '+${session.userInfoID}"></label>
+		<label th:text="'hello: '+${session.userFullName}"></label>
+		<a href="/logout">logout</a>
+	</p>
+</body>
+
+</html>
