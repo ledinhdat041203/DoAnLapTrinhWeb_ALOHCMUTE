@@ -31,7 +31,6 @@
 
 
 	<script type="module">
-		// Import the functions you need from the SDKs you need
 		import {initializeApp} from "https://www.gstatic.com/firebasejs/9.0.1/firebase-app.js";
 		import {getStorage, ref, uploadBytes, getDownloadURL} from "https://www.gstatic.com/firebasejs/9.0.1/firebase-storage.js";
 
@@ -65,7 +64,7 @@
 				try {
 					const snapshot = await uploadBytes(storageRef, file);
 
-					console.log("Uploaded:", snapshot.totalBytes);
+					//console.log("Uploaded:", snapshot.totalBytes);
 
 					// Get the download URL of the uploaded image
 					const downloadURL = await getDownloadURL(storageRef);

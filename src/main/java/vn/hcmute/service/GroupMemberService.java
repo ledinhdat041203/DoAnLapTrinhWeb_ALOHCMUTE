@@ -1,5 +1,7 @@
 package vn.hcmute.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +24,22 @@ public class GroupMemberService implements IGroupMemberService{
 	public <S extends GroupMembersEntity> S save(S entity) {
 		return groupMemberRepo.save(entity);
 	}
-	
-	
+
+	@Override
+	public List<GroupMembersEntity> findByGroupGroupID(Long groupID) {
+		return groupMemberRepo.findByGroupGroupID(groupID);
+	}
+
+	@Override
+	public void deleteById(Long id) {
+		groupMemberRepo.deleteById(id);
+	}
+
+	@Override
+	public void delete(GroupMembersEntity entity) {
+		groupMemberRepo.delete(entity);
+	}
+
 	
 	
 }

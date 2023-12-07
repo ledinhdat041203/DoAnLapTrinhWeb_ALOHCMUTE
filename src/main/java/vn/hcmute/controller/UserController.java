@@ -1,10 +1,12 @@
 package vn.hcmute.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -74,7 +76,7 @@ public class UserController {
 			session.setAttribute("userFullName",user_service.findByemailContaining(Email).get().getUserInfo().getFullName());
 
 
-			return "redirect:/list_Conversation";
+			return "redirect:/home";
 		}
 
 		return "login";
@@ -114,6 +116,13 @@ public class UserController {
 			user_service.save(user_entity);
 			return "redirect:/registerOrFail?success";
 		}
+	}
+	
+	@GetMapping("/findByName")
+	public String findByName(Model model,@RequestParam(name = "nameSearch") String name) {
+		List<UserInfoEntity> listUser = user_info_service.findByFullNameContaining(name);	
+		model.addAttribute("listUser", listUser);
+		return "listUser";
 	}
 	
 	

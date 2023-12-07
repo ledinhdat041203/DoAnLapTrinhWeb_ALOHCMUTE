@@ -41,9 +41,9 @@ public class MessageController {
 	    } 
 		List<MessagesEntity> messages = messageService.getAllMessagesFromFirebase(user1, user2);
 		String conversationId = messageService.generateConversationId(user1, user2);
-		System.out.println(conversationId);
+		//System.out.println(conversationId);
 		UserInfoEntity userInfo = userInfoService.findByUserIDEquals(user2).get();
-		System.out.println(userInfo.getPhoneNumber());
+		//System.out.println(userInfo.getPhoneNumber());
 		model.addAttribute("conversationId", conversationId);
 		model.addAttribute("messages", messages);
 		model.addAttribute("recipientInfo", userInfo);
@@ -57,14 +57,23 @@ public class MessageController {
 		messageService.sendMessage(message, user1, user2);
 		return ResponseEntity.ok("ok");
 	}
-
+	
 	@GetMapping("/list_Conversation")
-   public String showAllConversation(Model model, HttpSession session) {
+	public String showAllConversation(Model model, HttpSession session) {
 		Long user1 = (long) session.getAttribute("userInfoID");
 		List<Long> listUserID = messageService.findAllUserIdsInConversations(user1);
 		List<UserInfoEntity> list = messageService.listInfoReceiverByIdAccount(listUserID);
 		model.addAttribute("list",list);
 		return "conversation";
 	}
-
+	
+	@GetMapping("/delete-chat")
+	public ResponseEntity<String> deleteChat(@RequestParam(name = "uid") Long uid,HttpSession session)
+	{
+		Long user1 = (long) session.getAttribute("userInfoID");
+		messageService.deleteConversation(user1, uid);
+		return ResponseEntity.ok("ok");
+	}
+	
+	
 }
