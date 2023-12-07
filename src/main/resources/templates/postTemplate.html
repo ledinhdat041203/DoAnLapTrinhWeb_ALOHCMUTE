@@ -1,0 +1,96 @@
+ <!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Post</title>
+</head>
+
+<body>
+	<div th:fragment="post (post)">
+        <div class="container">
+          <article>
+            <div class="post-info">
+              <div class="post-account">
+                <img
+                  src="./photo/avatar.jpeg"
+                  alt="avatar con mèo"
+                  class="avatar"
+                />
+                <div class="account-name">
+                  <h5>xiaoluan_2011</h5>
+                </div>
+              </div>
+              <i class="fa-solid fa-ellipsis"></i>
+            </div>
+            <div class="post-img">
+              <img src="./photo/post.jpeg" alt="genshin" />
+            </div>
+            <div>
+              <div class="post-icon">
+                <i class="fa-regular fa-heart"></i>
+                <i class="fa-regular fa-comment"></i>
+              </div>
+              <div class="post-like">
+                <p>62 likes</p>
+              </div>
+              <div class="post-comment">
+                <h5>xiaoluan_2011</h5>
+                <p>Truyền thuyết thủy thần</p>
+              </div>
+              <textarea
+                name="comment"
+                id="comment"
+                placeholder="Add a comment..."
+                rows="2"
+                cols="50"
+              ></textarea>
+            </div>
+          </article>
+        </div>
+        <div class="container">
+          <article>
+            <div class="post-info">
+              <div class="post-account">
+                <img
+                  src="./photo/avatar.jpeg"
+                  alt="avatar con mèo"
+                  class="avatar"
+                />
+                <div class="account-name">
+                  <h5>xiaoluan_2011</h5>
+                </div>
+              </div>
+              <i class="fa-solid fa-ellipsis"></i>
+            </div>
+            <div class="post-img">
+              <img src="./photo/post.jpeg" alt="genshin" />
+            </div>
+            <div>
+              <div class="post-icon">
+                <i class="fa-regular fa-heart"></i>
+                <i class="fa-regular fa-comment"></i>
+              </div>
+              <div class="post-like">
+                <p>62 likes</p>
+              </div>
+              <div class="post-comment">
+                <h5>xiaoluan_2011</h5>
+                <p>Truyền thuyết thủy thần</p>
+              </div>
+              <textarea
+                name="comment"
+                id="comment"
+                placeholder="Add a comment..."
+                rows="2"
+                cols="50"
+              ></textarea>
+            </div>
+          </article>
+        </div>
+      </div>
+	</div>
+</body>
+
+</html>

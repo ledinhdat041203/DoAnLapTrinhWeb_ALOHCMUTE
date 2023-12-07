@@ -66,7 +66,15 @@
 		<dependency>
 			<groupId>com.microsoft.sqlserver</groupId>
 			<artifactId>mssql-jdbc</artifactId>
+<<<<<<< HEAD
 			<version>9.4.1.jre11</version>
+=======
+<<<<<<< HEAD
+			<version>8.4.0.jre11</version>
+=======
+			<version>9.4.1.jre11</version>
+>>>>>>> d3d09010e919429435fdeac48f653e84c0e5f5cc
+>>>>>>> 907fc2de600b9fe39320929be963c85de5bccf54
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
