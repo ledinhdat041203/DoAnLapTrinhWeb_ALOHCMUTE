@@ -9,7 +9,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+
+
 import vn.hcmute.Responsitory.PostRepository;
+import vn.hcmute.entities.CommentEntity;
 import vn.hcmute.entities.LikeEntity;
 import vn.hcmute.entities.PostEntity;
 import vn.hcmute.model.PostModel;
@@ -35,28 +38,33 @@ public class PostService implements IPostService {
 				likeCount++;
 			}
 		}
+		int commentCount = 0;
+		List<CommentEntity> listComment = post.getListComments();
+		for (CommentEntity comment : listComment) {
+			if (comment.getCommentId() != 0) {
+			    commentCount++;
+			}
+		}
+		
 		postModel.setLikeCount(likeCount);
+		postModel.setCommentCount(commentCount);
 		return postModel;
 	}
-
 
 	@Override
 	public List<PostEntity> findAll() {
 		return postRepo.findAll();
 	}
 
-
 	@Override
 	public <S extends PostEntity> S save(S entity) {
 		return postRepo.save(entity);
 	}
 
-
 	@Override
 	public Optional<PostEntity> findById(Long id) {
 		return postRepo.findById(id);
 	}
-
 
 	@Override
 	public List<PostModel> getPostsByGroupId(long groupId, int page, int size) {

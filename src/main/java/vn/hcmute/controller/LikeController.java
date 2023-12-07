@@ -27,6 +27,7 @@ public class LikeController {
 	IPostService postservice;
 	@Autowired
 	IUserInfoService userInfoService;
+	
 	@Autowired
 	IPostService postService;
 	@Autowired

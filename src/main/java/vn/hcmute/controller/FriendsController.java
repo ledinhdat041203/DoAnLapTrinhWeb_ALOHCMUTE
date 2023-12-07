@@ -1,9 +1,7 @@
 package vn.hcmute.controller;
 
 import java.util.ArrayList;
-
 import java.util.Iterator;
-
 import java.util.List;
 import java.util.Random;
 
@@ -16,12 +14,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.servlet.http.HttpSession;
-
-import vn.hcmute.service.INotificationService;
 import vn.hcmute.entities.FriendsEntity;
 import vn.hcmute.entities.NotificationEntity;
 import vn.hcmute.entities.UserInfoEntity;
 import vn.hcmute.service.IFriendsService;
+import vn.hcmute.service.INotificationService;
 import vn.hcmute.service.IUserInfoService;
 import vn.hcmute.service.IUserService;
 
@@ -39,7 +36,7 @@ public class FriendsController {
 
 	// Xuất danh sách những user mà current user đang theo dõi
 	@GetMapping("/following-list")
-	public String listFollowing(ModelMap model, HttpSession session) {
+	public String list(ModelMap model, HttpSession session) {
 		Long idUsercurrent = (long) session.getAttribute("userInfoID");
 		List<FriendsEntity> listFollowing = friendsService.findByuser1userID(idUsercurrent);
 		List<UserInfoEntity> listUser2 = new ArrayList<>();
@@ -54,6 +51,8 @@ public class FriendsController {
 		model.addAttribute("listUser2", listUser2);
 		return "listFollowing";
 	}
+
+	
 
 	// Xuất danh sách những user đang theo dõi current user
 	@GetMapping("/follower-list")
@@ -110,13 +109,12 @@ public class FriendsController {
 			UserInfoEntity user2 = userInfoService.findById(user2Id).get();
 
 			friendsService.createFriendsByUser1AndUser2(user1, user2, true);
-			
+
 			// Xử lí thông báo
 			String link = "friends/follower-list";
 			String content = user1.getFullName() + " đã follow bạn";
 			notificationService.createNotification(user2, link, content, user1.getAvata());
 		}
-
 
 		return ResponseEntity.ok("yes");
 	}

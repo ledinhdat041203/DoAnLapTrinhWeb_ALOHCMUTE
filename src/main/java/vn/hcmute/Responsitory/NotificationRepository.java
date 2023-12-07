@@ -10,6 +10,6 @@ import vn.hcmute.entities.NotificationEntity;
 @Repository
 public interface NotificationRepository extends JpaRepository<NotificationEntity, Long>{
 	
-	List<NotificationEntity> findByUserUserID(long userID);
-	
+	List<NotificationEntity> findByUserUserID(long userid);
+
 }

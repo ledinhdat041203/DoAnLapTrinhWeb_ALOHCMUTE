@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-
 <head>
-
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Post</title>
@@ -73,24 +71,25 @@
 			display: inline-block;
 			cursor: pointer;
 			margin-right: 5px;
-			color: rgb(255, 128, 192);
+			color: rgb(255, 255, 255);
 		}
 
 		.update-comment:hover,
 		.delete-comment:hover {
-			background-color: rgb(0, 255, 255);
-			color: rgb(0, 255, 64);
+			background-color: rgb(255, 255, 255);
+			color: rgb(255, 128, 128);
 		}
 
 		.comment-options-menu {
 			display: none;
 			position: absolute;
 			right: 0;
-			background-color: rgb(255, 0, 128);
-			min-width: 160px;
-			box-shadow: 0 8px 16px rgb(255, 255, 0);
+			background-color: white;
+			/* Thay đổi màu nền thành trắng */
+			box-shadow: 0 8px 16px rgb(64, 128, 128);
 			z-index: 1;
 			text-align: right;
+			border-radius: 5px;
 		}
 
 		.comment-options-button:hover+.comment-options-menu,
@@ -109,13 +108,12 @@
 		.comment-options-menu button {
 			cursor: pointer;
 			padding: 5px;
-			/* Điều chỉnh kích thước padding */
 			font-size: 10px;
-			/* Điều chỉnh kích thước font */
 			color: rgb(255, 128, 192);
+			/* Thay đổi màu chữ thành hồng */
 		}
 
-		.comment-options-menu button:hover {
+		comment-options-menu button:hover {
 			background-color: rgb(0, 255, 255);
 			color: rgb(0, 255, 64);
 		}
@@ -125,17 +123,23 @@
 			position: absolute;
 			right: 0;
 			background-color: rgb(255, 0, 128);
-			box-shadow: 0 8px 16px rgb(255, 255, 0);
+			box-shadow: 0 8px 16px rgb(64, 128, 128);
 			z-index: 1;
 			text-align: right;
 			border-radius: 5px;
 		}
+		.liked {
+        color: rgb(255, 0, 128);
+        }
 	</style>
+<<<<<<< HEAD
 	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+=======
+>>>>>>> 0b52baba3f5b80c8ae6402cbe27d839ef1839e92
 </head>
 
 <body>
-
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 	<div class="container bootstrap snippets bootdey" id="Post-Container">
 		<div class="row">
 			<!-- Bắt đầu vòng lặp qua tất cả bài viết -->
@@ -163,75 +167,82 @@
 						</div>
 						<p class="text-light fs-mini m" th:text="${post.content}"></p>
 
-						<!-- Comment Section -->
-						<div class="comment-section">
-							<input type="text" class="comment-input" placeholder="Add a comment..."
-								th:id="'commentInput-' + ${post.postID}" />
-							<!-- Change this line -->
-							<button th:onclick="'loadComments(' + ${post.postID} + ')'" class="comment-button">Load
-								Comments</button>
 
+						<!-- Display comments -->
+						<ul class="comment-list" th:id="'commentList-' + ${post.postID}">
+							<li th:each="comment : ${response}" class="comment-list-item">
+								<!-- Hiển thị nội dung bình luận -->
+								<span class="comment-content">
+									<span th:text="${comment.userName}"></span>:
+									<span th:text="${comment.content}"></span>
+								</span>
 
-							<!-- Display comments -->
-							<!-- Display comments -->
-							<ul class="comment-list" th:id="'commentList-' + ${post.postID}">
-								<li th:each="comment : ${response}" class="comment-list-item">
-									<!-- Hiển thị nội dung bình luận -->
-									<span class="comment-content">
-										<span th:text="${comment.userName}"></span>:
-										<span th:text="${comment.content}"></span>
-									</span>
+								<!-- Hiển thị ngày bình luận -->
+								<span class="comment-date" th:text="${comment.commentDate}"></span>
+								<span class="comment-count" th:id="'commentCount-' + ${post.postID}"
+									th:text="${post.commentCount}"></span>
 
-									<!-- Hiển thị ngày bình luận -->
-									<span class="comment-date" th:text="${comment.commentDate}"></span>
+								<!-- Nút Options và Nút Update/Delete -->
+								<div class="comment-options">
+									<button class="options-button"
+										onclick="toggleCommentOptions(this, '${comment.commentId}')">...</button>
 
-									<!-- Nút Options và Nút Update/Delete -->
-									<div class="comment-options">
-										<button class="options-button"
-											onclick="toggleCommentOptions(this, '${comment.commentId}')">...</button>
-
-										<div class="comment-options-menu">
-											<span class="update-comment"
-												onclick="showEditForm('${comment.commentId}', '${comment.content}')">Update</span>
-											<span class="delete-comment"
-												onclick="deleteComment('${comment.commentId')">Delete</span>
-										</div>
+									<div class="comment-options-menu">
+										<span class="update-comment"
+											onclick="showEditForm('${comment.commentId}', '${comment.content}')">Update</span>
+										<span class="delete-comment"
+											onclick="deleteComment('${comment.commentId')">Delete</span>
 									</div>
-								</li>
-							</ul>
+								</div>
+							</li>
+						</ul>
 
+						<div class="comment-section">
+							<!-- Load Comments and Create Comment Buttons -->
+							<div class="comment-buttons">
+								<!-- Create Comment Section -->
+								<div class="create-comment">
+									<form id="createCommentForm" th:action="'/create/' + ${post.postID}" method="post">
+										<input type="text" class="create-comment-input" placeholder="Your comment..."
+											th:id="'createCommentInput' + ${post.postID}" name="content" required />
+										<button type="submit" class="create-comment-button">Create Comment</button>
 
-
-
-							<!-- Create Comment Section -->
-							<!-- Inside the create-comment div -->
-							<div class="create-comment">
-								<form id="createCommentForm" th:action="'/create/' + ${post.postID}" method="post">
-									<input type="text" class="create-comment-input" placeholder="Your comment..."
-										th:id="'createCommentInput' + ${post.postID}" name="content" required />
-									<button type="submit" class="create-comment-button">Create Comment</button>
-								</form>
+										<!-- Load Comments Button -->
+										<button th:onclick="'loadComments(' + ${post.postID} + ')'"
+											class="comment-button">Load Comments</button>
+									</form>
+								</div>
 							</div>
 
-						</div>
-					</div>
-					<footer class="bg-body-light">
-						<ul class="post-links no-separator">
-							<li>
-								<a role="button" th:onclick="'likePost(' + ${post.postID} + ')'"
-									th:id="'s' + ${post.postID}">
-									<i class="fa fa-heart" th:id="'likeButton' + ${post.postID}"></i>
-									<span th:id="'likeCount' + ${post.postID}" th:text="${post.likeCount}"></span>
-								</a>
-							</li>
-							<li><a href="#"><i class="glyphicon glyphicon-comment"></i> 98</a></li>
-						</ul>
-					</footer>
+							<footer class="bg-body-light">
+								<ul class="post-links no-separator">
+									<li>
+										<a role="button" th:onclick="'likePost(' + ${post.postID} + ')'"
+											th:id="'s' + ${post.postID}">
+											<i class="fa fa-heart" th:id="'likeButton' + ${post.postID}"></i>
+											<span th:id="'likeCount' + ${post.postID}"
+												th:text="${post.likeCount}"></span>
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<i class="glyphicon glyphicon-comment"></i>
+											<span th:id="'commentCount' + ${post.postID}"
+												th:text="${post.commentCount}"></span>
+											Comments
+										</a>
+									</li>
+								</ul>
+							</footer>
+
 				</section>
+<<<<<<< HEAD
 		<div class="row" id="listpost">
 			<!--bắt đầu 1 post -->
 			<div th:each="post : ${list}" class="col-md-6">
 				<div th:replace="~{post_template::post_template(${post})}"></div>
+=======
+>>>>>>> 0b52baba3f5b80c8ae6402cbe27d839ef1839e92
 			</div>
 			<!-- Kết thúc vòng lặp -->
 		</div>
@@ -260,16 +271,30 @@
 					},
 					data: JSON.stringify(formData),
 					success: function (response) {
+						console.log(response);
+
+						// Gán giá trị mới cho số lượng bình luận của post
+						if (response) {
+							// Gán giá trị mới cho số lượng bình luận của post
+							const postIdNumeric = parseInt(postId);
+							if (!isNaN(postIdNumeric)) {
+								const commentCountSpan = $('#commentCount' + postIdNumeric);
+								commentCountSpan.text(response);
+							}
+						}
+
+						// Load lại danh sách bình luận
 						loadComments(postId);
-						$('#createCommentInput' + postId).val('')
+
+						// Xóa nội dung input
+						$('#createCommentInput' + postId).val('');
 					},
 					error: function (xhr, status, error) {
-						console.log(xhr);
-						alert('Thanh cong');
-						loadComments(postId);
-						$('#createCommentInput' + postId).val('')
+						console.error("Error creating comment: ", xhr.responseText);
+						alert('Error creating comment');
 					}
 				});
+
 			});
 		});
 
@@ -412,6 +437,8 @@
 			// Toggle the display of the comment-options-menu related to the clicked button
 			commentOptions.toggle();
 		}
+		// chỉ chỗ delete trc nha trong này khi console.log data trả về thì có 2 trường hợp 1 trả về theo response hai thì sẽ trả theo data
+		// 
 		function deleteComment(commentId) {
 			const confirmDelete = confirm('Do you want to delete the comment?');
 			if (confirmDelete) {
@@ -422,21 +449,31 @@
 				$.ajax({
 					type: 'DELETE',
 					url: '/comment/delete/' + postId + '/' + commentId,
-					success: function (data, textStatus, xhr) {
-						console.log(xhr);
+					success: function (data, textStatus, xhr, response) {
+						console.log(data);
+						//console.log(xhr);
+
 						if (xhr.status === 200) {
-							// Thành công
+							if (data) {
+								// Gán giá trị mới cho số lượng bình luận của post
+								const postIdNumeric = parseInt(postId);
+								if (!isNaN(postIdNumeric)) {
+									const commentCountSpan = $('#commentCount' + postIdNumeric);
+									commentCountSpan.text(data);
+								}
+							}
 							alert("Xóa thành công")
 							loadComments(postId);
 
 						} else {
 							// Thất bại
-							alert("Xóa thất bại - bạn không sở hữu bình luận")
+							alert("Bạn không có quyền xóa bình luận")
 							loadComments(postId);
 						}
 					},
-					error: function (data, textStatus, xhr) {
-						console.log(xhr);
+					error: function (data, textStatus, xhr, response) {
+						console.log(data);
+						//console.log(textStatus);
 						if (xhr.status === 200) {
 							// Thành công
 							alert("Xóa thành công")
@@ -444,7 +481,7 @@
 
 						} else {
 							// Thất bại
-							alert("Xóa thất bại - bạn không sở hữu bình luận")
+							alert("Bạn không có quyền xóa bình luận")
 							loadComments(postId);
 						}
 					}
@@ -508,39 +545,39 @@
 					}
 				},
 				error: function (xhr, textStatus, data) {
-				if(textStatus === 'error')
-				{
-					alert("Sửa thất bại - bạn không sở hữu");
-					loadComments(postId);
-				}
-				else if ( textStatus === 'parsererror')
-				{
-					alert("Sửa thành công");
-					loadComments(postId);
-				}
+					if (textStatus === 'error') {
+						alert("Bạn không có quyền sửa bình luận");
+						loadComments(postId);
+					}
+					else if (textStatus === 'parsererror') {
+						alert("Sửa thành công");
+						loadComments(postId);
+					}
 
-					
+
 				}
 			});
-			}
-			
+		}
+
 
 		function cancelEdit() {
-					// Close the edit form and show the comment content again
-					const commentContentSpan = $('.comment-options:visible').siblings('.comment-content');
-					const commentContent = commentContentSpan.find('.edit-comment-input').val();
-					commentContentSpan.html('' + commentContent);
+			// Close the edit form and show the comment content again
+			const commentContentSpan = $('.comment-options:visible').siblings('.comment-content');
+			const commentContent = commentContentSpan.find('.edit-comment-input').val();
+			commentContentSpan.html('' + commentContent);
 
-					// Hide the edit form
-					$('.edit-comment-input').remove();
-					$('.update-comment-button').remove();
-					$('.cancel-comment-button').remove();
-				}
+			// Hide the edit form
+			$('.edit-comment-input').remove();
+			$('.update-comment-button').remove();
+			$('.cancel-comment-button').remove();
+		}
 	</script>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0b52baba3f5b80c8ae6402cbe27d839ef1839e92
 
 
 </body>
 
 </html>
-

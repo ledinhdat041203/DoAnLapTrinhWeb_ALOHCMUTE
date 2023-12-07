@@ -26,7 +26,7 @@ public class NotificationEntity {
 	@Column(name = "notifyid", columnDefinition = "BIGINT")
 	private long notifyID;
 	
-	@Column(name = "content", columnDefinition =  "nvarchar(MAX)")
+	@Column(name = "content", columnDefinition =  "text")
 	private String content;
 	
 	@Column(name = "time", columnDefinition = "Date")
@@ -39,11 +39,11 @@ public class NotificationEntity {
 	@Column(name = "status", columnDefinition = "bit")
 	private boolean status;
 	
-	@Column(name = "link", columnDefinition = "text")
-	private String link;
-	
 	@Column(name = "image", columnDefinition = "nvarchar(255)")
 	private String image;
+	
+	@Column(name = "link", columnDefinition = "text")
+	private String link;
 	
 
 }

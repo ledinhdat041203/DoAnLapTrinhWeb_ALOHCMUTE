@@ -118,7 +118,29 @@
 				.querySelector("#urlImage").src
 				: null;
 
+<<<<<<< HEAD
 		const contentArea = document.getElementById("content");
+=======
+			const contentArea = document.getElementById("content");
+
+			// Kiểm tra xem content và imageURL có giá trị hay không
+			if (contentValue !== '' || contentValue != null || (imageURL !== "" && imageURL !== null)) {
+				// Nếu có nội dung và không có ảnh
+				if (contentValue !== '' && (imageURL == "" || imageURL == null)) {
+					contentArea.value = contentValue;
+					//alert("Nếu có nội dung và không có ảnh" + contentArea.value);
+				}
+				// Nếu có ảnh và không có nội dung
+				else if (contentValue == '' && (imageURL !== "" && imageURL !== null)) {
+					contentArea.value = imageURL + "++";
+					//alert("Nếu có ảnh và không có nội dung" + contentArea.value);
+				}
+				// Nếu cả hai đều có
+				else {
+					contentArea.value = imageURL + "++" + contentValue;
+					//alert("Nếu cả hai đều có" + contentArea.value);
+				}
+>>>>>>> 0b52baba3f5b80c8ae6402cbe27d839ef1839e92
 
 		// Kiểm tra xem content và imageURL có giá trị hay không
 		if ((contentValue != '' && contentValue != null)
@@ -164,6 +186,7 @@
 			// Thông báo người dùng chưa nhập nội dung hoặc chọn ảnh
 			alert('Please enter a message or choose an image.');
 		}
+<<<<<<< HEAD
 	}
 </script>
 <script>
@@ -177,6 +200,22 @@
 		document.getElementById('content').value = newContent;
 	}
 </script>
+=======
+
+
+	</script>
+	<script>
+		// Thêm hàm để xử lý sự kiện click vào icon
+		function addEmojiToContent(emoji) {
+			// Lấy giá trị hiện tại của nội dung
+			var currentContent = document.getElementById('content').value;
+			// Thêm emoji vào nội dung
+			var newContent = currentContent + emoji;
+			// Gán giá trị mới cho nội dung
+			document.getElementById('content').value = newContent;
+		}
+	</script>
+>>>>>>> 0b52baba3f5b80c8ae6402cbe27d839ef1839e92
 
 </head>
 

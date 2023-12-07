@@ -22,5 +22,9 @@ public interface ICommentService {
 	void createComment(long postId, long userId, String content, java.util.Date createdate);
     boolean deleteComment(long commentId,long userId, long postId);
     boolean updateComment(long commentId,long userId, long postId,String content);
+    CommentEntity findByPostCommnentAndUserCommentUserID(PostEntity postCommnent, long userComment);
 
+	Long countCommentsByPostId(long postId);
+
+	
 }
