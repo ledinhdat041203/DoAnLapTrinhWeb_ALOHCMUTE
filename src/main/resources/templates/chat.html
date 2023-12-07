@@ -2,12 +2,12 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Messages</title>
-	
-	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-	<script type="module">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Messages</title>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script type="module">
 		import {initializeApp} from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
 		import {getAnalytics} from "https://www.gstatic.com/firebasejs/10.6.0/firebase-analytics.js";
 		import {getDatabase, ref, onChildAdded, off} from "https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js";
@@ -73,7 +73,7 @@
 		// Set giá trị uid vào thuộc tính data-userid của form
 		$('#messageForm').attr('data-userid', uid);		
 	</script>
-	<script type="module">
+<script type="module">
 		import {initializeApp} from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
 		import {getStorage, ref, uploadBytes, getDownloadURL} from "https://www.gstatic.com/firebasejs/10.6.0/firebase-storage.js";
 
@@ -108,68 +108,75 @@
 			}
 		});
 	</script>
-	<script>
-		function sendMessage() {
-			var uid = $('#messageForm').data('userid');
-			var contentValue = $('#content').val().trim();
+<script>
+	function sendMessage() {
+		var uid = $('#messageForm').data('userid');
+		var contentValue = $('#content').val().trim();
 
-			const imageContainer = document.getElementById("imageContainer");
-			const imageURL = imageContainer.querySelector("#urlImage") ? imageContainer.querySelector("#urlImage").src : null;
+		const imageContainer = document.getElementById("imageContainer");
+		const imageURL = imageContainer.querySelector("#urlImage") ? imageContainer
+				.querySelector("#urlImage").src
+				: null;
 
-			const contentArea = document.getElementById("content");
-			
-			// Kiểm tra xem content và imageURL có giá trị hay không
-			if ((contentValue != '' && contentValue != null) || (imageURL !== "" && imageURL !== null)) {
-				// Nếu có nội dung và không có ảnh
-				if (contentValue !== '' && (imageURL == "" || imageURL == null)) {
-					contentArea.value = contentValue;
-					//alert("Nếu có nội dung và không có ảnh" + contentArea.value);
-				}
-				// Nếu có ảnh và không có nội dung
-				else if (contentValue == '' && (imageURL !== "" && imageURL !== null)) {
-					contentArea.value = imageURL + "++";
-					//alert("Nếu có ảnh và không có nội dung" + contentArea.value);
-				}
-				// Nếu cả hai đều có
-				else {
-					contentArea.value = imageURL + "++" + contentValue;
-					//alert("Nếu cả hai đều có" + contentArea.value);
-				}
+		const contentArea = document.getElementById("content");
 
-				// Thêm giá trị uid vào FormData
-				var formData = $('#messageForm').serializeArray();
-				formData.push({name: 'uid', value: uid});
-
-				$.ajax({
-					type: 'POST',
-					url: '/send',
-					data: formData,
-					success: function () {
-						$('#content').val(''); // reset ô nhập tin nhắn 
-						$('#imageContainer').html(''); // reset ảnh  
-					},
-					error: function () {
-						// Xử lý lỗi
-						alert('Error sending message');
-					}
-				});
-			} else {
-				// Thông báo người dùng chưa nhập nội dung hoặc chọn ảnh
-				alert('Please enter a message or choose an image.');
+		// Kiểm tra xem content và imageURL có giá trị hay không
+		if ((contentValue != '' && contentValue != null)
+				|| (imageURL !== "" && imageURL !== null)) {
+			// Nếu có nội dung và không có ảnh
+			if (contentValue !== '' && (imageURL == "" || imageURL == null)) {
+				contentArea.value = contentValue;
+				//alert("Nếu có nội dung và không có ảnh" + contentArea.value);
 			}
+			// Nếu có ảnh và không có nội dung
+			else if (contentValue == ''
+					&& (imageURL !== "" && imageURL !== null)) {
+				contentArea.value = imageURL + "++";
+				//alert("Nếu có ảnh và không có nội dung" + contentArea.value);
+			}
+			// Nếu cả hai đều có
+			else {
+				contentArea.value = imageURL + "++" + contentValue;
+				//alert("Nếu cả hai đều có" + contentArea.value);
+			}
+
+			// Thêm giá trị uid vào FormData
+			var formData = $('#messageForm').serializeArray();
+			formData.push({
+				name : 'uid',
+				value : uid
+			});
+
+			$.ajax({
+				type : 'POST',
+				url : '/send',
+				data : formData,
+				success : function() {
+					$('#content').val(''); // reset ô nhập tin nhắn 
+					$('#imageContainer').html(''); // reset ảnh  
+				},
+				error : function() {
+					// Xử lý lỗi
+					alert('Error sending message');
+				}
+			});
+		} else {
+			// Thông báo người dùng chưa nhập nội dung hoặc chọn ảnh
+			alert('Please enter a message or choose an image.');
 		}
-	</script>
-	<script>
-		// Thêm hàm để xử lý sự kiện click vào icon
-		function addEmojiToContent(emoji) {
-			// Lấy giá trị hiện tại của nội dung
-			var currentContent = document.getElementById('content').value;
-			// Thêm emoji vào nội dung
-			var newContent = currentContent + emoji;
-			// Gán giá trị mới cho nội dung
-			document.getElementById('content').value = newContent;
-		}
-	</script>
+	}
+</script>
+<script>
+	// Thêm hàm để xử lý sự kiện click vào icon
+	function addEmojiToContent(emoji) {
+		// Lấy giá trị hiện tại của nội dung
+		var currentContent = document.getElementById('content').value;
+		// Thêm emoji vào nội dung
+		var newContent = currentContent + emoji;
+		// Gán giá trị mới cho nội dung
+		document.getElementById('content').value = newContent;
+	}
+</script>
 
 </head>
 
@@ -179,7 +186,8 @@
 			<div class="col-lg-12">
 				<div class="mesg-area-head">
 					<div class="active-user">
-						<figure><img src="images/resources/friend-avatar3.jpg" alt="">
+						<figure>
+							<img src="images/resources/friend-avatar3.jpg" alt="">
 							<span class="status f-online"></span>
 						</figure>
 						<div>
@@ -193,18 +201,21 @@
 						<li class="uzr-info"><span class="fa fa-info-circle"></span></li>
 						<li>
 							<div class="dropdown">
-								<button class="btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<button class="btn" data-toggle="dropdown" aria-haspopup="true"
+									aria-expanded="false">
 									<i class="ti-view-grid"></i>
 								</button>
 								<div class="dropdown-menu dropdown-menu-right">
-									<a class="dropdown-item audio-call" href="#"><i class="ti-headphone-alt"></i>Voice
-										Call</a>
-									<a href="#" class="dropdown-item video-call"><i class="ti-video-camera"></i>Video
-										Call</a>
+									<a class="dropdown-item audio-call" href="#"><i
+										class="ti-headphone-alt"></i>Voice Call</a> <a href="#"
+										class="dropdown-item video-call"><i
+										class="ti-video-camera"></i>Video Call</a>
 									<hr>
-									<a href="#" class="dropdown-item"><i class="ti-server"></i>Clear History</a>
-									<a href="#" class="dropdown-item"><i class="ti-hand-stop"></i>Block Contact</a>
-									<a href="#" class="dropdown-item"><i class="ti-trash"></i>Delete Contact</a>
+									<a href="#" class="dropdown-item"><i class="ti-server"></i>Clear
+										History</a> <a href="#" class="dropdown-item"><i
+										class="ti-hand-stop"></i>Block Contact</a> <a href="#"
+										class="dropdown-item"><i class="ti-trash"></i>Delete
+										Contact</a>
 								</div>
 							</div>
 						</li>
@@ -213,127 +224,138 @@
 			</div>
 			<div class="col-lg-8 col-md-8">
 				<div class="mesge-area with-background">
-					<ul id="chat" class="conversations ps-container ps-theme-default ps-active-x ps-active-y">
+					<ul id="chat"
+						class="conversations ps-container ps-theme-default ps-active-x ps-active-y">
 
 					</ul>
 
 				</div>
 
 
-				
+
 				<div class="message-writing-box">
 					<div id="imageContainer"></div>
 					<form id="messageForm" th:attr="data-userid=${userid}">
 						<div class="text-area">
-							<input type="text" id="content" name="content" placeholder="write your message here..">
-							<button onclick="sendMessage(); return false;"><i class="fa fa-paper-plane-o"></i></button>
+							<input type="text" id="content" name="content"
+								placeholder="write your message here..">
+							<button onclick="sendMessage(); return false;">
+								<i class="fa fa-paper-plane-o"></i>
+							</button>
 						</div>
 
 						<div class="emojies">
 							<i><img src="images/smiles/happy-3.png" alt=""></i>
 							<ul class="emojies-list">
-								<li><a title="" onclick="addEmojiToContent('😢')" role="button"><img
-											src="images/smiles/unhappy.png" alt=""></a></li>
-								<li><a title="" onclick="addEmojiToContent('😛')" role="button"><img
-											src="images/smiles/tongue-out-1.png" alt=""></a></li>
-								<li><a title="" onclick="addEmojiToContent('😒')" role="button"><img
-											src="images/smiles/suspicious.png" alt=""></a></li>
-								<li><a title="" onclick="addEmojiToContent('😊')" role="button"><img
-											src="images/smiles/smiling.png" alt=""></a></li>
-								<li><a title="" onclick="addEmojiToContent('😜')" role="button"><img
-											src="images/smiles/wink.png" alt=""></a></li>
-								<li><a title="" onclick="addEmojiToContent('😐')" role="button"><img
-											src="images/smiles/bored.png" alt=""></a></li>
-								<li><a title="" onclick="addEmojiToContent('😡')" role="button"><img
-											src="images/smiles/angry-1.png" alt=""></a></li>
-								<li><a title="" onclick="addEmojiToContent('😠')" role="button"><img
-											src="images/smiles/angry.png" alt=""></a></li>
-								<li><a title="" onclick="addEmojiToContent('😕')" role="button"><img
-											src="images/smiles/bored-1.png" alt=""></a></li>
-								<li><a title="" onclick="addEmojiToContent('😑')" role="button"><img
-											src="images/smiles/bored-2.png" alt=""></a></li>
-								<li><a title="" onclick="addEmojiToContent('😕')" role="button"><img
-											src="images/smiles/confused-1.png" alt=""></a></li>
-								<li><a title="" onclick="addEmojiToContent('😖')" role="button"><img
-											src="images/smiles/confused.png" alt=""></a></li>
-								<li><a title="" onclick="addEmojiToContent('😭')" role="button"><img
-											src="images/smiles/crying-1.png" alt=""></a></li>
-								<li><a title="" onclick="addEmojiToContent('😢')" role="button"><img
-											src="images/smiles/crying.png" alt=""></a></li>
-								<li><a title="" onclick="addEmojiToContent('😳')" role="button"><img
-											src="images/smiles/embarrassed.png" alt=""></a></li>
-								<li><a title="" onclick="addEmojiToContent('😀')" role="button"><img
-											src="images/smiles/emoticons.png" alt=""></a></li>
-								<li><a title="" onclick="addEmojiToContent('😃')" role="button"><img
-											src="images/smiles/happy-1.png" alt=""></a></li>
-								<li><a title="" onclick="addEmojiToContent('😄')" role="button"><img
-											src="images/smiles/happy-2.png" alt=""></a></li>
-								<li><a title="" onclick="addEmojiToContent('😊')" role="button"><img
-											src="images/smiles/happy-3.png" alt=""></a></li>
-								<li><a title="" onclick="addEmojiToContent('😆')" role="button"><img
-											src="images/smiles/happy-4.png" alt=""></a></li>
-								<li><a title="" onclick="addEmojiToContent('😷')" role="button"><img
-											src="images/smiles/ill.png" alt=""></a></li>
-								<li><a title="" onclick="addEmojiToContent('😍')" role="button"><img
-											src="images/smiles/in-love.png" alt=""></a></li>
-								<li><a title="" onclick="addEmojiToContent('😘')" role="button"><img
-											src="images/smiles/kissing.png" alt=""></a></li>
-								<li><a title="" onclick="addEmojiToContent('😠')" role="button"><img
-											src="images/smiles/mad.png" alt=""></a></li>
-								<li><a title="" onclick="addEmojiToContent('🤓')" role="button"><img
-											src="images/smiles/nerd.png" alt=""></a></li>
-								<li><a title="" onclick="addEmojiToContent('👺')" role="button"><img
-											src="images/smiles/ninja.png" alt=""></a></li>
-								<li><a title="" onclick="addEmojiToContent('😶')" role="button"><img
-											src="images/smiles/quiet.png" alt=""></a></li>
-								<li><a title="" onclick="addEmojiToContent('😞')" role="button"><img
-											src="images/smiles/sad.png" alt=""></a></li>
-								<li><a title="" onclick="addEmojiToContent('🤫')" role="button"><img
-											src="images/smiles/secret.png" alt=""></a></li>
-								<li><a title="" onclick="addEmojiToContent('😊')" role="button"><img
-											src="images/smiles/smile.png" alt=""></a></li>
-								<li><a title="" onclick="addEmojiToContent('😯')" role="button"><img
-											src="images/smiles/surprised-1.png" alt=""></a></li>
-								<li><a title="" onclick="addEmojiToContent('😋')" role="button"><img
-											src="images/smiles/tongue-out.png" alt=""></a></li>
-								<li><a title="" onclick="addEmojiToContent('😢')" role="button"><img
-											src="images/smiles/unhappy.png" alt=""></a></li>
-								<li><a title="" onclick="addEmojiToContent('😒')" role="button"><img
-											src="images/smiles/suspicious.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😢')"
+									role="button"><img src="images/smiles/unhappy.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😛')"
+									role="button"><img src="images/smiles/tongue-out-1.png"
+										alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😒')"
+									role="button"><img src="images/smiles/suspicious.png"
+										alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😊')"
+									role="button"><img src="images/smiles/smiling.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😜')"
+									role="button"><img src="images/smiles/wink.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😐')"
+									role="button"><img src="images/smiles/bored.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😡')"
+									role="button"><img src="images/smiles/angry-1.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😠')"
+									role="button"><img src="images/smiles/angry.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😕')"
+									role="button"><img src="images/smiles/bored-1.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😑')"
+									role="button"><img src="images/smiles/bored-2.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😕')"
+									role="button"><img src="images/smiles/confused-1.png"
+										alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😖')"
+									role="button"><img src="images/smiles/confused.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😭')"
+									role="button"><img src="images/smiles/crying-1.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😢')"
+									role="button"><img src="images/smiles/crying.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😳')"
+									role="button"><img src="images/smiles/embarrassed.png"
+										alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😀')"
+									role="button"><img src="images/smiles/emoticons.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😃')"
+									role="button"><img src="images/smiles/happy-1.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😄')"
+									role="button"><img src="images/smiles/happy-2.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😊')"
+									role="button"><img src="images/smiles/happy-3.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😆')"
+									role="button"><img src="images/smiles/happy-4.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😷')"
+									role="button"><img src="images/smiles/ill.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😍')"
+									role="button"><img src="images/smiles/in-love.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😘')"
+									role="button"><img src="images/smiles/kissing.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😠')"
+									role="button"><img src="images/smiles/mad.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('🤓')"
+									role="button"><img src="images/smiles/nerd.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('👺')"
+									role="button"><img src="images/smiles/ninja.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😶')"
+									role="button"><img src="images/smiles/quiet.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😞')"
+									role="button"><img src="images/smiles/sad.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('🤫')"
+									role="button"><img src="images/smiles/secret.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😊')"
+									role="button"><img src="images/smiles/smile.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😯')"
+									role="button"><img src="images/smiles/surprised-1.png"
+										alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😋')"
+									role="button"><img src="images/smiles/tongue-out.png"
+										alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😢')"
+									role="button"><img src="images/smiles/unhappy.png" alt=""></a></li>
+								<li><a title="" onclick="addEmojiToContent('😒')"
+									role="button"><img src="images/smiles/suspicious.png"
+										alt=""></a></li>
 
 							</ul>
 						</div>
 						<div class="attach-file">
-							<label class="fileContainer">
-								<i class="ti-clip"></i>
-								<input type="file" id="file" name="file">
+							<label class="fileContainer"> <i class="ti-clip"></i> <input
+								type="file" id="file" name="file">
 							</label>
 						</div>
 					</form>
 				</div>
 				<div>
-					<input type="text" id="userid" name="userid" placeholder="userid" th:value="${session.userInfoID}"
-						hidden />
+					<input type="text" id="userid" name="userid" placeholder="userid"
+						th:value="${session.userInfoID}" hidden />
 				</div>
 
 			</div>
 			<div class="col-lg-4 col-md-4">
 				<div class="chater-info">
-					<figure><img src="images/resources/chatuser1.jpg" alt=""></figure>
+					<figure>
+						<img src="images/resources/chatuser1.jpg" alt="">
+					</figure>
 					<h6 id="Receiver-Name-About"></h6>
 					<span>Online</span>
 					<div class="userabout">
 						<span>About</span>
-						<p>I love reading, traveling and discovering new things. You need to be happy in life.</p>
+						<p>I love reading, traveling and discovering new things. You
+							need to be happy in life.</p>
 						<ul>
-							<li>
-								<span style="display: inline-block;">Phone: </span>
-								<span style="display: inline-block;" th:text="${recipientInfo.phoneNumber}"></span>
-							</li>
-							<li>
-								<span style="display: inline-block;">Address: </span>
-								<span style="display: inline-block;" th:text="${recipientInfo.address}"></span>
-							</li>
+							<li><span style="display: inline-block;">Phone: </span> <span
+								style="display: inline-block;"
+								th:text="${recipientInfo.phoneNumber}"></span></li>
+							<li><span style="display: inline-block;">Address: </span> <span
+								style="display: inline-block;"
+								th:text="${recipientInfo.address}"></span></li>
 
 
 						</ul>

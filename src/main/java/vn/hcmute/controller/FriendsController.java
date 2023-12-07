@@ -19,6 +19,7 @@ import jakarta.servlet.http.HttpSession;
 
 import vn.hcmute.service.INotificationService;
 import vn.hcmute.entities.FriendsEntity;
+import vn.hcmute.entities.NotificationEntity;
 import vn.hcmute.entities.UserInfoEntity;
 import vn.hcmute.service.IFriendsService;
 import vn.hcmute.service.IUserInfoService;
@@ -109,18 +110,13 @@ public class FriendsController {
 			UserInfoEntity user2 = userInfoService.findById(user2Id).get();
 
 			friendsService.createFriendsByUser1AndUser2(user1, user2, true);
-		}
-
-		// -- Chưa biết đúng chưa --//
-		// Xử lí thông báo
-		if (friend.isStatus()) {
-			UserInfoEntity user1 = userInfoService.findById(idUsercurrent).get();
-			UserInfoEntity user2 = userInfoService.findById(user2Id).get();
+			
+			// Xử lí thông báo
 			String link = "friends/follower-list";
 			String content = user1.getFullName() + " đã follow bạn";
 			notificationService.createNotification(user2, link, content, user1.getAvata());
 		}
-		//////////////////////////////
+
 
 		return ResponseEntity.ok("yes");
 	}

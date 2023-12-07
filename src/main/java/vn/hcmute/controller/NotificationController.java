@@ -1,6 +1,5 @@
 package vn.hcmute.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.servlet.http.HttpSession;
-import vn.hcmute.entities.FriendsEntity;
 import vn.hcmute.entities.NotificationEntity;
-import vn.hcmute.entities.UserInfoEntity;
 import vn.hcmute.service.INotificationService;
 
 @Controller

@@ -1,8 +1,6 @@
 package vn.hcmute.controller;
 
-import java.sql.Date;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
 
@@ -17,10 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import ch.qos.logback.core.model.Model;
 import jakarta.servlet.http.HttpSession;
 import vn.hcmute.entities.CommentEntity;
-import vn.hcmute.entities.PostEntity;
 import vn.hcmute.entities.UserInfoEntity;
 import vn.hcmute.model.CommentRequestModel;
 import vn.hcmute.service.ICommentService;
@@ -43,7 +39,7 @@ public class CommentController {
 
 	@Autowired
 	IPostService postService;
-	
+
 	@Autowired
 	INotificationService notificationService;
 
@@ -77,15 +73,13 @@ public class CommentController {
 
 		// Lưu CommentEntity mới tạo
 		commentService.save(newComment);
-		
-		/*
-		 * // Xử lí thông báo UserInfoEntity user =
-		 * userInfoService.findById(userid).get(); UserInfoEntity userNotice =
-		 * postservice.findByPostPostID(postId); String link = "Chưa có gì"; String
-		 * contentNotice = user.getFullName() + " đã bình luận về bài viết của bạn";
-		 * notificationService.createNotification(userNotice, link, contentNotice,
-		 * user.getAvata());
-		 */
+
+		// Xử lí thông báo 
+		UserInfoEntity user = userInfoService.findById(userid).get();
+		UserInfoEntity userNotice = postservice.findById(postId).get().getUser();
+		String link = "Chưa có gì";
+		String contentNotice = user.getFullName() + " đã bình luận về bài viết của bạn";
+		notificationService.createNotification(userNotice, link, contentNotice, user.getAvata());
 
 		return new ResponseEntity<>(content, HttpStatus.OK);
 	}
@@ -102,9 +96,6 @@ public class CommentController {
 			return new ResponseEntity<>("thatbai", HttpStatus.BAD_REQUEST);
 		}
 	}
-
-
-	
 
 	@PutMapping(value = "/comment/update/{postId}", consumes = "application/json")
 	public ResponseEntity<String> updateComment(@PathVariable long postId, @RequestBody CommentRequestModel commentData,

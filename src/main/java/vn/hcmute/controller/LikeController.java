@@ -18,7 +18,6 @@ import vn.hcmute.service.INotificationService;
 import vn.hcmute.service.IPostService;
 import vn.hcmute.service.IUserInfoService;
 
-
 @Controller
 public class LikeController {
 
@@ -32,7 +31,6 @@ public class LikeController {
 	IPostService postService;
 	@Autowired
 	INotificationService notificationService;
-
 
 	@PostMapping("/like/{postId}")
 	public ResponseEntity<Long> likePost(@PathVariable long postId, HttpSession session) {
@@ -56,18 +54,13 @@ public class LikeController {
 			like.setPost(post);
 			like.setUserLike(user);
 			likeService.save(like);
-		}
 
-
-		// Xử lí thông báo
-		if (LikeEntity.isStatus()) {
-			// Chưa xong khúc này (chưa có link)
+			// Xử lí thông báo
 			String link = "Chưa có gì cả";
 			String content = user.getFullName() + " đã thả tim bài viết của bạn";
 			UserInfoEntity user2 = post.getUser();
 			notificationService.createNotification(user2, link, content, user.getAvata());
 		}
-		////////////////////////////
 
 		List<LikeEntity> listLike = postservice.findById(postId).get().getListLikes();
 		Long likeCount = (long) 0;
