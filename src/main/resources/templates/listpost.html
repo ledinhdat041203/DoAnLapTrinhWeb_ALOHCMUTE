@@ -265,9 +265,11 @@
                     // Xóa phần tử li khỏi danh sách sau khi xóa thành công
                     $(button).closest('li').remove();
                     alert('Post deleted successfully!');
+                    // Tải lại trang sau khi xóa thành công
+               		 location.reload();
                 },
                 error: function (response) {
-                    alert();
+                    alert('Error deleting post');
                 }
             });
         }
