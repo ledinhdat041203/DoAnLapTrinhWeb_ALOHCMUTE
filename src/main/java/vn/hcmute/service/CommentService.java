@@ -130,19 +130,10 @@ public class CommentService implements ICommentService{
 		return commentRepo.countCommentsByPostId(postId);
 	}
 
-
-
 	@Override
 	@Transactional
 	public void deleteAllByPostId(long postId) {
 		commentRepo.deleteAllByPostCommnentPostID(postId);
 	}
 
-	
-
-
-
-
-
-	
 }

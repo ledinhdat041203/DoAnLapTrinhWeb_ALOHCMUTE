@@ -56,29 +56,31 @@ public class FriendsService implements IFriendsService {
 	public void deleteById(Long id) {
 		friendsRepository.deleteById(id);
 	}
-	
+
 	////////////////////////////////
 	@Override
 	public List<FriendsEntity> findByuser1userID(long user1id) {
 		return friendsRepository.findByUser1UserID(user1id);
 	}
 
+
+	@Override
+	public List<FriendsEntity> findByuser2userID(Long user2id) {
+		return friendsRepository.findByUser2UserID(user2id);
+	}
 	
 	@Override
 	public FriendsEntity findByUser1IDAndUser2ID(long user1id, long user2id) {
 		return friendsRepository.findByUser1UserIDAndUser2UserID(user1id, user2id);
 	}
-	
-	
+
 	@Override
 	public void createFriendsByUser1AndUser2(UserInfoEntity user1, UserInfoEntity user2, boolean status) {
 		FriendsEntity newFriends = new FriendsEntity();
 		newFriends.setUser1(user1);
 		newFriends.setUser2(user2);
 		newFriends.setStatus(status);
-		
+
 		friendsRepository.save(newFriends);
 	}
-
-
 }

@@ -36,19 +36,17 @@ public class MailService implements IMailService {
 
 	public void send(EmailInfo email) throws MessagingException {
 		// TODO Auto-generated method stub
-		try
-		{
+		try {
 			MimeMessage message = mailSender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(message, true);
 			helper.setTo(email.getTo());
 			helper.setSubject(email.getSubject());
 			helper.setText(email.getBody(), true);
 			mailSender.send(message);
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	@Override
@@ -86,5 +84,4 @@ public class MailService implements IMailService {
 			}
 		}
 	}
-
 }

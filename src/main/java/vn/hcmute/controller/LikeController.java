@@ -21,7 +21,6 @@ import vn.hcmute.service.IUserInfoService;
 
 @Controller
 public class LikeController {
-
 	@Autowired
 	ILikeService likeService;
 	@Autowired
@@ -31,7 +30,7 @@ public class LikeController {
 
 	@Autowired
 	IPostService postService;
-	
+
 	@Autowired
 	INotificationService notificationService;
 

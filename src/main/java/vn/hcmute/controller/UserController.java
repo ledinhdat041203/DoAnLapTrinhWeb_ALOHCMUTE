@@ -220,10 +220,6 @@ public class UserController {
 		}
 	}
 
-	/*
-	 * @GetMapping("updatePass") public String Show(ModelMap model) {
-	 * model.addAttribute("pass", new updatePassModel()); return "updatePass"; }
-	 */
 	@PostMapping("user/updatePassword")
 	public String savePass(@ModelAttribute("pass") updatePassModel pass, HttpServletResponse response) {
 		String result = user_service.validToken(pass.getToken());

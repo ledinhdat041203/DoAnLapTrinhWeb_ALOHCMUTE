@@ -14,3 +14,4 @@ public interface IMailService {
 	void constructResetTokenEmail(String contextPath, String token, UserEntity user) throws MessagingException ;
 	void constructCreateCode(int code, UserEntity user) throws MessagingException;
 }
+

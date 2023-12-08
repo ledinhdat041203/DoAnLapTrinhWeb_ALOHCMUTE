@@ -34,10 +34,10 @@
 	</form>
 
 	<div class="container bootstrap snippets bootdey" id="Post-Container">
-		<div class="row" id="listpost">
+		<div class="row" >
 			<!--bắt đầu 1 post -->
-			<div th:each="post : ${list}" class="col-md-6">
-				<div th:replace="~{post_template::post_template(${post})}"></div>
+			<div th:each="post : ${list}" class="col-md-6" id="listpost">
+				<div id="postgroup" th:replace="~{post_template::post_template(${post})}"></div>
 			</div>
 			<!--kết thúc 1 post -->
 		</div>
@@ -164,7 +164,7 @@
 			console.log("/listpost/group/" + page);
 			$.ajax({
 				type: 'GET',
-				url: '/listpost/group/' + page,  // Thay đổi đường dẫn API và tham số theo nhu cầu của bạn
+				url: '/listpost/postgroup/' + page,  // Thay đổi đường dẫn API và tham số theo nhu cầu của bạn
 
 				success: function (data) {
 					console.log(data);

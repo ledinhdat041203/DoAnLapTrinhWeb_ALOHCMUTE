@@ -35,6 +35,8 @@ public interface IFriendsService {
 	FriendsEntity findByUser1IDAndUser2ID(long user1id, long user2id);
 	
 	void createFriendsByUser1AndUser2(UserInfoEntity user1, UserInfoEntity user2, boolean status);
+
+	List<FriendsEntity> findByuser2userID(Long user2id);
 	
 
 }
