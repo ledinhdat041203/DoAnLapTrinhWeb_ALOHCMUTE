@@ -246,6 +246,134 @@ h5 {
     padding: 15px 20px;
     border-bottom: 1px solid rgb(219, 219, 219);
 }
+
+/*Form cmt*/
+
+.loadComment {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.loadComment.open {
+    display: flex;
+}
+
+.loadComment-container {
+    border-radius: 10px;
+    width: 1046px;
+    height: 633px;
+    display: flex;
+    background-color: #fff;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+}
+
+.loadComment-img {
+    width: calc(1046px / 2);
+    height: 633px;
+}
+
+.loadComment-img > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.loadComment-list {
+    width: calc(1046px / 2);
+    overflow-y: auto;
+    height: 633px;
+}
+
+.loadComment-header {
+    display: flex;
+    padding: 20px;
+    border-bottom: 1px solid rgb(219, 219, 219);
+    top: 0;
+    position: sticky;
+    background-color: #fff;
+    z-index: 1;
+}
+
+.loadComment-header > h5 {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.loadComment-header > img {
+    height: 35px;
+    width: 35px;
+    margin-right: 10px;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+}
+
+.loadComment-icon {
+    padding: 0 10px;
+    border-bottom: 1px solid rgb(219, 219, 219);
+    border-top: 1px solid rgb(219, 219, 219);
+    position: sticky;
+}
+
+.loadComment-icon > i {
+    height: 24px;
+    width: 24px;
+    font-size: 24px;
+    margin: 10px 10px;
+}
+
+.loadComment-footer {
+    bottom: 0;
+    position: sticky;
+    background-color: #fff;
+    z-index: 1;
+    height: 120px;
+}
+
+.loadComment-input {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px;
+}
+
+.loadComment-input > input {
+    width: 400px;
+    border: none;
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+.loadComment-input > i {
+    font-size: 24px;
+    margin-right: 10px;
+}
+
+.loadComment-info {
+    display: flex;
+    flex-direction: column;
+}
+.loadComment-button {
+    border: none;
+    background-color: transparent;
+    font-size: 24px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
 /*Form Thông báo*/
 
 .notification {
