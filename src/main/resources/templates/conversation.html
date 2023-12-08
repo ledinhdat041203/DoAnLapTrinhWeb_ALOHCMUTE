@@ -105,6 +105,7 @@
 				data: {nameSearch: name, action : 0},
 				success: function (data) {
 						// Thay đổi nội dung của #chat-container và cập nhật data-recv-id
+				//$('#chat-frame').empty();
 				$('#listPeople').html(data);
 				$('#nameSearch').val('');
 				

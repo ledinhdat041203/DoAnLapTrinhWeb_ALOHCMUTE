@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import vn.hcmute.entities.UserInfoEntity;
+import vn.hcmute.model.UserInfoModel;
 
 public interface IUserInfoService {
 
@@ -22,5 +23,7 @@ public interface IUserInfoService {
 	//UserInfoEntity findById(Long id);
 
 	List<UserInfoEntity> findByFullNameContaining(String name);
+
+	UserInfoModel convertToUserInfoModel(UserInfoEntity user);
 
 }
