@@ -10,7 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,8 +28,8 @@ import vn.hcmute.service.IUserInfoService;
 @Controller
 public class PostController {
 	
-	GroupEntity group = new GroupEntity()
-;	@Autowired
+	GroupEntity group = new GroupEntity();	
+	@Autowired
 	IPostService postService;
 	
 	@Autowired
@@ -94,19 +94,42 @@ public class PostController {
 
     }
 	
-	@GetMapping("/listpost/{page}")
-	public String getPostsByUserId(
-            @PathVariable int page,
-            @RequestParam(defaultValue = "2") int size,
-            Model model, 
-            HttpSession session) {
-		
-		long userID = (Long) session.getAttribute("userInfoID");
-		List<PostModel> posts = postService.findByUserUserID(userID, page, size);
-		System.out.println(page);
-		model.addAttribute("list", posts);
-        return "listpost :: #listpost";
+//	@GetMapping("/listpost/{page}")
+//	public String getPostsByUserId(
+//            @PathVariable int page,
+//            @RequestParam(defaultValue = "2") int size,
+//            Model model, 
+//            HttpSession session) {
+//		
+//		long userID = (Long) session.getAttribute("userInfoID");
+//		List<PostModel> posts = postService.findByUserUserID(userID, page, size);
+//		System.out.println(page);
+//		model.addAttribute("list", posts);
+//        return "listpost :: #listpost";
+//
+//    }
+	
+	@GetMapping("/post/update/{postID}")
+	public String getUpdatePost(Model post, @PathVariable long postID)
+	{
+		PostEntity existingPost  = postService.findById(postID).get();
+		post.addAttribute("post", existingPost );
+		return "updatepost";
+	}
+	
+	@PostMapping("/post/update/{postId}")
+	public String updatePost(@PathVariable Long postId, @ModelAttribute("post") PostEntity updatedPost)
+	{
+		 // Lấy ra post cần cập nhật 
+		PostEntity existingPost = postService.findById(postId).get();
 
-    }
+        // Cập nhật thông tin từ biểu mẫu chỉnh sửa
+        existingPost.setContent(updatedPost.getContent());
+        existingPost.setImage(updatedPost.getImage());
+        
+        postService.save(existingPost);
+
+		return "redirect:/listpost";
+	}
 }
 

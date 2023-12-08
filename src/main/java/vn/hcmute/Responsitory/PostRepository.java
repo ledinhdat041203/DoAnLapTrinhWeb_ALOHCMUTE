@@ -1,5 +1,7 @@
 package vn.hcmute.Responsitory;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,7 +13,7 @@ import vn.hcmute.entities.PostEntity;
 public interface PostRepository extends JpaRepository<PostEntity, Long> {
 	Page<PostEntity> findByGroupPostGroupID(long groupId, Pageable pageable);
 
-	Page<PostEntity> findByUserUserID(long userId, Pageable pageable);
+	List<PostEntity> findByUserUserID(long userId);
 	
 	PostEntity findByPostID(long postId);
 

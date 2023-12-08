@@ -23,7 +23,6 @@ public class UserInfoModel {
 	private String address;
 	private String phoneNumber;
 
-	
 	private MultipartFile imageFile;
 	private Boolean isEdit=false;
 

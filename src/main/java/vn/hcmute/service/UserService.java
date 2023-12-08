@@ -42,10 +42,12 @@ public class UserService implements IUserService {
 		// Constructor mặc định
 	}
 
+
 	@Override
 	public Optional<UserEntity> findByemailContaining(String name) {
 		return userResponsitory.findByemailContaining(name);
 	}
+
 
 	@Override
 	public Boolean checkLogin(String Email, String pass) {
@@ -55,41 +57,52 @@ public class UserService implements IUserService {
 		return false;
 	}
 
+
 	@Override
 	public <S extends UserEntity> S save(S entity) {
 		return userResponsitory.save(entity);
 	}
 
 	@Override
+	public long count() {
+		return userResponsitory.count();
+	}
+
 	public void createToken(UserEntity user, String token) {
 		ResetPasswordEntity reset = new ResetPasswordEntity(token, user);
 		passwordTokenResponsitory.save(reset);
 	}
+
 	@Override
 	public void createCode(StatusAccountEntity status, int code)
 	{
 		status.setCode(code);
 		verifyResponsitory.save(status);
 	}
+
 	@Override
 	public void deleteById(Long id) {
 		passwordTokenResponsitory.deleteById(id);
 	}
+
 
 	@Override
 	public Optional<ResetPasswordEntity> findByUserResetPass(UserEntity user) {
 		return passwordTokenResponsitory.findByUserResetPass(user);
 	}
 
+
 	@Override
 	public List<ResetPasswordEntity> findAll() {
 		return passwordTokenResponsitory.findAll();
 	}
 
+
 	@Override
 	public void deleteByUserResetPass(UserEntity user) {
 		passwordTokenResponsitory.deleteByUserResetPass(user);
 	}
+
 	@Override
 	public String validToken(String token)
 	{
@@ -98,20 +111,24 @@ public class UserService implements IUserService {
 	            : isTokenExpired(pass) ? "expired"
 	            : null;
 	}
+
 	@Override
 	public boolean isTokenFound(ResetPasswordEntity pass) {
 	    return pass != null;
 	}
+
 	@Override
 	public boolean isTokenExpired(ResetPasswordEntity pass) {
 	    final Calendar cal = Calendar.getInstance();
 	    return pass.getExpireDate().before(cal.getTime());
 	}
 
+
 	@Override
 	public ResetPasswordEntity findByToken(String token) {
 		return passwordTokenResponsitory.findByToken(token);
 	}
+
 	@Override
 	public void changePass(UserEntity user,String pass)
 	{
@@ -144,7 +161,5 @@ public class UserService implements IUserService {
 	public long count() {
 		return userResponsitory.count();
 	}
-	
-
-
 }
+
