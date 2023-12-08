@@ -9,7 +9,7 @@
 <ul class="nav nav-tabs nav-tabs--vertical msg-pepl-list">
 	<li class="nav-item " th:each="item : ${listUser}" th:data-userid="${item.userID}">
 		<a class="load-chat" data-toggle="tab" th:attr="data-full-name=${item.fullName}, data-recv-id=${item.userID}">
-			<figure><img src="images/resources/friend-avatar3.jpg" alt="">
+			<figure><image th:src = "${item.avata}"></image>
 				<span class="status f-online"></span>
 			</figure>
 			<div class="user-name">

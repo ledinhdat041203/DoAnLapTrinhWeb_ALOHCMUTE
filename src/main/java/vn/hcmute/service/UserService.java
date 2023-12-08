@@ -157,9 +157,5 @@ public class UserService implements IUserService {
 		return verifyResponsitory.findBycode(code);
 	}
 	
-	@Override
-	public long count() {
-		return userResponsitory.count();
-	}
 }
 
