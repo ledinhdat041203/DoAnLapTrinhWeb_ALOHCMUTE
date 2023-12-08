@@ -42,7 +42,7 @@ public class UserInfoController {
         model.addAttribute("info", user);
         post.addAttribute("post", new PostEntity());
 
-        List<PostModel> posts = postService.findByUserUserID(userID, 0, 2);
+        List<PostModel> posts = postService.findByUserUserID(userID);
         listpost.addAttribute("list", posts);
 
         return "profile";

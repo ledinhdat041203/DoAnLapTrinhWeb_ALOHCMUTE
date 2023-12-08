@@ -10,7 +10,7 @@ import vn.hcmute.model.PostModel;
 
 public interface IPostService {
 
-	List<PostModel> findByUserUserID(long userId, int page, int size);
+	List<PostModel> findByUserUserID(long userId);
 	
 	Optional<PostEntity> findById(Long id);
 
