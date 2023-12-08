@@ -44,7 +44,7 @@ public class UserInfoController {
 
         List<PostModel> posts = postService.findByUserUserID(userID);
         listpost.addAttribute("list", posts);
-
+        
         return "profile";
     }
 
