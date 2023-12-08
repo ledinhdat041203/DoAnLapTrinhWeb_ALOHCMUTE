@@ -14,6 +14,8 @@ import vn.hcmute.Responsitory.LikeRepository;
 import vn.hcmute.Responsitory.PostRepository;
 import vn.hcmute.entities.LikeEntity;
 import vn.hcmute.entities.PostEntity;
+import vn.hcmute.entities.UserEntity;
+import vn.hcmute.entities.UserInfoEntity;
 import vn.hcmute.model.PostModel;
 
 @Service
@@ -32,6 +34,7 @@ public class PostService implements IPostService {
 
 	private PostModel converEntityToModel(PostEntity post, long userid) {
 		PostModel postModel = new PostModel();
+		UserInfoEntity userInfo = userInfoService.findById(post.getUser().getUserID()).get();
 		postModel.setPostID(post.getPostID());
 		postModel.setContent(post.getContent());
 		postModel.setGroupID(post.getGroupPost().getGroupID());
@@ -39,6 +42,7 @@ public class PostService implements IPostService {
 		postModel.setPostDate(post.getPostDate());
 		postModel.setUserID(post.getUser().getUserID());
 		postModel.setUserFullName(post.getUser().getFullName());
+		postModel.setAvata(userInfo.getAvata());
 		int likeCount = 0;
 		List<LikeEntity> listLike = post.getListLikes();
 		for (LikeEntity like : listLike) {

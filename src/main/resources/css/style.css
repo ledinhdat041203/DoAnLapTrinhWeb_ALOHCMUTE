@@ -44,6 +44,8 @@ h5 {
 
 .list-Menu {
     list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 .link-item {
@@ -53,6 +55,17 @@ h5 {
     color: rgb(0, 0, 0);
     width: 100%;
     height: 100%;
+    cursor: pointer;
+}
+
+.link-item,
+button {
+    display: inline-block;
+    margin-right: 10px;
+    text-decoration: none;
+    background: none;
+    border: none;
+    padding: 0;
     cursor: pointer;
 }
 
@@ -69,10 +82,13 @@ h5 {
     padding: 20px;
     margin: 2px;
     line-height: 1;
+    display: flex;
+    align-items: center;
 }
 
 .list-item-icon {
     font-size: 22px;
+    margin-right: 5px;
 }
 
 .list-item-name {
@@ -246,6 +262,134 @@ h5 {
     padding: 15px 20px;
     border-bottom: 1px solid rgb(219, 219, 219);
 }
+
+/*Form cmt*/
+
+.loadComment {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.loadComment.open {
+    display: flex;
+}
+
+.loadComment-container {
+    border-radius: 10px;
+    width: 1046px;
+    height: 633px;
+    display: flex;
+    background-color: #fff;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+}
+
+.loadComment-img {
+    width: calc(1046px / 2);
+    height: 633px;
+}
+
+.loadComment-img > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.loadComment-list {
+    width: calc(1046px / 2);
+    overflow-y: auto;
+    height: 633px;
+}
+
+.loadComment-header {
+    display: flex;
+    padding: 20px;
+    border-bottom: 1px solid rgb(219, 219, 219);
+    top: 0;
+    position: sticky;
+    background-color: #fff;
+    z-index: 1;
+}
+
+.loadComment-header > h5 {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.loadComment-header > img {
+    height: 35px;
+    width: 35px;
+    margin-right: 10px;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+}
+
+.loadComment-icon {
+    padding: 0 10px;
+    border-bottom: 1px solid rgb(219, 219, 219);
+    border-top: 1px solid rgb(219, 219, 219);
+    position: sticky;
+}
+
+.loadComment-icon > i {
+    height: 24px;
+    width: 24px;
+    font-size: 24px;
+    margin: 10px 10px;
+}
+
+.loadComment-footer {
+    bottom: 0;
+    position: sticky;
+    background-color: #fff;
+    z-index: 1;
+    height: 120px;
+}
+
+.loadComment-input {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px;
+}
+
+.loadComment-input > input {
+    width: 400px;
+    border: none;
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+.loadComment-input > i {
+    font-size: 24px;
+    margin-right: 10px;
+}
+
+.loadComment-info {
+    display: flex;
+    flex-direction: column;
+}
+.loadComment-button {
+    border: none;
+    background-color: transparent;
+    font-size: 24px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
 /*Form Thông báo*/
 
 .notification {
@@ -555,7 +699,22 @@ textarea:focus {
 }
 
 .pb {
-    padding-bottom: 20px;
+    margin-bottom: 20px;
+    margin-right: 20px;
+}
+
+.edit-a {
+    margin-left: 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    background-color: rgb(239, 239, 239);
+    padding: 10px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
 }
 
 .ui-follow {
@@ -572,4 +731,13 @@ textarea:focus {
     height: 100%;
     padding-left: 2px;
     object-fit: cover;
+}
+
+/*Edit profile*/
+
+.edit-info {
+    width: 600px;
+    height: 100vh;
+    margin-right: auto;
+    margin-left: auto;
 }
