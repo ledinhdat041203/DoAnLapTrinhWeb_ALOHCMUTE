@@ -157,6 +157,7 @@ public class groupController {
 		List<PostModel> posts = postService.getPostsByGroupId(groupID, page, 2,userid);
 		System.out.println(page);
 		model.addAttribute("list", posts);
+		model.addAttribute("fragment", "post_template");
 		return "Group :: #listpost";
 
 	}

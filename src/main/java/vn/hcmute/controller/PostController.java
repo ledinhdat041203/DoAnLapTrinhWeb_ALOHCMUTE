@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.fasterxml.jackson.annotation.JacksonInject.Value;
-
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import vn.hcmute.entities.GroupEntity;

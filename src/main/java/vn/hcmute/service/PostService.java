@@ -11,9 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import vn.hcmute.Responsitory.LikeRepository;
-
 import vn.hcmute.Responsitory.PostRepository;
-import vn.hcmute.entities.CommentEntity;
 import vn.hcmute.entities.LikeEntity;
 import vn.hcmute.entities.PostEntity;
 import vn.hcmute.model.PostModel;
