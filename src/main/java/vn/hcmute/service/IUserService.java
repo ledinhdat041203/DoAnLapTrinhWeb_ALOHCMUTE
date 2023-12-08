@@ -1,9 +1,13 @@
 package vn.hcmute.service;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+
 import vn.hcmute.entities.ResetPasswordEntity;
+import vn.hcmute.entities.StatusAccountEntity;
 import vn.hcmute.entities.UserEntity;
 
 public interface IUserService {
@@ -15,8 +19,6 @@ public interface IUserService {
 
 	<S extends UserEntity> S save(S entity);
 	void createToken(UserEntity user,String token);
-
-	long count();
 
 	void deleteById(Long id);
 
@@ -35,4 +37,18 @@ public interface IUserService {
 	ResetPasswordEntity findByToken(String token);
 
 	void changePass(UserEntity user, String pass);
+
+	void createCode(StatusAccountEntity status, int code);
+
+	<S extends StatusAccountEntity> S save(S entity);
+
+	Optional<UserEntity> findById(Long id);
+
+	Optional<StatusAccountEntity> findByuserCode(UserEntity user);
+
+	Optional<StatusAccountEntity> findBycode(int code);
+
+	long count();
+
+
 }
