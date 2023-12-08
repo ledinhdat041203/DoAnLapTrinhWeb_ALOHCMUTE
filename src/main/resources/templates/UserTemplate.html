@@ -13,7 +13,7 @@
             display: flex;
             border-bottom: solid 1px rgb(219, 219, 219);
             padding-bottom: 30px;
-          "  >
+          ">
 		<div>
 			<img th:src="${user.avata}" alt="" class="avatar3" />
 		</div>
@@ -22,13 +22,14 @@
               flex-direction: column;
               justify-content: center;
             ">
-			<h3 class="pb" th:text = "${user.fullName}"></h3>
+			<h3 class="pb" th:text="${user.fullName}"></h3>
 			<div class="pb">
-				<span class="ui-follow">1 post</span>
-				<span class="ui-follow">69 followers</span>
-				<span class="ui-follow">78 following</span>
+				<span class="ui-follow" th:text="${user.countPost + ' post'}"></span>
+				<span class="ui-follow" th:text="${user.countFollower + ' followers'}"></span>
+				<span class="ui-follow" th:text="${user.countFollowing + ' following'}"></span>
+
 			</div>
-			<h5 class="pb" th:text = "${user.address}"></h5>
+			<h5 class="pb" th:text="${user.address}"></h5>
 		</section>
 	</div>
 

@@ -6,9 +6,12 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpSession;
+import vn.hcmute.entities.FriendsEntity;
+import vn.hcmute.entities.LikeEntity;
 import vn.hcmute.entities.PostEntity;
 import vn.hcmute.entities.UserInfoEntity;
 import vn.hcmute.model.PostModel;
+import vn.hcmute.model.UserInfoModel;
 import vn.hcmute.service.IPostService;
 import vn.hcmute.service.IUserInfoService;
 
@@ -32,20 +35,25 @@ public class UserInfoController {
             // Xử lý trường hợp userID là null
             return "redirect:/login"; // hoặc chuyển hướng đến trang đăng nhập khác
         }
-
+        List<PostModel> posts = postService.findByUserUserID(userID);
         Optional<UserInfoEntity> userOptional = userInfoService.findById(userID);
         if (userOptional.isEmpty()) {
             // Xử lý trường hợp userInfo không tồn tại
             return "redirect:/info/list";
         }
-
         UserInfoEntity user = userOptional.get();
-        model.addAttribute("info", user);
+        Long following = (long) user.getListFriend1().size();
+        Long follower = (long) user.getListFriend2().size();
+        UserInfoModel userModel = userInfoService.convertToUserInfoModel(user);
+        userModel.setCountFollower(follower);
+        userModel.setCountFollowing(following);
+        userModel.setCountPost((long)posts.size());
+        model.addAttribute("info", userModel);
         post.addAttribute("post", new PostEntity());
 
-        List<PostModel> posts = postService.findByUserUserID(userID);
+        
         listpost.addAttribute("list", posts);
-
+        
         return "profile";
     }
 
