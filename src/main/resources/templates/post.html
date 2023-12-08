@@ -73,13 +73,9 @@
 					// Display the image on the page
 					imageContainer.innerHTML = `<img src="${downloadURL}" alt="Uploaded Image" id = "urlImage">`;
 
-					alert('Successfully uploaded to Firebase Storage!');
 				} catch (error) {
-					console.error('Error uploading to Firebase Storage:', error);
-					alert('Error uploading to Firebase Storage. Please try again.');
+
 				}
-			} else {
-				alert('No file selected.');
 			}
 		});
 	</script>
