@@ -29,6 +29,28 @@
 </ul>
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+	function deleteChat() {
+		// Bắt sự kiện click cho các liên kết
+		const recvId = localStorage.getItem('recvId');
+
+		$.ajax({
+			type: 'GET',
+			url: '/delete-chat',
+			data: {uid: recvId},
+			success: function (response) {
+				console.log("Delete Chat Successfully");
+				$('#chat-frame').empty();
+				$('#listPeople').html(response);
+
+			},
+			error: function () {
+				alert('Error delete chat');
+			}
+		});
+
+	};
+</script>
 
 
 <script src="js/main.min.js"></script>
