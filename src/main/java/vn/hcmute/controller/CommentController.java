@@ -26,7 +26,6 @@ import vn.hcmute.service.ICommentService;
 import vn.hcmute.service.ILikeService;
 import vn.hcmute.service.IPostService;
 import vn.hcmute.service.IUserInfoService;
-import vn.hcmute.service.PostService;
 
 @Controller
 public class CommentController {
@@ -41,7 +40,7 @@ public class CommentController {
 	ICommentService commentService;
 
 	@Autowired
-	PostService postService;
+	IPostService postService;
 
 	@GetMapping("/comment/{postId}")
     public ResponseEntity<List<CommentEntity>> getComments(@PathVariable long postId) {

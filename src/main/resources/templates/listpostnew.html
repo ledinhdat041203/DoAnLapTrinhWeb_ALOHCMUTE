@@ -97,6 +97,28 @@
 		
 	</script>
 	-->
+	
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        // Hàm xóa bài viết
+        function deletePost(button) {
+            const postId = button.getAttribute("data-post-id");
+
+            // Gọi endpoint xóa bài viết với postId
+            $.ajax({
+                type: 'DELETE',
+                url: '/post/' + postId,
+                success: function () {
+                    // Xóa phần tử li khỏi danh sách sau khi xóa thành công
+                    $(button).closest('li').remove();
+                    alert('Post deleted successfully!');
+                },
+                error: function () {
+                    alert('Error deleting post');
+                }
+            });
+        }
+    </script>
 
 </body>
 

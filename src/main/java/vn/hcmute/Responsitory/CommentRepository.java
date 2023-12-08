@@ -48,8 +48,8 @@ public interface CommentRepository extends JpaRepository<CommentEntity, Long>{
 
 	CommentEntity findByPostCommnentAndUserCommentUserID(PostEntity postCommnent, long userComment);
 	
-    
 
+	void deleteAllByPostCommnentPostID(long postId);
 
 
 	

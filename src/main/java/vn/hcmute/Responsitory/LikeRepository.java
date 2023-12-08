@@ -1,6 +1,8 @@
 package vn.hcmute.Responsitory;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import vn.hcmute.entities.LikeEntity;
@@ -18,4 +20,8 @@ public interface LikeRepository extends JpaRepository<LikeEntity, Long>{
 	 */
 	
 	LikeEntity findByPostAndUserLikeUserID(PostEntity post, long userId);
+	
+	void deleteAllByPostPostID(long postid);
+	
+	
 }

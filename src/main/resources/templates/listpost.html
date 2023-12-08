@@ -131,6 +131,18 @@
 		.liked {
         color: rgb(255, 0, 128);
         }
+        .delete-post-button {
+            cursor: pointer;
+            padding: 5px;
+            font-size: 12px;
+            color: rgb(255, 0, 0); /* Red color for delete button */
+        }
+
+        .delete-post-button:hover {
+            background-color: rgb(255, 0, 0); /* Change background color on hover */
+            color: rgb(255, 255, 255); /* Change text color on hover */
+        }
+        
 	</style>
 </head>
 
@@ -163,7 +175,8 @@
 						</div>
 						<p class="text-light fs-mini m" th:text="${post.content}"></p>
 
-
+						 <button th:data-post-id="${post.postID}" onclick="deletePost(this)">Delete</button>
+						 
 						<!-- Display comments -->
 						<ul class="comment-list" th:id="'commentList-' + ${post.postID}">
 							<li th:each="comment : ${response}" class="comment-list-item">
@@ -238,6 +251,28 @@
 	</div>
 
 	<!-- -----------------------------------------------------------script------------------------------------- -->
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        // Hàm xóa bài viết
+        function deletePost(button) {
+            const postId = button.getAttribute("data-post-id");
+			alert(postId);
+            // Gọi endpoint xóa bài viết với postId
+            $.ajax({
+                type: 'DELETE',
+                url: '/post/' + postId,
+                success: function () {
+                    // Xóa phần tử li khỏi danh sách sau khi xóa thành công
+                    $(button).closest('li').remove();
+                    alert('Post deleted successfully!');
+                },
+                error: function (response) {
+                    alert();
+                }
+            });
+        }
+    </script>
+	
 	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 	<script defer>
 		$(document).ready(function () {

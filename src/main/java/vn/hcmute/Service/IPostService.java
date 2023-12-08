@@ -23,4 +23,10 @@ public interface IPostService {
 
 	List<PostEntity> findAll();
 
+
+	void deleteById(Long id);
+
+
+	boolean existsById(Long id);
+
 }
