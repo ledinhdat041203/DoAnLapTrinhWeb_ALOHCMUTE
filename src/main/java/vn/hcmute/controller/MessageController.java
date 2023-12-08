@@ -1,6 +1,5 @@
 package vn.hcmute.controller;
-
-
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,15 +23,11 @@ import vn.hcmute.service.MessageService;
 
 @Controller
 public class MessageController {
-	
 	@Autowired
 	private  MessageService messageService;
-	
 	@Autowired
 	private  IUserInfoService userInfoService;
-
 	
-
 	@GetMapping("/firebase")
 	public String showMessageFireBase(Model model, @RequestParam(name = "uid", required = false, defaultValue = "-1") Long user2, HttpSession session) {
 		Long user1 = (long) session.getAttribute("userInfoID");
@@ -59,14 +54,43 @@ public class MessageController {
 		messageService.sendMessage(message, user1, user2);
 		return ResponseEntity.ok("ok");
 	}
-
+	
 	@GetMapping("/list_Conversation")
-   public String showAllConversation(Model model, HttpSession session) {
+	public String showAllConversation(Model model, HttpSession session) {
 		Long user1 = (long) session.getAttribute("userInfoID");
 		List<Long> listUserID = messageService.findAllUserIdsInConversations(user1);
 		List<UserInfoEntity> list = messageService.listInfoReceiverByIdAccount(listUserID);
 		model.addAttribute("list",list);
 		return "conversation";
 	}
-
+	
+	@GetMapping("/delete-chat")
+	public String deleteChat(Model model,@RequestParam(name = "uid") Long uid,HttpSession session)
+	{
+		Long user1 = (long) session.getAttribute("userInfoID");
+		messageService.deleteConversation(user1, uid);		
+		List<UserInfoEntity> listUser = new ArrayList<UserInfoEntity>();
+		List<Long> listUserID = messageService.findAllUserIdsInConversations(user1);
+		listUser = messageService.listInfoReceiverByIdAccount(listUserID);
+		model.addAttribute("listUser", listUser);
+		return "listUser";
+	}
+	@GetMapping("/findByName")
+	public String findByName(Model model,@RequestParam(name = "nameSearch") String name , @RequestParam(name = "action") Integer action, HttpSession session) {
+		List<UserInfoEntity> listUser = new ArrayList<UserInfoEntity>();
+		if (action == 1){
+			if(name != ""){
+			listUser = userInfoService.findByFullNameContaining(name);
+			}
+		}
+		else
+		{
+			Long user1 = (long) session.getAttribute("userInfoID");
+			List<Long> listUserID = messageService.findAllUserIdsInConversations(user1);
+			listUser = messageService.listInfoReceiverByIdAccount(listUserID);
+		}			
+		model.addAttribute("listUser", listUser);
+		return "listUser";
+	}
+	
 }

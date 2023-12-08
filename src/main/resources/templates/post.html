@@ -95,6 +95,7 @@
 				$.ajax({
 					type: 'POST',
 					url: "/post",
+
 					data: JSON.stringify({ "imageURL": imageURL, "content": content }), //Ép kiểu string để tránh bị đôir / thành %
 					contentType: 'application/json',
 					success: function () {

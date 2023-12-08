@@ -22,10 +22,16 @@ public class NotificationController {
 	public String listNotification(ModelMap model, HttpSession session) {
 		Long idUsercurrent = (long) session.getAttribute("userInfoID");
 		List<NotificationEntity> listNotification = notificationService.findByUserUserID(idUsercurrent);
-		
+		int count = 0;
+		for (NotificationEntity notice : listNotification) {
+			if (!notice.isStatus())
+				count++;
+		}
+		model.addAttribute("unreadNotify", count);                   
 		model.addAttribute("listNotification", listNotification);
 		return "listNotification";
 		
 	}
+	
 	
 }

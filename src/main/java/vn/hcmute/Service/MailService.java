@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -19,8 +21,13 @@ import vn.hcmute.model.EmailInfo;
 public class MailService implements IMailService {
 
 	List<EmailInfo> list = new ArrayList<>();
-	@Autowired
-	JavaMailSender mailSender;
+	//@Autowired
+	//JavaMailSender mailSender;
+	
+	@Bean
+    public JavaMailSender javaMailSender() {
+        return new JavaMailSenderImpl();
+    }
 
 	@Override
 	public void constructResetTokenEmail(String contextPath, String token, UserEntity user) throws MessagingException {
@@ -32,12 +39,12 @@ public class MailService implements IMailService {
 	public void send(EmailInfo email) throws MessagingException {
 		// TODO Auto-generated method stub
 
-		MimeMessage message = mailSender.createMimeMessage();
-		MimeMessageHelper helper = new MimeMessageHelper(message, true);
-		helper.setTo(email.getTo());
-		helper.setSubject(email.getSubject());
-		helper.setText(email.getBody(), true);
-		mailSender.send(message);
+		/*
+		 * MimeMessage message = mailSender.createMimeMessage(); MimeMessageHelper
+		 * helper = new MimeMessageHelper(message, true); helper.setTo(email.getTo());
+		 * helper.setSubject(email.getSubject()); helper.setText(email.getBody(), true);
+		 * mailSender.send(message);
+		 */
 	}
 
 	@Override

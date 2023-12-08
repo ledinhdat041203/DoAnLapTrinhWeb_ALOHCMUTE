@@ -49,13 +49,14 @@ public class groupController {
 	@GetMapping("group/{groupID}")
 	public String GroupDetail(ModelMap model, @PathVariable long groupID, HttpSession session, ModelMap post, Model listpost) {
 		Long userid = (long) session.getAttribute("userInfoID");
+		
 		GroupMembersEntity groupMember = groupMemberService.findByUserMemberUserIDAndGroupGroupID(userid, groupID);
 		if (groupMember != null) {
 			GroupEntity group = groupService.findById(groupID).get();
 			model.addAttribute("group", group);
 			post.addAttribute("post", new PostEntity());
 			
-			List<PostModel> posts = postService.getPostsByGroupId(groupID, 0, 2);
+			List<PostModel> posts = postService.getPostsByGroupId(groupID, 0, 2, userid);
 			listpost.addAttribute("list", posts);
 			return "Group";
 		} else {
@@ -151,9 +152,9 @@ public class groupController {
 	}
 
 	@GetMapping("/listpost/postgroup/{page}")
-	public String getPostsByGroupId(@PathVariable int page, @RequestParam(defaultValue = "1") int groupID, Model model) {
-
-		List<PostModel> posts = postService.getPostsByGroupId(groupID, page, 2);
+	public String getPostsByGroupId(@PathVariable int page, @RequestParam(defaultValue = "1") int groupID, Model model,HttpSession session) {
+		Long userid = (long) session.getAttribute("userInfoID");
+		List<PostModel> posts = postService.getPostsByGroupId(groupID, page, 2,userid);
 		System.out.println(page);
 		model.addAttribute("list", posts);
 		return "Group :: #listpost";
