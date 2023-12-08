@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import vn.hcmute.Responsitory.UserInfoRepository;
-import vn.hcmute.entities.UserEntity;
 import vn.hcmute.entities.UserInfoEntity;
 
 

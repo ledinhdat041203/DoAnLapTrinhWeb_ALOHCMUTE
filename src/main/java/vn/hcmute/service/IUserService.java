@@ -50,7 +50,5 @@ public interface IUserService {
 	Optional<StatusAccountEntity> findByuserCode(UserEntity user);
 
 	Optional<StatusAccountEntity> findBycode(int code);
-
-	long count();
-
+	ResetPasswordEntity findByToken(String token);
 }

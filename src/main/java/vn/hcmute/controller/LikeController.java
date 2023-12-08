@@ -59,16 +59,7 @@ public class LikeController {
 			like.setUserLike(user);
 			likeService.save(like);
 		}
-
-
-		// Xử lí thông báo
-		if (LikeEntity.isStatus()) {
-			// Chưa xong khúc này (chưa có link)
-			String link = "Chưa có gì cả";
-			String content = user.getFullName() + " đã thả tim bài viết của bạn";
-			UserInfoEntity user2 = post.getUser();
-			notificationService.createNotification(user2, link, content, user.getAvata());
-		}
+		
 
 		List<LikeEntity> listLike = postservice.findById(postId).get().getListLikes();
 		Long likeCount = (long) 0;

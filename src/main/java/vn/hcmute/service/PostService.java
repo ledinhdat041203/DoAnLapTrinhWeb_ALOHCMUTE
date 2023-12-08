@@ -50,11 +50,15 @@ public class PostService implements IPostService {
 
 		System.out.println(post.getPostID());
 		System.out.println(userid);
+		try {
 		LikeEntity LikeEntity = likeRepo.findByPostPostIDAndUserLikeUserID(post.getPostID(), userid).get();
 		if (LikeEntity == null || !LikeEntity.isStatus())
 			postModel.setLiked(false);
 		else
 			postModel.setLiked(true);
+		}catch (Exception e) {
+			postModel.setLiked(false);
+		}
 		return postModel;
 	}
 

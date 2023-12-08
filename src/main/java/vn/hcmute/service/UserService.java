@@ -1,10 +1,6 @@
 package vn.hcmute.service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.ZonedDateTime;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -155,11 +151,6 @@ public class UserService implements IUserService {
 	@Override
 	public Optional<StatusAccountEntity> findBycode(int code) {
 		return verifyResponsitory.findBycode(code);
-	}
-	
-	@Override
-	public long count() {
-		return userResponsitory.count();
 	}
 }
 
