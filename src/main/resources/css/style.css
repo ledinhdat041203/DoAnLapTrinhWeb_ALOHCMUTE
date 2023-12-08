@@ -388,6 +388,7 @@ button {
     font-size: 24px;
     cursor: pointer;
     margin-left: 10px;
+    font-weight: 400;
 }
 
 /*Form Thông báo*/
@@ -740,4 +741,42 @@ textarea:focus {
     height: 100vh;
     margin-right: auto;
     margin-left: auto;
+}
+
+/*Suggested*/
+
+.suggest-main {
+    padding-top: 60px;
+    margin: 0 290px;
+    width: 100%;
+}
+
+.suggest-header {
+    margin: 16px 0;
+    padding: 0 12px;
+    font-weight: bold;
+}
+
+.suggest-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.suggest-people {
+    padding: 8px 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.suggest-span1 {
+    color: rgb(115, 115, 115);
+    font-size: 14px;
+}
+
+.suggest-span2 {
+    color: rgb(115, 115, 115);
+    font-size: 12px;
 }
