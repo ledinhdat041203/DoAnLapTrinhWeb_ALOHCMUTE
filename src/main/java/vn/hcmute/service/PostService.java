@@ -88,17 +88,6 @@ public class PostService implements IPostService {
 		return listPostModel;
 	}
 
-//	@Override
-//	public List<PostModel> findByUserUserID(long userId, int page, int size) {
-//		Pageable pageable = PageRequest.of(page, size);
-//		Page<PostEntity> postPage = postRepo.findByUserUserID(userId, pageable);
-//		List<PostEntity> posts = postPage.getContent();
-//		List<PostModel> listPostModel = new ArrayList<>();
-//		for (PostEntity post : posts) {
-//			listPostModel.add(converEntityToModel(post,userId));
-//		}
-//		return listPostModel;
-//	}
 	@Override
 	public List<PostModel> findByUserUserID(long userId) {
 		List<PostEntity> posts = postRepo.findByUserUserID(userId);

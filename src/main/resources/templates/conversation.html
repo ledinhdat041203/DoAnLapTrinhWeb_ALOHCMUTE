@@ -60,13 +60,13 @@
 					url: '/delete-chat',
 					data: {uid: recvId},
 					success: function (response) {
-					console.log("Delete Chat Successfully");
+					//console.log("Delete Chat Successfully");
 					$('#chat-frame').empty();
 					$('#listPeople').html(response);
-					
+					alter("Đã xóa cuộc trò chuyện!")
 					},
 					error: function () {
-						alert('Error delete chat');
+						alert("Lỗi xóa!");
 					}
 				});
 
@@ -107,10 +107,10 @@
 						// Thay đổi nội dung của #chat-container và cập nhật data-recv-id
 				$('#listPeople').html(data);
 				$('#nameSearch').val('');
-				alter("Đã xóa cuộc trò chuyện!")
+				
 				},
 				error: function (error) {
-					alert("Lỗi xóa!");
+					
 				}
 			});
 		}
