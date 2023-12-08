@@ -1,51 +1,35 @@
 package vn.hcmute.controller;
 
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 //import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-import org.apache.commons.lang3.RandomStringUtils;
-import jakarta.mail.internet.MimeMessage;
+
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import jakarta.transaction.Transactional;
-import jakarta.validation.constraints.Email;
-import jakarta.websocket.server.PathParam;
-import lombok.experimental.PackagePrivate;
 import vn.hcmute.entities.ResetPasswordEntity;
 import vn.hcmute.entities.StatusAccountEntity;
 import vn.hcmute.entities.UserEntity;
 import vn.hcmute.entities.UserInfoEntity;
 import vn.hcmute.model.EmailInfo;
 import vn.hcmute.model.UserAcountModel;
-import vn.hcmute.model.UserInfoModel;
 import vn.hcmute.model.updatePassModel;
 import vn.hcmute.service.IMailService;
 import vn.hcmute.service.IUserInfoService;
 import vn.hcmute.service.IUserService;
-import vn.hcmute.service.MailService;
-import vn.hcmute.service.UserService;
 
 @Controller
 public class UserController {
