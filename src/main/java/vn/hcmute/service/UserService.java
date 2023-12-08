@@ -1,6 +1,10 @@
 package vn.hcmute.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,17 +13,34 @@ import org.springframework.stereotype.Service;
 
 import vn.hcmute.Responsitory.PasswordTokenResponsitory;
 import vn.hcmute.Responsitory.UserResponsitory;
+import vn.hcmute.Responsitory.VerifyCodeResponsitory;
 import vn.hcmute.entities.ResetPasswordEntity;
+import vn.hcmute.entities.StatusAccountEntity;
 import vn.hcmute.entities.UserEntity;
 
 @Service
 public class UserService implements IUserService {
 	@Autowired
 	UserResponsitory userResponsitory;
-	
 	@Autowired
 	PasswordTokenResponsitory passwordTokenResponsitory;
+	@Autowired
+	VerifyCodeResponsitory verifyResponsitory;
+	public UserService(UserResponsitory userResponsitory) {
+		this.userResponsitory = userResponsitory;
+	}
 
+	public UserService(PasswordTokenResponsitory passwordTokenResponsitory) {
+		this.passwordTokenResponsitory = passwordTokenResponsitory;
+	}
+
+	public UserService(VerifyCodeResponsitory verifyResponsitory) {
+		this.verifyResponsitory = verifyResponsitory;
+	}
+
+	public UserService() {
+		// Constructor mặc định
+	}
 
 
 	@Override
@@ -31,7 +52,7 @@ public class UserService implements IUserService {
 	@Override
 	public Boolean checkLogin(String Email, String pass) {
 		Optional<UserEntity> u = findByemailContaining(Email);
-		if (u.isPresent()&&u.get().getPass().equals(pass))
+		if (u.isPresent() && u.get().getPass().equals(pass))
 			return true;
 		return false;
 	}
@@ -47,12 +68,17 @@ public class UserService implements IUserService {
 		return userResponsitory.count();
 	}
 
-	@Override
 	public void createToken(UserEntity user, String token) {
 		ResetPasswordEntity reset = new ResetPasswordEntity(token, user);
 		passwordTokenResponsitory.save(reset);
 	}
 
+	@Override
+	public void createCode(StatusAccountEntity status, int code)
+	{
+		status.setCode(code);
+		verifyResponsitory.save(status);
+	}
 
 	@Override
 	public void deleteById(Long id) {
@@ -109,9 +135,27 @@ public class UserService implements IUserService {
 		user.setPass(pass);
 		userResponsitory.save(user);
 	}
-	
-	
-	
 
 
+	@Override
+	public <S extends StatusAccountEntity> S save(S entity) {
+		return verifyResponsitory.save(entity);
+	}
+
+	@Override
+	public Optional<UserEntity> findById(Long id) {
+		return userResponsitory.findById(id);
+	}
+
+	@Override
+	public Optional<StatusAccountEntity> findByuserCode(UserEntity user) {
+		return verifyResponsitory.findByuserCode(user);
+	}
+
+	@Override
+	public Optional<StatusAccountEntity> findBycode(int code) {
+		return verifyResponsitory.findBycode(code);
+	}
+	
 }
+

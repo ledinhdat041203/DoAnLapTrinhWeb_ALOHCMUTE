@@ -1,5 +1,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+	integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+WySTQoub5ML4P6FucVfgdpaCcF7UN9MVBZ" crossorigin="anonymous">
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
@@ -12,6 +14,13 @@
 	<div class="container">
 		<div class="row justify-content-center">
 			<div class="col-md-4">
+				<div th:if="${param.false}">
+					<div class="alert alert-info">Tài khoản chưa được kích hoạt <a href="/verify">Kích hoạt</a>
+					</div>
+				</div>
+				<div th:if="${param.wrong}">
+					<div class="alert alert-info">Wrong password</div>
+				</div>
 				<form action='checklogin' method='post'>
 					<!-- Email input -->
 					<div class="form-group">
@@ -42,8 +51,11 @@
 					<p class="text-center">or sign up with:</p>
 					<div class="text-center">
 						<button type="button" class="btn btn-link btn-floating mx-1">
-							<i class="fab fa-facebook-f"></i>
+							<a href="">
+								<i class="fab fa-google"></i>
+							</a>
 						</button>
+
 						<button type="button" class="btn btn-link btn-floating mx-1">
 							<i class="fab fa-google"></i>
 						</button>

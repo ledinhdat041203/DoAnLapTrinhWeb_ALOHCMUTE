@@ -39,7 +39,7 @@ public class UserInfoController {
         Optional<UserInfoEntity> userOptional = userInfoService.findById(userID);
         if (userOptional.isEmpty()) {
             // Xử lý trường hợp userInfo không tồn tại
-            return "redirect:/info/list";
+            return "redirect:/profile";
         }
         UserInfoEntity user = userOptional.get();
         Long following = (long) user.getListFriend1().size();
@@ -57,35 +57,20 @@ public class UserInfoController {
         return "profile";
     }
 
-    @GetMapping("/update/{userid}")
-    public String update(@PathVariable Long userid, Model model) {
+    @GetMapping("/update")
+    public String update(Model model, HttpSession session) {
+    	Long userid = (long) session.getAttribute("userInfoID");
         Optional<UserInfoEntity> userInfoOptional = userInfoService.findById(userid);
-        if (userInfoOptional.isEmpty()) {
-            // Xử lý trường hợp userInfo không tồn tại
-            return "redirect:/info/list";
-        }
-
         UserInfoEntity userInfo = userInfoOptional.get();
         model.addAttribute("userInfo", userInfo);
         return "update";
     }
-
     @PostMapping("/saveUpdate")
     public String saveUserInfoUpdate(@ModelAttribute("userInfo") UserInfoEntity userInfo) {
-        if (userInfo == null || userInfo.getUserID() == null) {
-            // Xử lý trường hợp userInfo hoặc userID là null
-            return "redirect:/profile";
-        }
-
         Optional<UserInfoEntity> existingUser = userInfoService.findById(userInfo.getUserID());
         if (existingUser.isPresent()) {
-            // Update thông tin của người dùng
             userInfoService.save(userInfo);
-        } else {
-            // Xử lý trường hợp người dùng không tồn tại
-            return "redirect:/info/list";
         }
-
         return "redirect:/profile";
     }
 }
