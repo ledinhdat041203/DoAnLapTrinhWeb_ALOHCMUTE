@@ -1,0 +1,27 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>SendEmail</title>
+</head>
+
+<body>
+	<h2>Send Email Form</h2>
+	<div th:if="${param.success}">
+		<div class="alert alert-info">Register successful  <a href="/login">Login</a></div>
+	</div>
+	<div th:if="${param.fail}">
+					<div class="alert alert-info">Register fail</div>
+				</div>
+	<form action="verifyCode" method="post" enctype="multipart/form-data" modelAttribute="status">
+		<div>Nhập code của bạn tại đây:</div>
+		<input type="number" name="code" placeholder="code" />
+		<input type='submit' value='Send'>
+
+	</form>
+</body>
+
+</html>
