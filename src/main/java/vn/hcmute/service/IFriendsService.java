@@ -18,7 +18,11 @@ public interface IFriendsService {
 
 	long count();
 
+	<S extends FriendsEntity> long count(Example<S> example);
+
 	Optional<FriendsEntity> findById(Long id);
+
+	<S extends FriendsEntity> Page<S> findAll(Example<S> example, Pageable pageable);
 
 	List<FriendsEntity> findAll();
 
@@ -32,5 +36,5 @@ public interface IFriendsService {
 	
 	void createFriendsByUser1AndUser2(UserInfoEntity user1, UserInfoEntity user2, boolean status);
 	
-	public List<FriendsEntity> findByuser2userID(Long user2id);
+
 }

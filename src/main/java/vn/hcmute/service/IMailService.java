@@ -1,8 +1,5 @@
 package vn.hcmute.service;
 
-import java.util.Locale;
-
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
 import jakarta.mail.MessagingException;

@@ -28,9 +28,10 @@ public class LikeController {
 	IPostService postservice;
 	@Autowired
 	IUserInfoService userInfoService;
+
 	@Autowired
 	IPostService postService;
-
+	
 	@Autowired
 	INotificationService notificationService;
 
@@ -57,15 +58,13 @@ public class LikeController {
 			like.setStatus(true);
 			like.setPost(post);
 			like.setUserLike(user);
-			
-			
+
 			// xử lý thông báo
 			String link = "Chưa có gì cả";
 			String content = user.getFullName() + " đã thả tim bài viết của bạn";
 			UserInfoEntity user2 = post.getUser();
 			notificationService.createNotification(user2, link, content, user.getAvata());
-			
-			
+
 			likeService.save(like);
 		}
 
@@ -89,4 +88,5 @@ public class LikeController {
 		System.out.println(likeCount);
 		return ResponseEntity.ok(likeCount);
 	}
+
 }
