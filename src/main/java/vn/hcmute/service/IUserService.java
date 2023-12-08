@@ -8,23 +8,9 @@ import vn.hcmute.entities.UserEntity;
 
 public interface IUserService {
 
+	void changePass(UserEntity user, String pass);
 
-	Boolean checkLogin(String Email,String pass);
-
-	Optional<UserEntity> findByemailContaining(String name);
-
-	<S extends UserEntity> S save(S entity);
-	void createToken(UserEntity user,String token);
-
-	long count();
-
-	void deleteById(Long id);
-
-	Optional<ResetPasswordEntity> findByUserResetPass(UserEntity user);
-
-	List<ResetPasswordEntity> findAll();
-
-	void deleteByUserResetPass(UserEntity user);
+	ResetPasswordEntity findByToken(String token);
 
 	boolean isTokenExpired(ResetPasswordEntity pass);
 
@@ -32,7 +18,24 @@ public interface IUserService {
 
 	String validToken(String token);
 
-	ResetPasswordEntity findByToken(String token);
+	void deleteByUserResetPass(UserEntity user);
 
-	void changePass(UserEntity user, String pass);
+	List<ResetPasswordEntity> findAll();
+
+	Optional<ResetPasswordEntity> findByUserResetPass(UserEntity user);
+
+	void deleteById(Long id);
+
+	void createToken(UserEntity user, String token);
+
+	long count();
+
+	<S extends UserEntity> S save(S entity);
+
+	Boolean checkLogin(String Email, String pass);
+
+	Optional<UserEntity> findByemailContaining(String name);
+
+	
+
 }
