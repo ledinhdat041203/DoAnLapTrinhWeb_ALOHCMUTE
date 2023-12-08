@@ -24,9 +24,10 @@ public class UserInfoController {
     @Autowired
     private IPostService postService;
 
-    @GetMapping
+    @GetMapping("")
     public String list(ModelMap model, HttpSession session, ModelMap post, Model listpost) {
         Long userID = (Long) session.getAttribute("userInfoID");
+        
         if (userID == null) {
             // Xử lý trường hợp userID là null
             return "redirect:/login"; // hoặc chuyển hướng đến trang đăng nhập khác
