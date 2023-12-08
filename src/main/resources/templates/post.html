@@ -31,6 +31,7 @@
 
 
 	<script type="module">
+
 		import {initializeApp} from "https://www.gstatic.com/firebasejs/9.0.1/firebase-app.js";
 		import {getStorage, ref, uploadBytes, getDownloadURL} from "https://www.gstatic.com/firebasejs/9.0.1/firebase-storage.js";
 
@@ -72,13 +73,9 @@
 					// Display the image on the page
 					imageContainer.innerHTML = `<img src="${downloadURL}" alt="Uploaded Image" id = "urlImage">`;
 
-					alert('Successfully uploaded to Firebase Storage!');
 				} catch (error) {
-					console.error('Error uploading to Firebase Storage:', error);
-					alert('Error uploading to Firebase Storage. Please try again.');
+
 				}
-			} else {
-				alert('No file selected.');
 			}
 		});
 	</script>
@@ -94,7 +91,9 @@
 			try {
 				$.ajax({
 					type: 'POST',
-					url: "/post",
+
+					url: "/post/1",
+
 					data: JSON.stringify({ "imageURL": imageURL, "content": content }), //Ép kiểu string để tránh bị đôir / thành %
 					contentType: 'application/json',
 					success: function () {

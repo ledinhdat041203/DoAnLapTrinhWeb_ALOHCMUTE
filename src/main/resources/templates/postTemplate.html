@@ -1,0 +1,55 @@
+ <!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" >
+	<title>Post</title>
+</head>
+
+<body>
+	<div th:fragment="post (post)">
+        <div class="container">
+          <article>
+            <div class="post-info">
+              <div class="post-account">
+                <img
+                  th:src="${post.imageURL}" alt="Post Image"
+                  
+                  class="avatar"
+                />
+                <div class="account-name">
+                  <h5 th:text="${post.userFullName}"></h5th>
+                </div>
+              </div>
+              <i class="fa-solid fa-ellipsis"></i>
+            </div>
+            <div class="post-img">
+              <img th:src="${post.imageURL}" alt="Post Image" class="postimg"/>
+            </div>
+            <div>
+              <div class="post-icon">
+                <i th:classappend="${post.liked} ? 'fa fa-heart tym' : 'fa fa-heart'" th:onclick="'likePost(' + ${post.postID} + ')'" th:id="'likeButton' + ${post.postID}"></i>
+                <i class="fa-regular fa-comment"></i>
+              </div>
+              <div class="post-like">
+                <p th:text=" ${post.likeCount}+' Likes' " th:id="'likeCount' + ${post.postID}"></p>
+              </div>
+              <div class="post-comment">
+                <h5>xiaoluan_2011</h5>
+                <p th:text="${post.content}"></p>
+              </div>
+              <textarea
+                name="comment"
+                id="comment"
+                placeholder="Add a comment..."
+                rows="2"
+                cols="50"
+              ></textarea>
+            </div>
+          </article>
+      </div>
+	</div>
+</body>
+
+</html>

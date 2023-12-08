@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Post</title>
+	<link rel="stylesheet" href="/css/PostStyle.css">
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+	<div class="container bootstrap snippets bootdey" id="Post-Container">
+		<div class="row" id="listpost">
+			<!--bắt đầu 1 post -->
+			<div th:each="post : ${list}" class="col-md-6">
+				<div th:replace="~{post_template::post_template(${post})}"></div>
+			</div>
+			<!--kết thúc 1 post -->
+		</div>
+	</div>
+
+
+	<!-----------------------------------------------------------script------------------------------------- -->
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+	<script defer>
+
+		function likePost(postId) {
+			$.ajax({
+				type: 'POST',
+				url: '/like/' + postId,
+				success: function (response) {
+
+					const str = '#likeCount' + postId;
+					const likespan = $(str);
+					const likeicon = $('#likeButton' + postId);
+					likespan.text(response)
+					likespan.html(response)
+					likeicon.toggleClass("liked");
+				},
+				error: function () {
+					alert('Error liking post');
+				}
+			});
+		}
+
+		var page = 1;
+		var loading = true;
+		$(window).scroll(function () {
+			var windowHeight = $(window).height();
+			var documentHeight = $(document).height();
+			var scrollTop = $(window).scrollTop();
+
+			// Kiểm tra xem cuộn đến cuối trang
+			if (scrollTop + windowHeight >= documentHeight - 50 && loading) {
+				loading = false;
+				console.log("Đã cuộn xuống cuối trang");
+				loadAjax();
+			}
+		});
+
+		function loadAjax() {
+			console.log("/listpost/group/" + page);
+			$.ajax({
+				type: 'GET',
+				url: '/listpost/group/' + page,  // Thay đổi đường dẫn API và tham số theo nhu cầu của bạn
+
+				success: function (data) {
+					console.log(data);
+					if (data.trim() !== "") {
+						console.log("data k null");
+						loading = true;
+						page++;
+					} else {
+
+						loading = false;
+					}
+					console.log(page);
+
+					$("#listpost").append(data);
+				},
+				error: function (error) {
+					alert("error")
+					console.error('Error loading data:', error);
+					loading = false;
+				}
+			});
+		}
+	</script>
+
+
+</body>
+
+</html>

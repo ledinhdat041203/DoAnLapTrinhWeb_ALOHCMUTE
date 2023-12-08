@@ -1,5 +1,6 @@
 package vn.hcmute.service;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -16,6 +17,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 
 import vn.hcmute.Responsitory.MessageRepository;
 import vn.hcmute.entities.MessagesEntity;
@@ -164,16 +166,17 @@ public class MessageService {
 	}
 
 	/* Create Conversation id */
-	public String generateConversationId(long userId1, long userId2) {
-		if (userId1 < userId2) {
-			List<String> userIds = Arrays.asList(String.valueOf(userId1), String.valueOf(userId2));
-			return String.join("_", userIds);
-		} else {
-			List<String> userIds = Arrays.asList(String.valueOf(userId2), String.valueOf(userId1));
-			return String.join("_", userIds);
-		}
-	}
-	// ---------------------------------------------------------
+    public String generateConversationId(long userId1, long userId2) {
+    	if(userId1 < userId2) {
+    		List<String> userIds = Arrays.asList(String.valueOf(userId1), String.valueOf(userId2));
+    		return String.join("_", userIds);
+    	}
+    	else {
+    		List<String> userIds = Arrays.asList(String.valueOf(userId2), String.valueOf(userId1));
+    		return String.join("_", userIds);
+    	}
+    }
+    //---------------------------------------------------------
 
 	public List<String> findAllConversation() {
 		DatabaseReference databaseRef = firebaseDatabase.getReference("RealTimeChat");
@@ -203,7 +206,6 @@ public class MessageService {
 			} // Đợi cho đến khi dữ liệu được lấy xong
 		} catch (ExecutionException e) {
 			e.printStackTrace();
-			// Xử lý exception nếu cần
 		}
 		return listConversation;
 	}

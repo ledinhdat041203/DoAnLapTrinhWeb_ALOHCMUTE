@@ -28,6 +28,7 @@ public class LikeEntity {
     private UserInfoEntity userLike;
 	
 	@Column(name = "status", columnDefinition = "bit")
+
 	private boolean status;
 	@Column(name = "likedate", columnDefinition = "DATETIME")
 	private Date likeDate;

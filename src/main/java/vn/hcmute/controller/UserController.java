@@ -1,13 +1,10 @@
 package vn.hcmute.controller;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -34,7 +31,7 @@ public class UserController {
 	IUserService user_service;
 	@Autowired
 	IUserInfoService user_info_service;
-
+	
 	@RequestMapping("/login")
 	public String Showlogin(ModelMap model, HttpServletRequest request) {
 		Cookie[] cookies = request.getCookies();
@@ -73,6 +70,7 @@ public class UserController {
 					user_service.findByemailContaining(Email).get().getUserInfo().getFullName());
 
 			return "redirect:/home";
+
 		}
 
 		return "login";
@@ -92,7 +90,7 @@ public class UserController {
 	}
 
 	@PostMapping("/registerOrFail")
-	public String Show(ModelMap model,@ModelAttribute UserAcountModel user_account, @ModelAttribute("user_info") UserInfoEntity user_info)
+	public String Show(ModelMap model,@ModelAttribute UserAcountModel user_account, @ModelAttribute UserInfoEntity user_info)
 	{
 		//user_account.setUserInfo(user_info);
 		UserEntity user_entity = new UserEntity();
@@ -115,7 +113,5 @@ public class UserController {
 		}
 	}
 
-	
-	
-	
+
 }

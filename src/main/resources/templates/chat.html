@@ -100,13 +100,9 @@
 
 					// Hiển thị ảnh 
 					imageContainer.innerHTML = `<img src="${downloadURL}" alt="Uploaded Image" id="urlImage" style="width: 300px; height: 200px;">`;
-						alert('Successfully uploaded to Firebase Storage!');
 				} catch (error) {
 					console.error('Error uploading to Firebase Storage:', error);
-					alert('Error uploading to Firebase Storage. Please try again.');
 				}
-			} else {
-				alert('No file selected.');
 			}
 		});
 	</script>
@@ -173,7 +169,7 @@
 			document.getElementById('content').value = newContent;
 		}
 	</script>
-	
+
 
 </head>
 
@@ -208,12 +204,8 @@
 			<div class="col-lg-8 col-md-8">
 				<div class="mesge-area with-background">
 					<ul id="chat" class="conversations ps-container ps-theme-default ps-active-x ps-active-y">
-
 					</ul>
-
 				</div>
-
-
 				
 				<div class="message-writing-box">
 					<div id="imageContainer"></div>
@@ -353,12 +345,6 @@
 	</div>
 	<script src="js/main.min.js"></script>
 	<script src="js/script.js"></script>
-
-
-
-
-
-
 
 
 </body>

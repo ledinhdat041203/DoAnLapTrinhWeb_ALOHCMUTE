@@ -1,0 +1,55 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+</head>
+
+<body>
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-md-4">
+				<div th:if="${param.success}">
+					<div class="alert alert-info">Change successful</div>
+				</div>
+				<div th:if="${param.noexist}">
+					<div class="alert alert-info">Email no exist</div>
+				</div>
+				<div th:if="${param.fail}">
+					<div class="alert alert-info">Wrong token</div>
+				</div>
+				<form action='updatePassword' method='post' modelAttribute="pass">
+					<!-- Email input -->
+					<div class="form-group">
+						<label for="form2Example1">New Password</label> <input type="text" id="form2Example1"
+							name="newPass" class="form-control" />
+					</div>
+					<div th:if="${param.wrong}">
+						<div class="alert alert-info">Wrong confirm pass</div>
+					</div>
+					<!-- Password input -->
+					<div class="form-group">
+						<label for="form2Example2">Confirm Passwword</label> <input type="text" name="confirmPass"
+							class="form-control" />
+					</div>
+					<div class="form-group">
+						<label for="form2Example2">Code</label> <input type="password" name="token" th:value="${tokenvalue != null ? tokenvalue : ''}"
+							class="form-control" />
+					</div>
+
+					<input type='submit' class="btn btn-primary btn-block" value='Create'>
+					<p class="text-center">
+						Already change pass? <a href="/login">Login</a>
+					</p>
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+</body>
+
+</html>

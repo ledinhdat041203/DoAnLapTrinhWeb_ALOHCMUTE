@@ -29,7 +29,7 @@ public class UserInfoEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "userid", columnDefinition = "BIGINT")
-	private long userID;
+	private Long userID;
 	@Column(name = "fullname", columnDefinition = "nvarchar(255)", nullable = false)
 	private String fullName;
 	@Column(name = "dateofbirth", columnDefinition = "DATE")
@@ -59,6 +59,7 @@ public class UserInfoEntity {
 	 
 	 @OneToMany(mappedBy = "userMember", fetch = FetchType.LAZY)
 	 private List<GroupMembersEntity> listGroupMembers;
+
 	 
 	public UserInfoEntity(long userID, String fullName) {
 	
@@ -69,6 +70,6 @@ public class UserInfoEntity {
 	 //@OneToOne(mappedBy = "userInfo", cascade = CascadeType.ALL)
 	 //private ImageEntity image;
 	 
-	 
 	
 }
+
