@@ -22,6 +22,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import vn.hcmute.entities.ResetPasswordEntity;
 import vn.hcmute.entities.StatusAccountEntity;
+
 import vn.hcmute.entities.UserEntity;
 import vn.hcmute.entities.UserInfoEntity;
 import vn.hcmute.model.EmailInfo;
@@ -61,36 +62,6 @@ public class UserController {
 		return "login";
 	}
 
-	/*
-	 * @GetMapping("/login/oauth2/code/google") public String
-	 * User(OAuth2AuthenticationToken oAuth2AuthenticationToken, HttpSession
-	 * session) { System.out.print(toUser(oAuth2AuthenticationToken.getPrincipal().
-	 * getAttributes())); UserEntity user_entity = new UserEntity(); UserInfoEntity
-	 * user_info = new UserInfoEntity(); StatusAccountEntity status = new
-	 * StatusAccountEntity();
-	 * user_entity.setEmail(toUser(oAuth2AuthenticationToken.getPrincipal().
-	 * getAttributes()).getEmail());
-	 * user_entity.setUserName(toUser(oAuth2AuthenticationToken.getPrincipal().
-	 * getAttributes()).getGiven_name());
-	 * user_info.setFullName(toUser(oAuth2AuthenticationToken.getPrincipal().
-	 * getAttributes()).getName()); user_entity.setPass(""); Optional<UserEntity> ue
-	 * = user_service.findByemailContaining(user_entity.getEmail()); if
-	 * (ue.isEmpty()) { user_info_service.save(user_info);
-	 * user_entity.setUserInfo(user_info); status.setUserCode(user_entity);
-	 * status.setStatus(true); status.setCode(0); user_service.save(user_entity);
-	 * user_service.save(status); session.setAttribute("username", user_service
-	 * .findByemailContaining(toUser(oAuth2AuthenticationToken.getPrincipal().
-	 * getAttributes()).getEmail()) .get().getIdAccount()); return "user"; } else {
-	 * session.setAttribute("username",
-	 * user_service.findByemailContaining(ue.get().getEmail()).get().getIdAccount())
-	 * ; return "user"; } } public LoginGoogleModel toUser(Map<String, Object> map)
-	 * { LoginGoogleModel loginModel = new LoginGoogleModel(); if (map == null)
-	 * return null; else { loginModel.setEmail((String) map.get("email"));
-	 * loginModel.setName((String) map.get("name"));
-	 * loginModel.setGiven_name((String) map.get("given_name")); } return
-	 * loginModel; }
-	 */
-
 	// kiểm tra email pass và status kích hoạt
 	@PostMapping("/checklogin")
 	public String CheckLoginn(HttpServletResponse response, ModelMap model, @RequestParam("email") String Email,
@@ -111,7 +82,7 @@ public class UserController {
 			response.addCookie(password);
 			session.setAttribute("username", user_service.findByemailContaining(Email).get().getIdAccount());
 			session.setAttribute("email", user_service.findByemailContaining(Email));
-			
+
 			session.setAttribute("userID", user_service.findByemailContaining(Email).get().getIdAccount());
 			session.setAttribute("userInfoID",
 					user_service.findByemailContaining(Email).get().getUserInfo().getUserID());
@@ -314,5 +285,4 @@ public class UserController {
 	public String showAgain() {
 		return "verify";
 	}
-
 }

@@ -12,9 +12,9 @@ import vn.hcmute.entities.PostEntity;
 @Repository
 public interface PostRepository extends JpaRepository<PostEntity, Long> {
 	Page<PostEntity> findByGroupPostGroupID(long groupId, Pageable pageable);
-
 	List<PostEntity> findByUserUserID(long userId);
 	
 	PostEntity findByPostID(long postId);
+
 
 }

@@ -19,6 +19,7 @@ public class PostModel {
 	    private long likeCount;
 	    private String userFullName;
 	    private boolean liked;
+	    private long commentCount;
 
 }
 

@@ -11,7 +11,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import vn.hcmute.Responsitory.LikeRepository;
+
 import vn.hcmute.Responsitory.PostRepository;
+import vn.hcmute.entities.CommentEntity;
 import vn.hcmute.entities.LikeEntity;
 import vn.hcmute.entities.PostEntity;
 import vn.hcmute.model.PostModel;
@@ -50,17 +52,12 @@ public class PostService implements IPostService {
 
 		System.out.println(post.getPostID());
 		System.out.println(userid);
-
-		try {
 		LikeEntity LikeEntity = likeRepo.findByPostAndUserLikeUserID(post, userid);
 		if (LikeEntity == null || !LikeEntity.isStatus())
 			postModel.setLiked(false);
 		else
 			postModel.setLiked(true);
 
-		}catch (Exception e) {
-			postModel.setLiked(false);
-		}
 		return postModel;
 	}
 
@@ -102,4 +99,13 @@ public class PostService implements IPostService {
 		return listPostModel;
 	}
 
+	@Override
+	public boolean existsById(Long id) {
+		return postRepo.existsById(id);
+	}
+
+	@Override
+	public void deleteById(Long id) {
+		postRepo.deleteById(id);
+	}
 }

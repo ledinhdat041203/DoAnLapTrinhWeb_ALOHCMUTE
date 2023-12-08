@@ -33,8 +33,18 @@ public class FriendsService implements IFriendsService {
 	}
 
 	@Override
+	public <S extends FriendsEntity> Page<S> findAll(Example<S> example, Pageable pageable) {
+		return friendsRepository.findAll(example, pageable);
+	}
+
+	@Override
 	public Optional<FriendsEntity> findById(Long id) {
 		return friendsRepository.findById(id);
+	}
+
+	@Override
+	public <S extends FriendsEntity> long count(Example<S> example) {
+		return friendsRepository.count(example);
 	}
 
 	@Override
@@ -70,9 +80,5 @@ public class FriendsService implements IFriendsService {
 		friendsRepository.save(newFriends);
 	}
 
-	@Override
-	public List<FriendsEntity> findByuser2userID(Long user2id) {
-		return friendsRepository.findByUser2UserID(user2id);
-	}
 
 }
