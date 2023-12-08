@@ -100,13 +100,9 @@
 
 					// Hiển thị ảnh 
 					imageContainer.innerHTML = `<img src="${downloadURL}" alt="Uploaded Image" id="urlImage" style="width: 300px; height: 200px;">`;
-						alert('Successfully uploaded to Firebase Storage!');
 				} catch (error) {
 					console.error('Error uploading to Firebase Storage:', error);
-					alert('Error uploading to Firebase Storage. Please try again.');
 				}
-			} else {
-				alert('No file selected.');
 			}
 		});
 	</script>
@@ -174,17 +170,6 @@
 		}
 	</script>
 
-	<script>
-		// Thêm hàm để xử lý sự kiện click vào icon
-		function addEmojiToContent(emoji) {
-			// Lấy giá trị hiện tại của nội dung
-			var currentContent = document.getElementById('content').value;
-			// Thêm emoji vào nội dung
-			var newContent = currentContent + emoji;
-			// Gán giá trị mới cho nội dung
-			document.getElementById('content').value = newContent;
-		}
-	</script>
 
 </head>
 
