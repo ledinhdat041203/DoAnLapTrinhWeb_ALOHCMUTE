@@ -25,6 +25,7 @@ public class UserInfoModel {
 	private Long countFollower;
 	private Long countFollowing;
 	private Long countPost;
+
 	private MultipartFile imageFile;
 	private Boolean isEdit=false;
 

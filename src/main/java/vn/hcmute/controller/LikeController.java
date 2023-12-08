@@ -19,7 +19,6 @@ import vn.hcmute.service.INotificationService;
 import vn.hcmute.service.IPostService;
 import vn.hcmute.service.IUserInfoService;
 
-
 @Controller
 public class LikeController {
 
@@ -35,7 +34,6 @@ public class LikeController {
 	@Autowired
 	INotificationService notificationService;
 
-
 	@PostMapping("/like/{postId}")
 	public ResponseEntity<Long> likePost(@PathVariable long postId, HttpSession session) {
 		System.out.print("Post id nha: " + postId);
@@ -47,8 +45,10 @@ public class LikeController {
 			System.out.println("Toi Day roi!!!!");
 			if (LikeEntity.isStatus())
 				LikeEntity.setStatus(false);
+
 			else
 				LikeEntity.setStatus(true);
+
 			likeService.save(LikeEntity);
 		} else {
 			System.out.println("Loi nayy!!");
@@ -57,9 +57,27 @@ public class LikeController {
 			like.setStatus(true);
 			like.setPost(post);
 			like.setUserLike(user);
+			
+			
+			// xử lý thông báo
+			String link = "Chưa có gì cả";
+			String content = user.getFullName() + " đã thả tim bài viết của bạn";
+			UserInfoEntity user2 = post.getUser();
+			notificationService.createNotification(user2, link, content, user.getAvata());
+			
+			
 			likeService.save(like);
 		}
-		
+
+		// Xử lí thông báo
+
+		/*
+		 * if (LikeEntity.isStatus()) { // Chưa xong khúc này (chưa có link) String link
+		 * = "Chưa có gì cả"; String content = user.getFullName() +
+		 * " đã thả tim bài viết của bạn"; UserInfoEntity user2 = post.getUser();
+		 * notificationService.createNotification(user2, link, content,
+		 * user.getAvata()); }
+		 */
 
 		List<LikeEntity> listLike = postservice.findById(postId).get().getListLikes();
 		Long likeCount = (long) 0;

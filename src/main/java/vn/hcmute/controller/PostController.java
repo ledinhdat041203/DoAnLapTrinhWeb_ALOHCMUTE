@@ -2,7 +2,6 @@ package vn.hcmute.controller;
 
 import java.sql.Date;
 import java.util.List;
-
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
 import vn.hcmute.entities.GroupEntity;
-import vn.hcmute.entities.LikeEntity;
 import vn.hcmute.entities.PostEntity;
 import vn.hcmute.entities.UserInfoEntity;
 import vn.hcmute.model.PostModel;
@@ -38,6 +36,7 @@ public class PostController {
 	@GetMapping("/listpost")
 	public String post(Model model, HttpSession session) {
 		Long userid = (long) session.getAttribute("userInfoID");
+		
 		List<PostModel> posts = postService.getPostsByGroupId(1, 0, 2, userid);
 	
 		model.addAttribute("list", posts);
