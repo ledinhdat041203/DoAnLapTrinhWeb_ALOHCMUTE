@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>EditProfile</title>
+        <link rel="stylesheet" href="../css/style.css" />
+        <link rel="stylesheet" href="../fontawesome-free-6.5.1-web/css/all.min.css" />
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous" />
+    </head>
+    <body>
+        <div style="display: flex; justify-content: space-between">
+            <header id="sidebarMenu">
+                <div class="sidebar">
+                    <div class="logo">
+                        <img src="../photo/Logo1.png" alt="logo" />
+                    </div>
+                    <div class="Menu">
+                        <ul class="list-Menu">
+                            <a class="link-item" href="Home.html">
+                                <li class="list-item">
+                                    <i class="fa-solid fa-house list-item-icon"></i
+                                    ><span class="list-item-name">Home</span>
+                                </li>
+                            </a>
+                            <button class="link-item">
+                                <li class="list-item">
+                                    <i class="fa-solid fa-magnifying-glass list-item-icon"></i
+                                    ><span class="list-item-name">Search</span>
+                                </li>
+                            </button>
+                            <button class="link-item">
+                                <li class="list-item">
+                                    <i class="fa-solid fa-user-group list-item-icon"></i
+                                    ><span class="list-item-name">Group</span>
+                                </li>
+                            </button>
+                            <a href="Message.html" class="link-item">
+                                <li class="list-item">
+                                    <i class="fa-brands fa-facebook-messenger list-item-icon"></i
+                                    ><span class="list-item-name">Messages</span>
+                                </li>
+                            </a>
+                            <button class="link-item">
+                                <li class="list-item">
+                                    <i class="fa-regular fa-heart list-item-icon"></i
+                                    ><span class="list-item-name">Notifications</span>
+                                </li>
+                            </button>
+                            <button class="link-item js-post">
+                                <li class="list-item">
+                                    <i class="fa-regular fa-square-plus list-item-icon"></i
+                                    ><span class="list-item-name">Create</span>
+                                </li>
+                            </button>
+                            <a class="link-item">
+                                <li class="list-item">
+                                    <i class="fa-regular fa-user list-item-icon"></i
+                                    ><span class="list-item-name">Profile</span>
+                                </li>
+                            </a>
+                        </ul>
+                    </div>
+                    <div class="more">
+                        <ul class="list-Menu">
+                            <a class="link-item">
+                                <li class="list-item">
+                                    <i
+                                        class="fa-solid fa-arrow-right-from-bracket list-item-icon"></i
+                                    ><span class="list-item-name">Log out</span>
+                                </li>
+                            </a>
+                            <a class="link-item">
+                                <li class="list-item">
+                                    <i class="fa-solid fa-repeat list-item-icon"></i
+                                    ><span class="list-item-name">Switch Account</span>
+                                </li>
+                            </a>
+                        </ul>
+                    </div>
+                </div>
+            </header>
+
+            <main class="edit-info">
+                <div style="text-align: center; margin-top: 30px">
+                    <h2>Edit Profile</h2>
+                </div>
+
+                <div style="margin-bottom: 20px; margin-top: 20px">
+                    <img src="../photo/avatar.jpeg" alt="avatar con mèo" class="avatar" />
+                    <h5 style="display: inline; margin-left: 10px">xiaoluan_2011</h5>
+                </div>
+
+                <form class="row g-3 needs-validation" novalidate>
+                    <div class="col-md-12">
+                        <label for="formFile" class="form-label">Select profile photo</label>
+                        <input class="form-control" type="file" id="formFile" />
+                    </div>
+                    <div class="col-md-12">
+                        <label for="fullName" class="form-label">Full name</label>
+                        <input type="text" class="form-control" id="fullName" required />
+                        <div class="valid-feedback">Success!</div>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="phone" class="form-label">Phone</label>
+                        <input type="text" class="form-control" id="phone" required />
+                        <div class="valid-feedback">Success!</div>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="validationCustomUsername" class="form-label"
+                            >Date of birth</label
+                        >
+                        <input class="form-control" type="date" />
+                        <div class="valid-feedback">Success!</div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-check">
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                value=""
+                                id="invalidCheck"
+                                required />
+                            <label class="form-check-label" for="invalidCheck">
+                                Agree to terms and conditions
+                            </label>
+                            <div class="invalid-feedback">You must agree before submitting.</div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                    </div>
+                </form>
+            </main>
+        </div>
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+            crossorigin="anonymous"></script>
+    </body>
+</html>
