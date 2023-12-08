@@ -20,13 +20,13 @@ import vn.hcmute.model.PostModel;
 public class PostService implements IPostService {
 	@Autowired
 	PostRepository postRepo;
-	
+
 	@Autowired
 	IUserInfoService userInfoService;
-	
+
 	@Autowired
 	ILikeService likeService;
-	
+
 	@Autowired
 	LikeRepository likeRepo;
 
@@ -47,7 +47,7 @@ public class PostService implements IPostService {
 			}
 		}
 		postModel.setLikeCount(likeCount);
-		
+
 		System.out.println(post.getPostID());
 		System.out.println(userid);
 		LikeEntity LikeEntity = likeRepo.findByPostPostIDAndUserLikeUserID(post.getPostID(), userid).get();
@@ -58,18 +58,15 @@ public class PostService implements IPostService {
 		return postModel;
 	}
 
-
 	@Override
 	public List<PostEntity> findAll() {
 		return postRepo.findAll();
 	}
 
-
 	@Override
 	public <S extends PostEntity> S save(S entity) {
 		return postRepo.save(entity);
 	}
-
 
 	@Override
 	public Optional<PostEntity> findById(Long id) {
@@ -83,7 +80,7 @@ public class PostService implements IPostService {
 		List<PostEntity> posts = postPage.getContent();
 		List<PostModel> listPostModel = new ArrayList<>();
 		for (PostEntity post : posts) {
-			listPostModel.add(converEntityToModel(post,userid));
+			listPostModel.add(converEntityToModel(post, userid));
 		}
 		return listPostModel;
 	}
@@ -91,10 +88,10 @@ public class PostService implements IPostService {
 	@Override
 	public List<PostModel> findByUserUserID(long userId) {
 		List<PostEntity> posts = postRepo.findByUserUserID(userId);
-		
+
 		List<PostModel> listPostModel = new ArrayList<>();
 		for (PostEntity post : posts) {
-			listPostModel.add(converEntityToModel(post,userId));
+			listPostModel.add(converEntityToModel(post, userId));
 		}
 		return listPostModel;
 	}
