@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport">
+	<title>Post</title>
+</head>
+
+<body>
+
+	<div class="img-w" th:fragment="post (post)">
+		<img th:src="${post?.imageURL}" />
+	</div>
+
+</body>
+
+</html>

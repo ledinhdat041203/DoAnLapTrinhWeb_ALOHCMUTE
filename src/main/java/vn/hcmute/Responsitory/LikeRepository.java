@@ -1,5 +1,7 @@
 package vn.hcmute.Responsitory;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -18,4 +20,5 @@ public interface LikeRepository extends JpaRepository<LikeEntity, Long>{
 	 */
 	
 	LikeEntity findByPostAndUserLikeUserID(PostEntity post, long userId);
+	Optional<LikeEntity> findByPostPostIDAndUserLikeUserID(long postid, long userId);
 }
