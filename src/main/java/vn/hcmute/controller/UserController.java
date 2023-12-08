@@ -139,7 +139,7 @@ public class UserController {
 			session.setAttribute("email", user_service.findByemailContaining(Email));
 			return "home";
 		} else if (user_service.checkLogin(Email, pass) && status.get().getStatus() == false) {
-			session.setAttribute("mail", Email);
+			session.setAttribute("email", Email);
 			return "redirect:login?false";
 		}
 		return "redirect:login?wrong";
@@ -194,15 +194,15 @@ public class UserController {
 		System.out.println("Email: -----------------------------------------------------------------------------"+email);
 		Optional<UserEntity> user = user_service.findByemailContaining(email);
 		System.out.print(user.get().getEmail());
-		//Optional<StatusAccountEntity> account_status = user_service.findByuserCode(user.get());
+		Optional<StatusAccountEntity> account_status = user_service.findByuserCode(user.get());
 		if (user.isPresent()) { //&& account_status.get().getStatus() == false) {
 			System.out.print(user.get().getIdAccount());
-			//System.out.print(account_status.get().getId());
+			System.out.print(account_status.get().getId());
 			System.out.print(user.get().getEmail());
 			int code = Integer.parseInt(RandomStringUtils.randomNumeric(6));
-			//user_service.createCode(account_status.get(), code);// tạo code cập nhật code cũ
+			user_service.createCode(account_status.get(), code);// tạo code cập nhật code cũ
 			try {
-				//imail.constructCreateCode(code, user.get());
+				imail.constructCreateCode(code, user.get());
 				System.out.print("da in");
 
 			} catch (Exception e) {
