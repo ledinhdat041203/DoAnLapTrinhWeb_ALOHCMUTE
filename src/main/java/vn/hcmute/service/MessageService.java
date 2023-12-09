@@ -1,9 +1,7 @@
 package vn.hcmute.service;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -17,7 +15,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 
 import vn.hcmute.Responsitory.MessageRepository;
 import vn.hcmute.entities.MessagesEntity;
@@ -166,17 +163,16 @@ public class MessageService {
 	}
 
 	/* Create Conversation id */
-    public String generateConversationId(long userId1, long userId2) {
-    	if(userId1 < userId2) {
-    		List<String> userIds = Arrays.asList(String.valueOf(userId1), String.valueOf(userId2));
-    		return String.join("_", userIds);
-    	}
-    	else {
-    		List<String> userIds = Arrays.asList(String.valueOf(userId2), String.valueOf(userId1));
-    		return String.join("_", userIds);
-    	}
-    }
-    //---------------------------------------------------------
+	public String generateConversationId(long userId1, long userId2) {
+		if (userId1 < userId2) {
+			List<String> userIds = Arrays.asList(String.valueOf(userId1), String.valueOf(userId2));
+			return String.join("_", userIds);
+		} else {
+			List<String> userIds = Arrays.asList(String.valueOf(userId2), String.valueOf(userId1));
+			return String.join("_", userIds);
+		}
+	}
+	// ---------------------------------------------------------
 
 	public List<String> findAllConversation() {
 		DatabaseReference databaseRef = firebaseDatabase.getReference("RealTimeChat");
@@ -244,20 +240,20 @@ public class MessageService {
 		}
 		return -1;
 	}
-	public void deleteConversation(Long userId1, Long userId2) {
-	    String conversationId = generateConversationId(userId1, userId2);
-	    DatabaseReference conversationRef = firebaseDatabase.getReference("RealTimeChat").child(conversationId);
-	    
-	    conversationRef.removeValue(new DatabaseReference.CompletionListener() {
-	        @Override
-	        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-	            if (databaseError == null) {
-	                System.out.println("Conversation deleted successfully");
-	            } else {
-	                System.err.println("Error deleting conversation: " + databaseError.getMessage());
-	            }
-	        }
-	    });
-	}
 
+	public void deleteConversation(Long userId1, Long userId2) {
+		String conversationId = generateConversationId(userId1, userId2);
+		DatabaseReference conversationRef = firebaseDatabase.getReference("RealTimeChat").child(conversationId);
+
+		conversationRef.removeValue(new DatabaseReference.CompletionListener() {
+			@Override
+			public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+				if (databaseError == null) {
+					System.out.println("Conversation deleted successfully");
+				} else {
+					System.err.println("Error deleting conversation: " + databaseError.getMessage());
+				}
+			}
+		});
+	}
 }

@@ -23,8 +23,10 @@ import vn.hcmute.entities.GroupMembersEntity;
 import vn.hcmute.entities.PostEntity;
 import vn.hcmute.entities.UserInfoEntity;
 import vn.hcmute.model.PostModel;
+import vn.hcmute.service.ICommentService;
 import vn.hcmute.service.IGroupMemberService;
 import vn.hcmute.service.IGroupService;
+import vn.hcmute.service.ILikeService;
 import vn.hcmute.service.IPostService;
 import vn.hcmute.service.IUserInfoService;
 
@@ -41,7 +43,10 @@ public class groupController {
 	
 	@Autowired
 	IPostService postService;
-
+	@Autowired
+	ICommentService commentService;
+	@Autowired
+	ILikeService likeService;
 	
 	
 	@GetMapping("listgroup")
@@ -100,13 +105,19 @@ public class groupController {
 	}
 	
 	@PostMapping("modifyGroup")
-	public String modifyGroup(@ModelAttribute("group") GroupEntity group) {
-		Long groupID = group.getGroupID();
-		GroupEntity groupOld = groupService.findById(groupID).get();
-		groupOld.setGroupName(group.getGroupName());
-		groupOld.setAvataGroup(group.getAvataGroup());
-		groupOld.setDescription(group.getDescription());
-		groupService.save(groupOld);
+	public String modifyGroup(@ModelAttribute("group") GroupEntity group, HttpSession session, Model model) {
+		GroupEntity groupOld = groupService.findById(group.getGroupID()).get();
+		Long userid = (long) session.getAttribute("userInfoID");
+		if(checkIsAdminGroup(group.getGroupID(), userid)==1) {
+			groupOld.setGroupName(group.getGroupName());
+			groupOld.setAvataGroup(group.getAvataGroup());
+			groupOld.setDescription(group.getDescription());
+			groupService.save(groupOld);
+			model.addAttribute("message", "Sửa thành công");
+		}
+		else {
+			model.addAttribute("message", "Bạn không là quản trị viên!");
+		}
 		return "redirect:/group/"+groupOld.getGroupID();
 	}
 	
@@ -222,15 +233,37 @@ public class groupController {
 		List<PostModel> posts = postService.getPostsByGroupId(groupID, page, 2,userid);
 		System.out.println(page);
 		model.addAttribute("list", posts);
+		model.addAttribute("fragment", "post_template");
 		return "Group :: #listpost";
 
 	}
 
 	@GetMapping("/deleteGroup/{groupID}")
 	@Transactional
-	public String deleteGroup(@PathVariable("groupID") Long groupID) {
-		postService.deleteByGroupPostGroupID(groupID);
-		return "redirect:/listgroup";
+	public String deleteGroup(@PathVariable("groupID") Long groupID, HttpSession session, Model model) {
+		Long userid = (long) session.getAttribute("userInfoID");
+		if(checkIsAdminGroup(groupID, userid)==1) {
+			//Xóa bài viết khỏi nhóm
+			List<PostEntity> listPost = postService.findByGroupPostGroupID(groupID);
+			for(PostEntity post: listPost) {
+				if (postService.existsById(post.getPostID())) {
+					commentService.deleteAllByPostId(post.getPostID());
+					likeService.deleteAllByPostPostId(post.getPostID());
+					postService.deleteById(post.getPostID());
+				}
+			}
+			//Xóa thành viên của nhóm
+			groupMemberService.deleteByGroupGroupID(groupID);
+			
+			//Xóa nhóm
+			groupService.deleteById(groupID);
+			model.addAttribute("message", "Đã xóa nhóm!");
+		}
+		else {
+			model.addAttribute("message", "Bạn đang vi phạm điều khoản");
+		}
+		model.addAttribute("list", groupService.findAll());
+		return "listgroup";
 	}
 	
 	

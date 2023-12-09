@@ -11,6 +11,8 @@ import vn.hcmute.model.PostModel;
 public interface IPostService {
 
 	List<PostModel> findByUserUserID(long userId);
+
+	<S extends PostEntity> S save(S entity);
 	
 	Optional<PostEntity> findById(Long id);
 
@@ -21,8 +23,12 @@ public interface IPostService {
 	List<PostEntity> findAll();
 
 
-	<S extends PostEntity> S save(S entity);
+	void deleteById(Long id);
 
-	int deleteByGroupPostGroupID(long groupID);
+
+	boolean existsById(Long id);
+
+	List<PostEntity> findByGroupPostGroupID(Long groupID);
+
 
 }

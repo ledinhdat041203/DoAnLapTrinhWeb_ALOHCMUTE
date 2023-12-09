@@ -98,11 +98,20 @@ public class PostService implements IPostService {
 		return listPostModel;
 	}
 	
-	@Override
-	@Transactional
-	public int deleteByGroupPostGroupID(long groupID) {
-		return postRepo.deleteByGroupPostGroupID(groupID);
-	}
-	
 
+	
+	@Override
+	public List<PostEntity> findByGroupPostGroupID(Long groupID) {
+		return postRepo.findByGroupPostGroupID(groupID);
+	}
+
+	@Override
+	public boolean existsById(Long id) {
+		return postRepo.existsById(id);
+	}
+
+	@Override
+	public void deleteById(Long id) {
+		postRepo.deleteById(id);
+	}
 }
