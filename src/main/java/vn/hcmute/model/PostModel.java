@@ -25,6 +25,5 @@ public class PostModel {
 	    private boolean liked;
 	    private long commentCount;
 	    private List<CommentEntity> listComment;
-	    private String avata;
 }
 

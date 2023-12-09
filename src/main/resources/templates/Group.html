@@ -11,7 +11,61 @@
 </head>
 
 <body>
-	<div style="display: flex; justify-content: space-between">
+	<div class="homePage">
+		<div th:replace="~{menu::menu}"></div>
+		<div class="group-container">
+			<div class="post-img">
+				<img src="/images/ALOHCMUTE.png" style="width: 100%" />
+			</div>
+			<div style="display: flex; justify-content:space-between ">
+				<article style="margin-left: 20px;">
+					<div class="post-info">
+						<div class="group-name">
+							<h5>LẬP TRÌNH WEB SPKT 2023</h5>
+						</div>
+					</div>
+					<!--bắt đầu 1 post -->
+					<div th:each="post : ${list}" id="listpost">
+						<div id="postgroup" th:replace="~{postGroupTemplate::postGroup(${post})}"></div>
+					</div>
+					<!--kết thúc 1 post -->
+				</article>
+				<aside class="asideMenu" style="width: 100%;">
+					<div class="suggest">
+						<p class="suggest-text">Your Group</p>
+						<a href="#" class="suggest-link">See All</a>
+					</div>
+					<div class="listFriend">
+						<div th:each="group : ${listgroup}" id="listpost">
+						<div class="group">
+							<div class="account">
+								<div class="account-info">
+									<img th:src="${group.avataGroup}" alt="avatar con mèo" class="avatar" />
+									<div class="account-name">
+										<h5 th:text = "${group.groupName}"></h5>
+										<p>Truy cập 30p trước</p>
+									</div>
+								</div>
+								<a th:href="'/group/' + ${group.groupID}" class="button-like">Truy cập</a>
+							</div>
+						</div>
+						</div>
+
+					</div>
+				</aside>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+
+
+
+
+	<!--	<div style="display: flex; justify-content: space-between">
 		<div th:replace="~{menu::menu}"></div>
 		<div class="group-container">
 			<div class="post-img">
@@ -35,29 +89,29 @@
 					</button>
 				</form>
 			</div>
-			
-			<!-- desgine lại chỗ ni -->
+
+			 desgine lại chỗ ni 
 			<div class="container bootstrap snippets bootdey" id="Post-Container">
 				<div class="row">
-					<!--bắt đầu 1 post -->
+					bắt đầu 1 post 
 					<div th:each="post : ${list}" class="col-md-6" id="listpost">
 						<div id="postgroup" th:replace="~{post_template::post_template(${post})}"></div>
 					</div>
-					<!--kết thúc 1 post -->
+					kết thúc 1 post 
 				</div>
 			</div>
 
 
 		</div>
-		
 
 
 
 
 
 
-	</div>
-<!-----------------------------------------------------------Copy cua hy qua nha------------------------------------- -->
+
+	</div>-->
+	<!-----------------------------------------------------------Copy cua hy qua nha------------------------------------- -->
 	<div class="modal js-modal">
 		<div class="modal-container">
 			<header class="modal-header">

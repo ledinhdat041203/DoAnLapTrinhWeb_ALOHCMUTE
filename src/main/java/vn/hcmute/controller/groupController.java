@@ -130,6 +130,8 @@ public class groupController {
 			GroupEntity group = groupService.findById(groupID).get();
 			model.addAttribute("group", group);
 			post.addAttribute("post", new PostEntity());
+			List<GroupEntity> listgroup = groupService.findGroupsByUserId(userid);
+			model.addAttribute("listgroup", listgroup);
 
 			List<PostModel> posts = postService.getPostsByGroupId(groupID, 0, 2, userid);
 			listpost.addAttribute("list", posts);

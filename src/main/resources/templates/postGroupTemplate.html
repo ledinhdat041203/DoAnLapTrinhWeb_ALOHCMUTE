@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport">
+	<title>Post</title>
+</head>
+
+<body>
+	<div th:fragment="postGroup (post)">
+		<div class="post-info">
+			<div class="post-account">
+				<img th:src="${post.avata}" alt="avatar con mèo" class="avatar" />
+				<div class="account-name">
+					<h5 th:text = "${post.userFullName}"></h5>
+				</div>
+			</div>
+			<i class="fa-solid fa-ellipsis"></i>
+		</div>
+		<div class="post-img">
+			<img th:src="${post.imageURL}" alt="genshin" style="width: 100%" />
+		</div>
+		<div>
+			<div class="post-icon">
+				<i class="fa-regular fa-heart"></i>
+				<i class="fa-regular fa-comment"></i>
+			</div>
+			<div class="post-like">
+				<p>62 likes</p>
+			</div>
+			<div class="post-comment">
+				<h5>danhy1110</h5>
+				<p>Mạng xã hội HCMUTE Spring Boot</p>
+			</div>
+			<div style="display: flex; justify-content:space-between">
+				<textarea name="comment" id="comment" placeholder="Add a comment..." rows="2" cols="50"
+					style="margin-right: 10px;"></textarea>
+				<button class="button" style="margin-bottom: 20px;">Send</button>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

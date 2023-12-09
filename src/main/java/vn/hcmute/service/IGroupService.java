@@ -17,5 +17,7 @@ public interface IGroupService {
 
 	void deleteById(Long id);
 
+	List<GroupEntity> findGroupsByUserId(Long userId);
+
 
 }
