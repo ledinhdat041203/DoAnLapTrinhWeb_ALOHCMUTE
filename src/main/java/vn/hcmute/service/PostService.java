@@ -26,7 +26,10 @@ public class PostService implements IPostService {
 
 	@Autowired
 	IUserInfoService userInfoService;
-
+	
+	@Autowired
+	IUserService userAccService;
+	
 	@Autowired
 	ILikeService likeService;
 
@@ -36,6 +39,7 @@ public class PostService implements IPostService {
 	private PostModel converEntityToModel(PostEntity post, long userid) {
 		PostModel postModel = new PostModel();
 		UserInfoEntity userInfo = userInfoService.findById(post.getUser().getUserID()).get();
+		UserEntity userAcc = userAccService.findByUserInfoId(post.getUser().getUserID());
 		postModel.setPostID(post.getPostID());
 		postModel.setContent(post.getContent());
 		postModel.setGroupID(post.getGroupPost().getGroupID());
@@ -44,6 +48,8 @@ public class PostService implements IPostService {
 		postModel.setUserID(post.getUser().getUserID());
 		postModel.setUserFullName(post.getUser().getFullName());
 		postModel.setAvata(userInfo.getAvata());
+		postModel.setUserAccountName(userAcc.getUserName());
+		System.out.println("USER NAME: ------------------" + userAcc.getUserName());
 		int likeCount = 0;
 		List<LikeEntity> listLike = post.getListLikes();
 		for (LikeEntity like : listLike) {
@@ -52,9 +58,7 @@ public class PostService implements IPostService {
 			}
 		}
 		postModel.setLikeCount(likeCount);
-
-		System.out.println(post.getPostID());
-		System.out.println(userid);
+		
 		LikeEntity LikeEntity = likeRepo.findByPostAndUserLikeUserID(post, userid);
 		if (LikeEntity == null || !LikeEntity.isStatus())
 			postModel.setLiked(false);
