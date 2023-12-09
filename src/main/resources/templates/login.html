@@ -8,6 +8,37 @@
 	<meta name="description" content="" />
 	<meta name="keywords" content="" />
 	<link rel="stylesheet" href="/fontawesome-free-6.5.1-web/css/style2.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+		integrity="sha512-REHdZZjR1P1i6yoY3SDr6vAM5OAv/MtdZq5i44lqkiLZwE5aAdbXh9ZLrcaM1Mbp3o/xmCwL/5qlbCoI60V+8A=="
+		crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+	<title>Login with Google</title>
+	<style>
+		body {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			height: 100vh;
+			margin: 0;
+		}
+
+		.google-login-btn {
+			text-decoration: none;
+		}
+
+		.google-login-btn:hover {
+			text-decoration: none;
+		}
+
+		.google-icon {
+			font-size: 24px;
+			/* Điều chỉnh kích thước theo nhu cầu */
+			margin-right: 8px;
+			/* Khoảng cách giữa biểu tượng và văn bản */
+		}
+	</style>
 </head>
 
 <body>
@@ -54,8 +85,13 @@
 						<button type="submit" data-ripple="">Đăng nhập</button>
 						<a class="forgot underline" href="forgot" title="">Quên mật khẩu?</a>
 					</form>
-					<span>Bạn chưa có tài khoản <a class="we-account underline" href="/registerOrFail" title="">Hãy đăng
-							ký ngay!</a></span>
+					<span>Bạn chưa có tài khoản  <a class="we-account underline" href="/registerOrFail" title="">Hãy đăng ký ngay!</a></span>
+					<a href="https://accounts.google.com/o/oauth2/auth?scope=openid%20profile%20email&redirect_uri=http://localhost:8088/LoginGoogle/LoginGooleHandler&response_type=code&client_id=123838352882-n3n3fdbnu8ulqvbr7ethoaof319b95l5.apps.googleusercontent.com&approval_prompt=force"
+						class="google-login-btn">
+						<button type="button" class="btn btn-outline-dark btn-floating mx-1">
+							<i class="fab fa-google google-icon"></i> 
+						</button>
+					</a>
 				</div>
 			</div>
 		</div>
