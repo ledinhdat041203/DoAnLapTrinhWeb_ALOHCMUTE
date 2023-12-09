@@ -22,6 +22,9 @@ public class UserInfoModel {
 	private String avata;
 	private String address;
 	private String phoneNumber;
+	private Long countFollower;
+	private Long countFollowing;
+	private Long countPost;
 
 	private MultipartFile imageFile;
 	private Boolean isEdit=false;

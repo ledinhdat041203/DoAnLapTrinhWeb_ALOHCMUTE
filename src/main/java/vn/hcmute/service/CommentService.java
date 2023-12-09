@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import vn.hcmute.Responsitory.CommentRepository;
 
 import vn.hcmute.entities.CommentEntity;
@@ -116,6 +117,23 @@ public class CommentService implements ICommentService{
 
 
 
+	@Override
+	public CommentEntity findByPostCommnentAndUserCommentUserID(PostEntity postCommnent, long userComment) {
+		
+		return commentRepo.findByPostCommnentAndUserCommentUserID(postCommnent, userComment);
+	}
 
-	
+
+
+	@Override
+	public Long countCommentsByPostId(long postId) {
+		return commentRepo.countCommentsByPostId(postId);
+	}
+
+	@Override
+	@Transactional
+	public void deleteAllByPostId(long postId) {
+		commentRepo.deleteAllByPostCommnentPostID(postId);
+	}
+
 }

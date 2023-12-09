@@ -78,6 +78,10 @@ public class UserEntity implements Serializable{
 
 	public void setUserInfo(UserInfoEntity userInfo) {
 		this.userInfo = userInfo;
+	}
+
+	public UserEntity() {
+
 	}	
 
 	

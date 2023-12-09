@@ -25,5 +25,11 @@ public class LikeService implements ILikeService{
 		return likeRepo.findByPostAndUserLikeUserID(post, userID);
 	}
 
+
+	@Override
+	public void deleteAllByPostPostId(long postId) {
+		likeRepo.deleteAllByPostPostID(postId);
+	}
+
 	
 }

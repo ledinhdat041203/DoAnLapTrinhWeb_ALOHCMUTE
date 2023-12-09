@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import vn.hcmute.Responsitory.UserInfoRepository;
-import vn.hcmute.entities.UserEntity;
 import vn.hcmute.entities.UserInfoEntity;
+import vn.hcmute.model.UserInfoModel;
 
 
 @Service
@@ -53,6 +53,20 @@ public class UserInfoService implements IUserInfoService{
 
 	public List<UserInfoEntity> findByFullNameContaining(String name) {
 		return user_info.findByFullNameContaining(name);
+	}
+	
+	@Override
+	public UserInfoModel convertToUserInfoModel(UserInfoEntity user)
+	{
+		UserInfoModel userModel = new UserInfoModel();
+		userModel.setUserID(user.getUserID());
+		userModel.setFullName(user.getFullName());
+		userModel.setDateOfBirth(user.getDateOfBirth());
+		userModel.setAvata(user.getAvata());
+		userModel.setAddress(user.getAddress());
+		userModel.setPhoneNumber(user.getPhoneNumber());
+		
+		return userModel;
 	}
 	
 }

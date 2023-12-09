@@ -2,10 +2,8 @@ package vn.hcmute.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -13,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import jakarta.validation.constraints.Email;
 import vn.hcmute.entities.UserEntity;
 import vn.hcmute.model.EmailInfo;
 
@@ -39,19 +36,17 @@ public class MailService implements IMailService {
 
 	public void send(EmailInfo email) throws MessagingException {
 		// TODO Auto-generated method stub
-		try
-		{
+		try {
 			MimeMessage message = mailSender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(message, true);
 			helper.setTo(email.getTo());
 			helper.setSubject(email.getSubject());
 			helper.setText(email.getBody(), true);
 			mailSender.send(message);
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	@Override
@@ -89,5 +84,4 @@ public class MailService implements IMailService {
 			}
 		}
 	}
-
 }

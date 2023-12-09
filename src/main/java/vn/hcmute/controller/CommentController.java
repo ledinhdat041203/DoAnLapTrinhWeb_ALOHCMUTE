@@ -1,8 +1,6 @@
 package vn.hcmute.controller;
 
-import java.sql.Date;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
 
@@ -17,10 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import ch.qos.logback.core.model.Model;
 import jakarta.servlet.http.HttpSession;
 import vn.hcmute.entities.CommentEntity;
-import vn.hcmute.entities.PostEntity;
 import vn.hcmute.entities.UserInfoEntity;
 import vn.hcmute.model.CommentRequestModel;
 import vn.hcmute.service.ICommentService;
@@ -43,20 +39,30 @@ public class CommentController {
 
 	@Autowired
 	IPostService postService;
-	
+
 	@Autowired
 	INotificationService notificationService;
 
+
 	@GetMapping("/comment/{postId}")
-	public ResponseEntity<List<CommentEntity>> getComments(@PathVariable long postId) {
-		System.out.print("Post id nha: " + postId);
+    public ResponseEntity<List<CommentEntity>> getComments(@PathVariable long postId) {
+        System.out.print("Post id nha: " + postId);
 
-		// Debug để xác nhận giá trị của postId
-		List<CommentEntity> listComment = commentService.findCommentByPost(postId);
-		System.out.print(listComment);
+        // Lấy danh sách bình luận
+        List<CommentEntity> listComment = commentService.findCommentByPost(postId);
+        System.out.print(listComment);
 
-		return new ResponseEntity<>(listComment, HttpStatus.OK);
-	}
+        // Đếm số lượng bình luận
+        Long commentCount = commentService.countCommentsByPostId(postId);
+
+        // Gán số lượng bình luận vào danh sách và trả về
+        for (CommentEntity comment : listComment) {
+            comment.setCommentCount(commentCount);
+        }
+        System.out.println("cmt =" + commentCount);
+        return new ResponseEntity<>(listComment, HttpStatus.OK);
+    }
+
 
 	@PostMapping(value = "/create/{postId}", consumes = "application/json")
 	public ResponseEntity<String> createComment(@PathVariable long postId, @RequestBody Map<String, String> commentData,
@@ -77,17 +83,18 @@ public class CommentController {
 
 		// Lưu CommentEntity mới tạo
 		commentService.save(newComment);
-		
-		/*
-		 * // Xử lí thông báo UserInfoEntity user =
-		 * userInfoService.findById(userid).get(); UserInfoEntity userNotice =
-		 * postservice.findByPostPostID(postId); String link = "Chưa có gì"; String
-		 * contentNotice = user.getFullName() + " đã bình luận về bài viết của bạn";
-		 * notificationService.createNotification(userNotice, link, contentNotice,
-		 * user.getAvata());
-		 */
 
-		return new ResponseEntity<>(content, HttpStatus.OK);
+		// Xử lí thông báo 
+		UserInfoEntity user = userInfoService.findById(userid).get();
+		UserInfoEntity userNotice = postservice.findById(postId).get().getUser();
+		String link = "Chưa có gì";
+		String contentNotice = user.getFullName() + " đã bình luận về bài viết của bạn";
+		notificationService.createNotification(userNotice, link, contentNotice, user.getAvata());
+
+		Long commentCount = commentService.countCommentsByPostId(postId);
+		String commentCountString1 = String.valueOf(commentCount);
+
+		return new ResponseEntity<>(commentCountString1, HttpStatus.OK);
 	}
 
 	@DeleteMapping(value = "/comment/delete/{postId}/{commentId}")
@@ -95,16 +102,14 @@ public class CommentController {
 			HttpSession session) {
 		Long userId = (long) session.getAttribute("userInfoID");
 		boolean isDeleted = commentService.deleteComment(commentId, userId, postId);
-
+		Long commentCount = commentService.countCommentsByPostId(postId);
+		String commentCountString1 = String.valueOf(commentCount);
 		if (isDeleted) {
-			return new ResponseEntity<>("thanh cong", HttpStatus.OK);
+			return new ResponseEntity<>(commentCountString1, HttpStatus.OK);
 		} else {
-			return new ResponseEntity<>("thatbai", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(commentCountString1, HttpStatus.BAD_REQUEST);
 		}
 	}
-
-
-	
 
 	@PutMapping(value = "/comment/update/{postId}", consumes = "application/json")
 	public ResponseEntity<String> updateComment(@PathVariable long postId, @RequestBody CommentRequestModel commentData,
@@ -123,5 +128,4 @@ public class CommentController {
 		}
 
 	}
-
 }

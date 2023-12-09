@@ -105,6 +105,7 @@
 				data: {nameSearch: name, action : 0},
 				success: function (data) {
 						// Thay đổi nội dung của #chat-container và cập nhật data-recv-id
+				//$('#chat-frame').empty();
 				$('#listPeople').html(data);
 				$('#nameSearch').val('');
 				
@@ -175,7 +176,7 @@
 								</div>
 								<div id="listPeople" class="mesg-peple">
 									<ul class="nav nav-tabs nav-tabs--vertical msg-pepl-list">
-										<li class="nav-item " th:each="item : ${list}" th:data-userid="${item.userID}">
+										<li class="nav-item " th:each="item : ${list}" th:data-userid="${item?.userID}">
 											<a class="load-chat" data-toggle="tab"
 												th:attr="data-full-name=${item.fullName}, data-recv-id=${item.userID}">
 												<figure><image th:src = "${item.avata}"></image>
@@ -209,7 +210,6 @@
 
 	<script src="js/main.min.js"></script>
 	<script src="js/script.js"></script>
-	<div id="mm-blocker" class="mm-slideout"></div>
 
 </body>
 

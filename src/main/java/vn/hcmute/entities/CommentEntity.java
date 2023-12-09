@@ -2,16 +2,19 @@ package vn.hcmute.entities;
 
 import java.sql.Date;
 
+import org.springframework.data.repository.CrudRepository;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import lombok.Setter;
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-import jakarta.persistence.*;
-import org.springframework.data.repository.CrudRepository;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "comments")
@@ -23,7 +26,7 @@ public class CommentEntity {
 	private long commentidID;
 
 	@JsonProperty("content")
-	@Column(name = "content", columnDefinition = "text")
+	@Column(name = "content", columnDefinition = "ntext")
 	private String content;
 
 	@ManyToOne
@@ -121,5 +124,15 @@ public class CommentEntity {
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	private Long commentCount;
+
+	public Long getCommentCount() {
+		return commentCount;
+	}
+
+	public void setCommentCount(Long commentCount) {
+		this.commentCount = commentCount;
 	}
 }

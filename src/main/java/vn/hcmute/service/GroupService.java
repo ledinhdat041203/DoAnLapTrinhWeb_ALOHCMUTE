@@ -27,6 +27,15 @@ public class GroupService implements IGroupService{
 		return groupRepo.findById(id);
 	}
 
+	@Override
+	public <S extends GroupEntity> S save(S entity) {
+		return groupRepo.save(entity);
+	}
+
+	@Override
+	public void deleteById(Long id) {
+		groupRepo.deleteById(id);
+	}
 	
 	
 	

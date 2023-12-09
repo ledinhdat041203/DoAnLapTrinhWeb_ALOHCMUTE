@@ -3,26 +3,23 @@ package vn.hcmute.controller;
 import java.io.IOException;
 
 import java.util.Map;
+
 import java.util.Optional;
 import java.util.UUID;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 //import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.BodyInserters;
@@ -38,29 +35,28 @@ import org.apache.http.client.fluent.Form;
 import org.apache.http.client.fluent.Request;
 
 import jakarta.mail.internet.MimeMessage;
+import org.springframework.web.servlet.ModelAndView;
+
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import jakarta.transaction.Transactional;
-import jakarta.validation.constraints.Email;
-import jakarta.websocket.server.PathParam;
-import lombok.experimental.PackagePrivate;
 import vn.hcmute.entities.ResetPasswordEntity;
 import vn.hcmute.entities.StatusAccountEntity;
+
 import vn.hcmute.entities.UserEntity;
 import vn.hcmute.entities.UserInfoEntity;
 import vn.hcmute.model.EmailInfo;
 import vn.hcmute.model.InfoGoogleModel;
 import vn.hcmute.model.UserAcountModel;
+
 import vn.hcmute.model.UserGoogle;
 import vn.hcmute.model.UserInfoModel;
+
 import vn.hcmute.model.updatePassModel;
 import vn.hcmute.service.IMailService;
 import vn.hcmute.service.IUserInfoService;
 import vn.hcmute.service.IUserService;
-import vn.hcmute.service.MailService;
-import vn.hcmute.service.UserService;
 
 @Controller
 public class UserController {
@@ -89,36 +85,6 @@ public class UserController {
 
 		return "login";
 	}
-
-	/*
-	 * @GetMapping("/login/oauth2/code/google") public String
-	 * User(OAuth2AuthenticationToken oAuth2AuthenticationToken, HttpSession
-	 * session) { System.out.print(toUser(oAuth2AuthenticationToken.getPrincipal().
-	 * getAttributes())); UserEntity user_entity = new UserEntity(); UserInfoEntity
-	 * user_info = new UserInfoEntity(); StatusAccountEntity status = new
-	 * StatusAccountEntity();
-	 * user_entity.setEmail(toUser(oAuth2AuthenticationToken.getPrincipal().
-	 * getAttributes()).getEmail());
-	 * user_entity.setUserName(toUser(oAuth2AuthenticationToken.getPrincipal().
-	 * getAttributes()).getGiven_name());
-	 * user_info.setFullName(toUser(oAuth2AuthenticationToken.getPrincipal().
-	 * getAttributes()).getName()); user_entity.setPass(""); Optional<UserEntity> ue
-	 * = user_service.findByemailContaining(user_entity.getEmail()); if
-	 * (ue.isEmpty()) { user_info_service.save(user_info);
-	 * user_entity.setUserInfo(user_info); status.setUserCode(user_entity);
-	 * status.setStatus(true); status.setCode(0); user_service.save(user_entity);
-	 * user_service.save(status); session.setAttribute("username", user_service
-	 * .findByemailContaining(toUser(oAuth2AuthenticationToken.getPrincipal().
-	 * getAttributes()).getEmail()) .get().getIdAccount()); return "user"; } else {
-	 * session.setAttribute("username",
-	 * user_service.findByemailContaining(ue.get().getEmail()).get().getIdAccount())
-	 * ; return "user"; } } public LoginGoogleModel toUser(Map<String, Object> map)
-	 * { LoginGoogleModel loginModel = new LoginGoogleModel(); if (map == null)
-	 * return null; else { loginModel.setEmail((String) map.get("email"));
-	 * loginModel.setName((String) map.get("name"));
-	 * loginModel.setGiven_name((String) map.get("given_name")); } return
-	 * loginModel; }
-	 */
 
 	// kiểm tra email pass và status kích hoạt
 	@PostMapping("/checklogin")
@@ -278,10 +244,6 @@ public class UserController {
 		}
 	}
 
-	/*
-	 * @GetMapping("updatePass") public String Show(ModelMap model) {
-	 * model.addAttribute("pass", new updatePassModel()); return "updatePass"; }
-	 */
 	@GetMapping("/LoginGoogle")
 	public String processRequest(@RequestParam("code") String code,HttpSession session) throws ClientProtocolException, IOException {
 		String accessToken = getToken(code);
@@ -317,25 +279,6 @@ public class UserController {
 			return "home";
 	}
 
-	/*
-	 * public static String getToken(String code) throws ClientProtocolException,
-	 * IOException { String tokenEndpoint = InfoGoogleModel.GOOGLE_LINK_GET_TOKEN;
-	 * 
-	 * // Set up WebClient WebClient webClient = WebClient.create();
-	 * 
-	 * // Make the POST request String response = webClient.post()
-	 * .uri(tokenEndpoint) .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-	 * .body(BodyInserters.fromFormData("client_id",
-	 * InfoGoogleModel.GOOGLE_CLIENT_ID) .with("client_secret",
-	 * InfoGoogleModel.GOOGLE_CLIENT_SECRET) .with("redirect_uri",
-	 * InfoGoogleModel.GOOGLE_REDIRECT_URI) .with("code", code) .with("grant_type",
-	 * InfoGoogleModel.GOOGLE_GRANT_TYPE)) .retrieve() .bodyToMono(String.class)
-	 * .block(); // Blocking call, handle differently in a reactive scenario
-	 * 
-	 * if (response != null) { // Your parsing logic here, use a JSON library like
-	 * Gson or Jackson return "Access Token: " + response; } else { // Handle error
-	 * case return "Error: Unable to fetch token"; } }
-	 */
 	public static String getToken(String code) throws ClientProtocolException, IOException {
 		// call api to get token
 		try {
@@ -441,5 +384,4 @@ public class UserController {
 	public String showAgain() {
 		return "verify";
 	}
-
 }

@@ -13,4 +13,9 @@ public interface IGroupService {
 
 	Optional<GroupEntity> findById(Long id);
 
+	<S extends GroupEntity> S save(S entity);
+
+	void deleteById(Long id);
+
+
 }
