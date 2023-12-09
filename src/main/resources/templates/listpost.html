@@ -21,11 +21,6 @@
 			<!-- Kết thúc vòng lặp -->
 		</div>
 		<div th:replace="~{asideMenu::asideMenu}"></div>
-
-
-
-
-		<!-- -----------------------------------------------------------script------------------------------------- -->
 		<div class="modal js-modal">
 			<form th:object="${post}" onsubmit="saveImage(); return false;">
 				<div class="modal-container">
@@ -274,8 +269,6 @@
 		}
 	</script>
 
-
-	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 	<script>
 		// Hàm xóa bài viết
 		function deletePost(button) {
@@ -299,7 +292,6 @@
 		}
 	</script>
 
-	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 	<script defer>
 		$(document).ready(function () {
 			$('form').submit(function (event) {
@@ -358,7 +350,6 @@
 				var formData = {
 					content: $('#createCommentInput' + postId).val() // Assuming you have a createCommentInput element
 				};
-
 				// Get the post ID from the form's action attribute
 
 				$.ajax({
@@ -695,8 +686,9 @@
 		//}
 
 		//function hideComment() {
-		// listComment.classList.remove("open");
+		//	listComment.classList.remove("open");
 		//}
+
 
 		//cmt.addEventListener("click", showComment);
 		//listComment.addEventListener("click", hideComment);
@@ -916,7 +908,6 @@
 
 
 
-
 	<!--Lưu ảnh,Post ảnh-->
 	<script type="module">
 
@@ -986,6 +977,7 @@
 					success: function () {
 						alert('Save successfully');
 						modal.classList.remove("open");
+						window.location.replace("/listpost");
 					},
 					error: function () {
 						alert('Error save image');
