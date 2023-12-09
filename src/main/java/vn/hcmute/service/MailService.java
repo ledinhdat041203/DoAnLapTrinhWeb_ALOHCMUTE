@@ -18,6 +18,7 @@ import vn.hcmute.model.EmailInfo;
 public class MailService implements IMailService {
 
 	List<EmailInfo> list = new ArrayList<>();
+	
 	@Autowired
 	JavaMailSender mailSender;
 
