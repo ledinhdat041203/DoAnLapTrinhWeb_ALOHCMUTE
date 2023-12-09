@@ -32,6 +32,10 @@ public class GroupService implements IGroupService{
 		return groupRepo.save(entity);
 	}
 
+	@Override
+	public void deleteById(Long id) {
+		groupRepo.deleteById(id);
+	}
 	
 	
 	

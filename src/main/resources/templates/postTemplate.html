@@ -14,7 +14,7 @@
             <div class="post-info">
               <div class="post-account">
                 <img
-                  th:src="${post.imageURL}" alt="Post Image"
+                  th:src="${post.avata}" alt="Post Image"
                   
                   class="avatar"
                 />
@@ -36,6 +36,7 @@
                 <p th:text=" ${post.likeCount}+' Likes' " th:id="'likeCount' + ${post.postID}"></p>
               </div>
               <div class="post-comment">
+				 <!--Lay userName cho nay nha-->
                 <h5>xiaoluan_2011</h5>
                 <p th:text="${post.content}"></p>
               </div>
