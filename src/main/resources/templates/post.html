@@ -10,7 +10,7 @@
 <body>
 	<h2>Add Post</h2>
 
-	<form action="/post" th:object="${post}" method="post" onsubmit="saveImage(); return false;">
+	<form th:object="${post}" method="post" onsubmit="saveImage(); return false;">
 
 		<label for="content">Nội dung:</label>
 		
@@ -98,6 +98,8 @@
 					contentType: 'application/json',
 					success: function () {
 						alert('Save successfully');
+						// Reload the page upon successful submission
+						location.reload();
 					},
 					error: function () {
 						alert('Error save image');

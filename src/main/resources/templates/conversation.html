@@ -176,7 +176,7 @@
 								</div>
 								<div id="listPeople" class="mesg-peple">
 									<ul class="nav nav-tabs nav-tabs--vertical msg-pepl-list">
-										<li class="nav-item " th:each="item : ${list}" th:data-userid="${item.userID}">
+										<li class="nav-item " th:each="item : ${list}" th:data-userid="${item?.userID}">
 											<a class="load-chat" data-toggle="tab"
 												th:attr="data-full-name=${item.fullName}, data-recv-id=${item.userID}">
 												<figure><image th:src = "${item.avata}"></image>

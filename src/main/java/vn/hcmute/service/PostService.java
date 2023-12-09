@@ -10,10 +10,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import vn.hcmute.Responsitory.LikeRepository;
 import vn.hcmute.Responsitory.PostRepository;
 import vn.hcmute.entities.LikeEntity;
 import vn.hcmute.entities.PostEntity;
+import vn.hcmute.entities.UserEntity;
+import vn.hcmute.entities.UserInfoEntity;
 import vn.hcmute.model.PostModel;
 
 @Service
@@ -32,6 +35,7 @@ public class PostService implements IPostService {
 
 	private PostModel converEntityToModel(PostEntity post, long userid) {
 		PostModel postModel = new PostModel();
+		UserInfoEntity userInfo = userInfoService.findById(post.getUser().getUserID()).get();
 		postModel.setPostID(post.getPostID());
 		postModel.setContent(post.getContent());
 		postModel.setGroupID(post.getGroupPost().getGroupID());
@@ -39,6 +43,7 @@ public class PostService implements IPostService {
 		postModel.setPostDate(post.getPostDate());
 		postModel.setUserID(post.getUser().getUserID());
 		postModel.setUserFullName(post.getUser().getFullName());
+		postModel.setAvata(userInfo.getAvata());
 		int likeCount = 0;
 		List<LikeEntity> listLike = post.getListLikes();
 		for (LikeEntity like : listLike) {
@@ -96,5 +101,21 @@ public class PostService implements IPostService {
 		}
 		return listPostModel;
 	}
+	
+	
+	@Override
+	public List<PostEntity> findByGroupPostGroupID(Long groupID) {
+		return postRepo.findByGroupPostGroupID(groupID);
+	}
 
+
+	@Override
+	public boolean existsById(Long id) {
+		return postRepo.existsById(id);
+	}
+
+	@Override
+	public void deleteById(Long id) {
+		postRepo.deleteById(id);
+	}
 }

@@ -122,4 +122,14 @@ public class CommentEntity {
 	public void setContent(String content) {
 		this.content = content;
 	}
+
+	private Long commentCount;
+
+	public Long getCommentCount() {
+		return commentCount;
+	}
+
+	public void setCommentCount(Long commentCount) {
+		this.commentCount = commentCount;
+	}
 }

@@ -1,8 +1,5 @@
 package vn.hcmute.service;
 
-import java.util.Locale;
-
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
 import jakarta.mail.MessagingException;
@@ -17,3 +14,4 @@ public interface IMailService {
 	void constructResetTokenEmail(String contextPath, String token, UserEntity user) throws MessagingException ;
 	void constructCreateCode(int code, UserEntity user) throws MessagingException;
 }
+
