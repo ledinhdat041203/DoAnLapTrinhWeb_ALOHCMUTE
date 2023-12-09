@@ -17,8 +17,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
-
 @Entity
 @Table(name = "UserInfo")
 public class UserInfoEntity {
@@ -105,6 +103,48 @@ public class UserInfoEntity {
 		this.fullName = fullName;
 	}
 
+
+	public UserInfoEntity(Long userID, String fullName, Date dateOfBirth, String avata, String address,
+			String phoneNumber, UserEntity userAccount, List<MessagesEntity> messageSender,
+			List<MessagesEntity> messageReceiver, List<FriendsEntity> listFriend1, List<FriendsEntity> listFriend2,
+			List<GroupEntity> listGroups, List<GroupMembersEntity> listGroupMembers) {
+		this.userID = userID;
+		this.fullName = fullName;
+		this.dateOfBirth = dateOfBirth;
+		this.avata = avata;
+		this.address = address;
+		this.phoneNumber = phoneNumber;
+		this.userAccount = userAccount;
+		this.messageSender = messageSender;
+		this.messageReceiver = messageReceiver;
+		this.listFriend1 = listFriend1;
+		this.listFriend2 = listFriend2;
+		this.listGroups = listGroups;
+		this.listGroupMembers = listGroupMembers;
+	}
+
+
+	public UserInfoEntity() {
+	}
+
+
+	public Long getUserID() {
+		return userID;
+	}
+
+
+	public void setUserID(Long userID) {
+		this.userID = userID;
+	}
+	public String getFullName() {
+		return fullName;
+	}
+
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
 	public Date getDateOfBirth() {
 		return dateOfBirth;
 	}
@@ -120,6 +160,7 @@ public class UserInfoEntity {
 	public void setAvata(String avata) {
 		this.avata = avata;
 	}
+
 
 	public String getAddress() {
 		return address;
@@ -193,6 +234,7 @@ public class UserInfoEntity {
 		this.listGroupMembers = listGroupMembers;
 	}
 
+
 	public List<NotificationEntity> getUserNotify() {
 		return userNotify;
 	}
@@ -200,8 +242,6 @@ public class UserInfoEntity {
 	public void setUserNotify(List<NotificationEntity> userNotify) {
 		this.userNotify = userNotify;
 	}
-
-	// @OneToOne(mappedBy = "userInfo", cascade = CascadeType.ALL)
-	// private ImageEntity image;
 	
 }
+

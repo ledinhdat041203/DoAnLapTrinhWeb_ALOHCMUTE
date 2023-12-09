@@ -37,6 +37,9 @@ public class UserEntity implements Serializable{
 		this.userInfo = userInfo;
 	}
 
+	public UserEntity() {
+	}
+
 	public long getIdAccount() {
 		return idAccount;
 	}
@@ -78,6 +81,7 @@ public class UserEntity implements Serializable{
 	}
 
 	public UserEntity() {
+
 	}	
 
 	
