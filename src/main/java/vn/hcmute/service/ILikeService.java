@@ -11,6 +11,8 @@ public interface ILikeService {
 
 	LikeEntity findLikeByPostAndUser(PostEntity post, long userID);
 
+	void deleteAllByPostPostId(long postId);
+
 
 	//LikeEntity findByLikeByPostAndUser(long postID, long userID);
 	//Optional<LikeEntity> findByPostAndUserLike(PostEntity post, UserInfoEntity userLike);

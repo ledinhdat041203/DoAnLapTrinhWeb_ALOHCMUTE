@@ -101,4 +101,13 @@ public class PostService implements IPostService {
 		return listPostModel;
 	}
 
+	@Override
+	public boolean existsById(Long id) {
+		return postRepo.existsById(id);
+	}
+
+	@Override
+	public void deleteById(Long id) {
+		postRepo.deleteById(id);
+	}
 }

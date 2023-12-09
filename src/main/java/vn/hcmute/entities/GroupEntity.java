@@ -23,6 +23,8 @@ public class GroupEntity {
 	private String groupName;
 	@Column(name = "description", columnDefinition = "ntext")
 	private String description;
+	@Column (name = "avataGroup", columnDefinition = "nvarchar(255)")
+	private String avataGroup;
 	
 	@ManyToOne
     @JoinColumn(name = "admin")
@@ -31,7 +33,7 @@ public class GroupEntity {
 	@Column(name = "createdate", columnDefinition = "DATE")
 	private Date createDate;
 	
-	 @OneToMany(mappedBy = "groupPost", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "groupPost", fetch = FetchType.LAZY)
 	 private List<PostEntity> listPosts;
 	 
 	 @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)

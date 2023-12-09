@@ -17,8 +17,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -40,36 +38,36 @@ public class UserInfoEntity {
 	private String address;
 	@Column(name = "phonenumber", columnDefinition = "nvarchar(255)")
 	private String phoneNumber;
-	
-	 @OneToOne(mappedBy = "userInfo", cascade = CascadeType.ALL)
-	 private UserEntity userAccount;
-	 
-	 @OneToMany(mappedBy = "sender", fetch = FetchType.EAGER)
-	 private List<MessagesEntity> messageSender;
-	 @OneToMany(mappedBy = "receiver", fetch = FetchType.LAZY)
-	 private List<MessagesEntity> messageReceiver;
-	 
-	 @OneToMany(mappedBy = "user1", fetch = FetchType.LAZY)
-	 private List<FriendsEntity> listFriend1;
-	 @OneToMany(mappedBy = "user2", fetch = FetchType.LAZY)
-	 private List<FriendsEntity> listFriend2;
-	 
-	 @OneToMany(mappedBy = "admin", fetch = FetchType.LAZY)
-	 private List<GroupEntity> listGroups;
-	 
-	 @OneToMany(mappedBy = "userMember", fetch = FetchType.LAZY)
-	 private List<GroupMembersEntity> listGroupMembers;
 
-	 
+	@OneToOne(mappedBy = "userInfo", cascade = CascadeType.ALL)
+	private UserEntity userAccount;
+
+	@OneToMany(mappedBy = "sender", fetch = FetchType.EAGER)
+	private List<MessagesEntity> messageSender;
+	@OneToMany(mappedBy = "receiver", fetch = FetchType.LAZY)
+	private List<MessagesEntity> messageReceiver;
+
+	@OneToMany(mappedBy = "user1", fetch = FetchType.LAZY)
+	private List<FriendsEntity> listFriend1;
+	@OneToMany(mappedBy = "user2", fetch = FetchType.LAZY)
+	private List<FriendsEntity> listFriend2;
+
+	@OneToMany(mappedBy = "admin", fetch = FetchType.LAZY)
+	private List<GroupEntity> listGroups;
+
+	@OneToMany(mappedBy = "userMember", fetch = FetchType.LAZY)
+	private List<GroupMembersEntity> listGroupMembers;
+
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	private List<NotificationEntity> userNotify;
+
 	public UserInfoEntity(long userID, String fullName) {
-	
+
 		this.userID = userID;
 		this.fullName = fullName;
 	}
 
-	 //@OneToOne(mappedBy = "userInfo", cascade = CascadeType.ALL)
-	 //private ImageEntity image;
-	 
-	
-}
+	// @OneToOne(mappedBy = "userInfo", cascade = CascadeType.ALL)
+	// private ImageEntity image;
 
+}

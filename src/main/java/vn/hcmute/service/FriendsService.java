@@ -33,8 +33,18 @@ public class FriendsService implements IFriendsService {
 	}
 
 	@Override
+	public <S extends FriendsEntity> Page<S> findAll(Example<S> example, Pageable pageable) {
+		return friendsRepository.findAll(example, pageable);
+	}
+
+	@Override
 	public Optional<FriendsEntity> findById(Long id) {
 		return friendsRepository.findById(id);
+	}
+
+	@Override
+	public <S extends FriendsEntity> long count(Example<S> example) {
+		return friendsRepository.count(example);
 	}
 
 	@Override
@@ -46,33 +56,31 @@ public class FriendsService implements IFriendsService {
 	public void deleteById(Long id) {
 		friendsRepository.deleteById(id);
 	}
-	
+
 	////////////////////////////////
 	@Override
 	public List<FriendsEntity> findByuser1userID(long user1id) {
 		return friendsRepository.findByUser1UserID(user1id);
 	}
 
+
+	@Override
+	public List<FriendsEntity> findByuser2userID(Long user2id) {
+		return friendsRepository.findByUser2UserID(user2id);
+	}
 	
 	@Override
 	public FriendsEntity findByUser1IDAndUser2ID(long user1id, long user2id) {
 		return friendsRepository.findByUser1UserIDAndUser2UserID(user1id, user2id);
 	}
-	
-	
+
 	@Override
 	public void createFriendsByUser1AndUser2(UserInfoEntity user1, UserInfoEntity user2, boolean status) {
 		FriendsEntity newFriends = new FriendsEntity();
 		newFriends.setUser1(user1);
 		newFriends.setUser2(user2);
 		newFriends.setStatus(status);
-		
+
 		friendsRepository.save(newFriends);
 	}
-
-	@Override
-	public List<FriendsEntity> findByuser2userID(Long user2id) {
-		return friendsRepository.findByUser2UserID(user2id);
-	}
-
 }
