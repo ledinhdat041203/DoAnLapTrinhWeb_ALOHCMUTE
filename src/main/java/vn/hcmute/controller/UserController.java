@@ -171,7 +171,7 @@ public class UserController {
 		return "sendMail";
 	}
 
-	@PostMapping("/sended")
+	@PostMapping("/sendmail")
 	public String Send(HttpServletRequest request, ModelMap model, @ModelAttribute("mail") EmailInfo emailInfo) {
 		/*
 		 * try { Optional<UserEntity> user =

@@ -10,13 +10,15 @@
 </head>
 
 <body>
+	<img th:src="*{group.avataGroup}" alt="Uploaded Image" id="urlImage" style="width: 300px; height: 200px;"></image>
 	<h2 th:text=" 'Group ID: ' + ${group.groupID}"></h2>
 	<h2 th:text="${'Group Name: ' + group.groupName}"></h2>
 	<h2 th:text="${'Description: ' + group.description}"></h2>
 	<h2 th:text="${'Admin: ' + group.admin.fullName}"></h2>
+	<h2 th:text="${'Ngày  tạo: ' + group.createDate}"></h2>
 	<h2><a th:href="'/group/list_member/' + ${group.groupID}">Thành viên nhóm</a></h2>
-	<br>
-
+	</br>
+	<a th:href="@{/modifyGroup/{groupID}(groupID=${group.groupID})}">Modify Group</a>
 	<form th:action=" '/post/' + ${group.groupID} " th:object="${post}" method="post"
 		th:onsubmit="saveImage(); return false;">
 
