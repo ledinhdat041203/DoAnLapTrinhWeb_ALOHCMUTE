@@ -31,4 +31,5 @@ public interface IPostService {
 	List<PostEntity> findByGroupPostGroupID(Long groupID);
 
 
+
 }

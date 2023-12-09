@@ -47,6 +47,7 @@ public class groupController {
 	ICommentService commentService;
 	@Autowired
 	ILikeService likeService;
+
 	
 	
 	@GetMapping("listgroup")
@@ -118,8 +119,7 @@ public class groupController {
 		else {
 			model.addAttribute("message", "Bạn không là quản trị viên!");
 		}
-		return "redirect:/group/"+groupOld.getGroupID();
-	}
+
 	
 
 	@GetMapping("group/{groupID}")

@@ -47,8 +47,10 @@ public class PostController {
 	public String post(Model model, HttpSession session) {
 		Long userid = (long) session.getAttribute("userInfoID");
 
-		List<PostModel> posts = postService.getPostsByGroupId(1, 0, 2, userid);
 
+		UserInfoEntity userInfo = userInfoService.findById(userid).get();
+		List<PostModel> posts = postService.getPostsByGroupId(1, 0, 2, userid);
+		model.addAttribute("userInfo",userInfo);
 		model.addAttribute("list", posts);
 		return "listpost";
 	}

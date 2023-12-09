@@ -20,6 +20,7 @@
 	<h2><a th:href="'/group/list_member/' + ${group.groupID}">Thành viên nhóm</a></h2>
 	<h2><a th:href="@{/modifyGroup/{groupID}(groupID=${group.groupID})}">Modify Group</a></h2>
 	<h2><a th:href="@{/deleteGroup/{groupID}(groupID=${group.groupID})}">Giải tán</a></h2>
+
 	<form th:action=" '/post/' + ${group.groupID} " th:object="${post}" method="post"
 		th:onsubmit="saveImage(); return false;">
 
