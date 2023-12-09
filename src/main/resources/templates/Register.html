@@ -4,8 +4,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<title>Getting Started: Serving Web Content</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="" />
+	<meta name="keywords" content="" />
+	<link rel="stylesheet" href="/fontawesome-free-6.5.1-web/css/style2.css">
+
 </head>
 
 <body>
@@ -30,48 +34,26 @@
 						<label for="form2Example2">Password</label> <input type="password" name="pass"
 							id="form2Example2" class="form-control">
 					</div>
-					<div class="form-group">
-						<label for="form2Example2">Confirm Password</label> <input type="password" name="checkPass"
-							id="form2Example2" class="form-control" />
-					</div>
-					<div th:if="${param.pass}">
-						<div class="alert alert-info">Confirm Password is not correct</div>
-					</div>
-					<div class="form-group">
-						<label for="form2Example2">Name</label> <input type="text" name="userName" id="form2Example2"
-							class="form-control" />
-					</div>
-					<div class="form-group">
-						<label for="form2Example2">Full Name</label> <input type="text" name="fullName"
-							id="form2Example2" class="form-control" />
-					</div>
-					<div class="form-group">
-						<label for="form2Example2">Phone number</label> <input type="text" name="phoneNumber"
-							id="form2Example2" class="form-control" />
-						<div th:if="${param.phone}">
-							<div class="alert alert-info">Phone is exist</div>
-						</div>
-						<div class="form-group">
-							<label for="form2Example2">Ảnh đại diện</label>
-							<input type="text" name="avata" id="form2Example2" class="form-control" hidden/>
-							<div id="imageContainer"></div>
-							<input type="file" id="file">
-						</div>
-						<div class="form-group">
-							<label for="form2Example2">address</label> <input type="text" name="address"
-								id="form2Example2" class="form-control" />
-						</div>
-						<div class="form-group">
-							<label for="form2Example2">Date of birth</label> <input type="date" name="dateOfBirth"
-								id="form2Example2" class="form-control" />
-						</div>
-						<!-- Submit button -->
-						<input type='submit' class="btn btn-primary btn-block" value='Register'>
-						<p class="text-center">
-							Already a member? <a href="/login">Login</a>
-						</p>
-					</div>
-				</form>
+					<form class="we-form" action="registerOrFail" method="post">
+						<input type="text" placeholder="Email" name="email">
+						<input type="password" placeholder="Password" name="pass">
+						<input type="password" placeholder="Confirm Password" name="checkPass">
+						<input type="text" placeholder="Name" name="userName">
+						<input type="text" placeholder="Full name" name="fullName">
+						<input type="text" placeholder="Phone" name="phoneNumber">
+						<label for="form2Example2">Ảnh đại diện</label>
+						<input type="text" name="avata" id="form2Example2" class="form-control" hidden />
+						<input type="file" id="file">
+						<div id="imageContainer"></div>
+						<input type="file" id="file">
+						<input type="text" placeholder="Address" name="address">
+						<input type="date" placeholder="Date of birth" name="dateOfBirth">
+						<button type="submit" data-ripple style="margin-left: auto; margin-right: auto;">Đăng
+							ký</button>
+					</form>
+					<span>Bạn có tài khoản rồi?<a class="we-account underline" a href="/login" title="">Hãy nhập ngay
+							nhé!</a></span>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -125,6 +107,7 @@
 		});
 
 	</script>
+
 
 </body>
 

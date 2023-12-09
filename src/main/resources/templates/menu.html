@@ -10,72 +10,96 @@
 <body>
 	<header id="sidebarMenu" th:fragment="menu">
 		<div class="sidebar">
-			<div class="logo"></div>
+			<div class="logo">
+				<img src="/images/Logo1.png" alt="logo" />
+			</div>
 			<div class="Menu">
 				<ul class="list-Menu">
-					<a class="link-item">
+					<a href="/listpost" class="link-item">
 						<li class="list-item">
 							<i class="fa-solid fa-house list-item-icon"></i><span class="list-item-name">Home</span>
 						</li>
 					</a>
-					<button class="link-item">
-						<li class="list-item" style="padding-right: 127px">
+					<a class="link-item">
+						<li class="list-item">
 							<i class="fa-solid fa-magnifying-glass list-item-icon"></i><span
 								class="list-item-name">Search</span>
 						</li>
-					</button>
-					<button class="link-item">
-						<li class="list-item" style="padding-right: 124px">
-							<i class="fa-regular fa-compass list-item-icon"></i><span
-								class="list-item-name">Explore</span>
-						</li>
-					</button>
-					<a  href="/list_Conversation" class="link-item" role="button">
+					</a>
+					<a class="link-item" href="/listgroup">
+
 						<li class="list-item">
-							
-								<i class="fa-brands fa-facebook-messenger list-item-icon"></i><span
-									class="list-item-name">Messages</span>
-							
+							<i class="fa-solid fa-user-group list-item-icon"></i><span
+								class="list-item-name">Group</span>
 						</li>
 					</a>
-					<button class="link-item">
-						<li class="list-item" style="padding-right: 79px">
+					<a href="/list_Conversation" class="link-item">
+						<li class="list-item">
+							<i class="fa-brands fa-facebook-messenger list-item-icon"></i><span
+								class="list-item-name">Messages</span>
+						</li>
+					</a>
+					<a href="/notification/notification-list" class="link-item has-noti">
+						<li class="list-item">
 							<i class="fa-regular fa-heart list-item-icon"></i><span
 								class="list-item-name">Notifications</span>
+							<!--<div class="notification">
+									<header class="notify-header">
+										<h2>Notifications</h2>
+									</header>
+									<ul class="notify-list">
+										<li class="notify-item">
+											<img src="../photo/avatar.jpeg" alt="" />
+											<span class="description">
+												<h5>xiaoluan_2011</h5>
+												vừa theo dõi bạn
+											</span>
+										</li>
+										<li class="notify-item">
+											<img src="../photo/avatar.jpeg" alt="" />
+											<span class="description">
+												<h5>xiaoluan_2011</h5>
+												vừa theo dõi bạn
+											</span>
+										</li>
+										<li class="notify-item">
+											<img src="../photo/avatar.jpeg" alt="" />
+											<span class="description">
+												<h5>xiaoluan_2011</h5>
+												vừa theo dõi bạn
+											</span>
+										</li>
+									</ul>
+								</div>-->
 						</li>
-					</button>
-					<button class="link-item js-post">
-						<li class="list-item" style="padding-right: 134px">
+					</a>
+					<a class="link-item js-post">
+						<li class="list-item">
 							<i class="fa-regular fa-square-plus list-item-icon"></i><span
 								class="list-item-name">Create</span>
 						</li>
-					</button>
-					<a class="link-item">
+					</a>
+					<a class="link-item" href="/profile" role="button">
 						<li class="list-item">
-							<i class="fa-regular fa-user list-item-icon"></i><span class="list-item-name">Profile</span>
+							<i class="fa-regular fa-user list-item-icon"></i>
+							<span class="list-item-name">Profile</span>
 						</li>
 					</a>
 				</ul>
 			</div>
 			<div class="more">
 				<ul class="list-Menu">
-					<a class="link-item">
+					<a class="link-item" href="/logout" role="button">
 						<li class="list-item">
 							<i class="fa-solid fa-arrow-right-from-bracket list-item-icon"></i><span
 								class="list-item-name">Log out</span>
-						</li>
-					</a>
-					<a class="link-item">
-						<li class="list-item">
-							<i class="fa-solid fa-repeat list-item-icon"></i><span class="list-item-name">Switch
-								Account</span>
 						</li>
 					</a>
 				</ul>
 			</div>
 		</div>
 	</header>
-
+	
 </body>
 
 </html>

@@ -40,6 +40,11 @@ public class GroupMemberService implements IGroupMemberService{
 		groupMemberRepo.delete(entity);
 	}
 
+	@Override
+	public int deleteByGroupGroupID(Long groupID) {
+		return groupMemberRepo.deleteByGroupGroupID(groupID);
+	}
+
 	
 	
 }

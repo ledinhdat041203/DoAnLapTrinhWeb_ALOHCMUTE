@@ -10,8 +10,8 @@
 <body>
 	<h2>Add Post</h2>
 
-	<form th:object="${post}" method="post"
-		onsubmit="saveImage(); return false;">
+
+	<form th:object="${post}" method="post" onsubmit="saveImage(); return false;">
 
 		<label for="content">Nội dung:</label> <input type="text" id="content"
 			name="content" rows="4" cols="50" th:field="*{content}" required>

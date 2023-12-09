@@ -49,11 +49,12 @@ public class PostController {
 	@GetMapping("/listpost")
 	public String post(Model model, HttpSession session) {
 		Long userid = (long) session.getAttribute("userInfoID");
-
+		UserInfoEntity userInfo = userInfoService.findById(userid).get();
 		List<PostModel> posts = postService.getPostsByGroupId(1, 0, 2, userid);
 		List<UserInfoEntity> listSuggest = friendController.suggest(userid, 5);
 		
 		model.addAttribute("listSuggest", listSuggest);
+		model.addAttribute("userInfo",userInfo);
 		model.addAttribute("list", posts);
 		model.addAttribute("demo", posts.get(1));
 		return "listpost";

@@ -144,7 +144,7 @@ public class FriendsController {
 
 		List<Long> listuserid = new ArrayList<>();
 		for (long i = 0; i < sizeList;) {
-			long randomId = random.nextLong(100) + 1;
+			long randomId = random.nextLong(11000) + 1;
 			if (randomId != idUsercurrent) {
 				FriendsEntity friend = friendsService.findByUser1IDAndUser2ID(idUsercurrent, randomId);
 				boolean shouldAdd = false;

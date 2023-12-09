@@ -3971,6 +3971,7 @@ nav.breadcrumb {
     font-weight: 400;
     text-align: center;
     width: 100%;
+    height: 755px;
 }
 
 .page-likes .tab-content .tab-pane > span i {
@@ -3978,7 +3979,9 @@ nav.breadcrumb {
     font-size: 15px;
     margin-right: 6px;
 }
-
+.tab-pane{
+	height: 755px;
+}
 .page-likes .users-thumb-list {
     float: left;
     text-align: center;
@@ -15250,7 +15253,7 @@ a.shopping-cart > i {
     float: left;
     width: 26%;
 	box-shadow: -10px 0 20px rgba(0, 0, 0, 0.1);
-	height: 715.636px;
+	height: 755px;
 }
 .chater-info {
     background: #fff none repeat scroll 0 0;
@@ -15408,7 +15411,6 @@ a.shopping-cart > i {
 .mesg-peple {
     display: inline-block;
     width: 100%;
-    height: 100%;
 }
 .nav.nav-tabs.nav-tabs--vertical.msg-pepl-list {
     margin-bottom: 0;

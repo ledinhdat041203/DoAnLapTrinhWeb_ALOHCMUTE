@@ -14,6 +14,8 @@ import vn.hcmute.Responsitory.LikeRepository;
 import vn.hcmute.Responsitory.PostRepository;
 import vn.hcmute.entities.LikeEntity;
 import vn.hcmute.entities.PostEntity;
+import vn.hcmute.entities.UserEntity;
+import vn.hcmute.entities.UserInfoEntity;
 import vn.hcmute.model.PostModel;
 
 @Service
@@ -26,13 +28,18 @@ public class PostService implements IPostService {
 
 	@Autowired
 	IUserInfoService userInfoService;
-
+	
+	@Autowired
+	IUserService userAccService;
+	
 	@Autowired
 	ILikeService likeService;
 
 	@Override
 	public PostModel converEntityToModel(PostEntity post, long userid) {
 		PostModel postModel = new PostModel();
+		UserInfoEntity userInfo = userInfoService.findById(post.getUser().getUserID()).get();
+		UserEntity userAcc = userAccService.findByUserInfoId(post.getUser().getUserID());
 		postModel.setPostID(post.getPostID());
 		postModel.setContent(post.getContent());
 		postModel.setGroupID(post.getGroupPost().getGroupID());
@@ -41,6 +48,10 @@ public class PostService implements IPostService {
 		postModel.setUserID(post.getUser().getUserID());
 		postModel.setUserFullName(post.getUser().getFullName());
 		postModel.setAvata(post.getUser().getAvata());
+
+		postModel.setAvata(userInfo.getAvata());
+		postModel.setUserAccountName(userAcc.getUserName());
+		System.out.println("USER NAME: ------------------" + userAcc.getUserName());
 		int likeCount = 0;
 		List<LikeEntity> listLike = post.getListLikes();
 		for (LikeEntity like : listLike) {
@@ -49,9 +60,7 @@ public class PostService implements IPostService {
 			}
 		}
 		postModel.setLikeCount(likeCount);
-
-		System.out.println(post.getPostID());
-		System.out.println(userid);
+		
 		LikeEntity LikeEntity = likeRepo.findByPostAndUserLikeUserID(post, userid);
 		if (LikeEntity == null || !LikeEntity.isStatus())
 			postModel.setLiked(false);
@@ -98,6 +107,13 @@ public class PostService implements IPostService {
 		}
 		return listPostModel;
 	}
+	
+	
+	@Override
+	public List<PostEntity> findByGroupPostGroupID(Long groupID) {
+		return postRepo.findByGroupPostGroupID(groupID);
+	}
+
 
 	@Override
 	public boolean existsById(Long id) {

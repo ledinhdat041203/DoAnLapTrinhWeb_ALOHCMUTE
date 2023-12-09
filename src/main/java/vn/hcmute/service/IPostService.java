@@ -33,4 +33,8 @@ public interface IPostService {
 
 	boolean existsById(Long id);
 
+	List<PostEntity> findByGroupPostGroupID(Long groupID);
+
+
+
 }

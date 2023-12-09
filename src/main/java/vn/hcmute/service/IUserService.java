@@ -50,4 +50,6 @@ public interface IUserService {
 
 	ResetPasswordEntity findByToken(String token);
 
+	UserEntity findByUserInfoId(Long userId);
+
 }

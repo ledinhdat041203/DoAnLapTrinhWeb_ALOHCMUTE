@@ -16,4 +16,6 @@ public interface IGroupMemberService {
 
 	void delete(GroupMembersEntity entity);
 
+	int deleteByGroupGroupID(Long groupID);
+
 }
