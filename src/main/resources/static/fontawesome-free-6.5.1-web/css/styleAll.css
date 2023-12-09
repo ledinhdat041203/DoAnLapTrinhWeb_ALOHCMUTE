@@ -775,3 +775,7 @@ textarea:focus {
     flex: 0 0 calc(33.33% - 10px); /* Hiển thị 2 ảnh trên mỗi hàng khi màn hình nhỏ */
   }
 }
+
+.tym {
+	color: orangered;
+}

@@ -4,12 +4,6 @@ import java.io.Serializable;
 
 import jakarta.persistence.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-
-
 @Entity
 @Table(name = "UserAccount")
 public class UserEntity implements Serializable{
@@ -79,10 +73,5 @@ public class UserEntity implements Serializable{
 	public void setUserInfo(UserInfoEntity userInfo) {
 		this.userInfo = userInfo;
 	}
-
-	public UserEntity() {
-
-	}	
-
 	
 }

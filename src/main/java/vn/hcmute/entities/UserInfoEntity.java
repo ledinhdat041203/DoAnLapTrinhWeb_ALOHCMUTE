@@ -123,28 +123,6 @@ public class UserInfoEntity {
 		this.listGroupMembers = listGroupMembers;
 	}
 
-
-	public UserInfoEntity() {
-	}
-
-
-	public Long getUserID() {
-		return userID;
-	}
-
-
-	public void setUserID(Long userID) {
-		this.userID = userID;
-	}
-	public String getFullName() {
-		return fullName;
-	}
-
-
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
-	}
-
 	public Date getDateOfBirth() {
 		return dateOfBirth;
 	}
