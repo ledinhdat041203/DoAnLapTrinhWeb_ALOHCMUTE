@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import vn.hcmute.Responsitory.LikeRepository;
 import vn.hcmute.Responsitory.PostRepository;
 import vn.hcmute.entities.LikeEntity;
@@ -100,6 +101,13 @@ public class PostService implements IPostService {
 		}
 		return listPostModel;
 	}
+	
+	
+	@Override
+	public List<PostEntity> findByGroupPostGroupID(Long groupID) {
+		return postRepo.findByGroupPostGroupID(groupID);
+	}
+
 
 	@Override
 	public boolean existsById(Long id) {
