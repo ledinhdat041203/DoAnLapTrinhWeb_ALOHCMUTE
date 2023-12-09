@@ -6,6 +6,140 @@
 	<title>User Info</title>
 	<link rel="stylesheet" href="/css/PostStyle.css">
 	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+	
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Post</title>
+	<link rel="stylesheet" href="/css/PostStyle.css">
+	<style>
+		.comment-section {
+			position: relative;
+		}
+
+		.comment-list li {
+			margin-bottom: 10px;
+			position: relative;
+		}
+
+		.comment-content {
+			display: block;
+			font-size: 14px;
+			display: inline-block;
+		}
+
+		.comment-date {
+			font-size: 12px;
+			color: gray;
+			display: block;
+			margin-top: 5px;
+		}
+
+		.time-diff {
+			font-size: 12px;
+			color: gray;
+			display: block;
+			margin-top: 5px;
+		}
+
+		.create-comment {
+			margin-top: 10px;
+		}
+
+		.comment-options {
+			float: right;
+			position: relative;
+		}
+
+		.comment-options {
+			display: flex;
+			align-items: center;
+			/* Giữa theo chiều dọc */
+			position: relative;
+		}
+
+		.comment-options button {
+			display: inline-block;
+			padding: 20px;
+			/* Điều chỉnh giá trị padding để giảm khoảng cách */
+			font-size: 12px;
+			margin-right: 5px;
+			/* Điều chỉnh giá trị margin để giảm khoảng cách với nội dung */
+			color: rgb(255, 128, 192);
+		}
+
+		.comment-options:hover .comment-options-menu {
+			display: block;
+		}
+
+		.update-comment,
+		.delete-comment {
+			display: inline-block;
+			cursor: pointer;
+			margin-right: 5px;
+			color: rgb(255, 255, 255);
+		}
+
+		.update-comment:hover,
+		.delete-comment:hover {
+			background-color: rgb(255, 255, 255);
+			color: rgb(255, 128, 128);
+		}
+
+		.comment-options-menu {
+			display: none;
+			position: absolute;
+			right: 0;
+			background-color: white;
+			/* Thay đổi màu nền thành trắng */
+			box-shadow: 0 8px 16px rgb(64, 128, 128);
+			z-index: 1;
+			text-align: right;
+			border-radius: 5px;
+		}
+
+		.comment-options-button:hover+.comment-options-menu,
+		.comment-options-menu:hover {
+			display: block;
+		}
+
+		.comment-options-menu:not(.active) {
+			display: none;
+		}
+
+		.comment-options-menu.active {
+			display: block;
+		}
+
+		.comment-options-menu button {
+			cursor: pointer;
+			padding: 5px;
+			font-size: 10px;
+			color: rgb(255, 128, 192);
+			/* Thay đổi màu chữ thành hồng */
+		}
+
+		comment-options-menu button:hover {
+			background-color: rgb(0, 255, 255);
+			color: rgb(0, 255, 64);
+		}
+
+		.comment-options-menu {
+			display: none;
+			position: absolute;
+			right: 0;
+			background-color: rgb(255, 0, 128);
+			box-shadow: 0 8px 16px rgb(64, 128, 128);
+			z-index: 1;
+			text-align: right;
+			border-radius: 5px;
+		}
+		.liked {
+        color: rgb(255, 0, 128);
+        }
+        
+        
+	</style>
+	
 </head>
 
 <body>
@@ -38,6 +172,7 @@
 			</tr>
 		</table>
 	</div>
+	
 	<br>
 	<form action="/post/1" th:object="${post}" method="post" onsubmit="saveImage(); return false;">
 
@@ -54,14 +189,111 @@
 		<input type="submit" value="Đăng bài" />
 	</form>
 	<br>
-
+	
+	
+	
+	
+	
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 	<div class="container bootstrap snippets bootdey" id="Post-Container">
-		<div class="row" id="listpost">
-			<!--bắt đầu 1 post -->
+		<div class="row">
+			<!-- Bắt đầu vòng lặp qua tất cả bài viết -->
 			<div th:each="post : ${list}" class="col-md-6">
-				<div th:replace="~{post_template::post_template(${post})}"></div>
+				<section class="widget">
+					<div class="widget-controls">
+						<a href="#"><i class="fa fa-refresh"></i></a>
+						<a href="#" data-widgster="close"><i class="glyphicon glyphicon-remove"></i></a>
+					</div>
+					<div class="widget-body">
+						<div class="widget-top-overflow text-white">
+							<img th:src="${post.imageURL}" alt="Post Image">
+							<ul class="tags text-white pull-right">
+								<li><a href="#">design</a></li>
+								<li><a href="#">white</a></li>
+							</ul>
+						</div>
+						<div class="post-user mt-sm">
+							<span class="thumb pull-left mr">
+								<img class="img-circle" src="https://bootdey.com/img/Content/user_1.jpg" alt="...">
+							</span>
+							<h5 class="mb-xs mt-xs" th:text="${post.userFullName}"></h5>
+							<p class="fs-mini text-muted"><time>25 mins</time> &nbsp; <i class="fa fa-map-marker"></i>
+								&nbsp; near Amsterdam</p>
+						</div>
+						<p class="text-light fs-mini m" th:text="${post.content}"></p>
+
+						 <button th:data-post-id="${post.postID}" onclick="deletePost(this)">Delete</button>
+						 
+						<!-- Display comments -->
+						<ul class="comment-list" th:id="'commentList-' + ${post.postID}">
+							<li th:each="comment : ${response}" class="comment-list-item">
+								<!-- Hiển thị nội dung bình luận -->
+								<span class="comment-content">
+									<span th:text="${comment.userName}"></span>:
+									<span th:text="${comment.content}"></span>
+								</span>
+
+								<!-- Hiển thị ngày bình luận -->
+								<span class="comment-date" th:text="${comment.commentDate}"></span>
+								<span class="comment-count" th:id="'commentCount-' + ${post.postID}"
+									th:text="${post.commentCount}"></span>
+
+								<!-- Nút Options và Nút Update/Delete -->
+								<div class="comment-options">
+									<button class="options-button"
+										onclick="toggleCommentOptions(this, '${comment.commentId}')">...</button>
+
+									<div class="comment-options-menu">
+										<span class="update-comment"
+											onclick="showEditForm('${comment.commentId}', '${comment.content}')">Update</span>
+										<span class="delete-comment"
+											onclick="deleteComment('${comment.commentId')">Delete</span>
+									</div>
+								</div>
+							</li>
+						</ul>
+
+						<div class="comment-section">
+							<!-- Load Comments and Create Comment Buttons -->
+							<div class="comment-buttons">
+								<!-- Create Comment Section -->
+								<div class="create-comment">
+									<form id="createCommentForm" th:action="'/create/' + ${post.postID}" method="post">
+										<input type="text" class="create-comment-input" placeholder="Your comment..."
+											th:id="'createCommentInput' + ${post.postID}" name="content" required />
+										<button type="submit" class="create-comment-button">Create Comment</button>
+
+										<!-- Load Comments Button -->
+										<button th:onclick="'loadComments(' + ${post.postID} + ')'"
+											class="comment-button">Load Comments</button>
+									</form>
+								</div>
+							</div>
+
+							<footer class="bg-body-light">
+								<ul class="post-links no-separator">
+									<li>
+										<a role="button" th:onclick="'likePost(' + ${post.postID} + ')'"
+											th:id="'s' + ${post.postID}">
+											<i class="fa fa-heart" th:id="'likeButton' + ${post.postID}"></i>
+											<span th:id="'likeCount' + ${post.postID}"
+												th:text="${post.likeCount}"></span>
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<i class="glyphicon glyphicon-comment"></i>
+											<span th:id="'commentCount' + ${post.postID}"
+												th:text="${post.commentCount}"></span>
+											Comments
+										</a>
+									</li>
+								</ul>
+							</footer>
+
+				</section>
 			</div>
-			<!--kết thúc 1 post -->
+			<!-- Kết thúc vòng lặp -->
 		</div>
 	</div>
 
@@ -119,6 +351,7 @@
 			}
 		});
 	</script>
+	
 	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 	<script>
 		function saveImage() {
@@ -136,6 +369,7 @@
 					contentType: 'application/json',
 					success: function () {
 						alert('Save successfully');
+						location.reload()
 					},
 					error: function () {
 						alert('Error save image');
@@ -148,8 +382,8 @@
 
 		}
 	</script>
-
-	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+	
+	
 	<script defer>
 
 		function likePost(postId) {
@@ -171,21 +405,7 @@
 			});
 		}
 
-		var page = 1;
-		var loading = true;
-		$(window).scroll(function () {
-			var windowHeight = $(window).height();
-			var documentHeight = $(document).height();
-			var scrollTop = $(window).scrollTop();
-
-			// Kiểm tra xem cuộn đến cuối trang
-			if (scrollTop + windowHeight >= documentHeight - 50 && loading) {
-				loading = false;
-				console.log("Đã cuộn xuống cuối trang");
-				loadAjax();
-			}
-		});
-
+		
 		function loadAjax() {
 			console.log("/listpost/" + page);
 			$.ajax({
@@ -212,6 +432,338 @@
 					loading = false;
 				}
 			});
+		}
+	</script>
+	
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        // Hàm xóa bài viết
+        function deletePost(button) {
+            const postId = button.getAttribute("data-post-id");
+			alert(postId);
+            // Gọi endpoint xóa bài viết với postId
+            $.ajax({
+                type: 'DELETE',
+                url: '/post/' + postId,
+                success: function () {
+                    // Xóa phần tử li khỏi danh sách sau khi xóa thành công
+                    $(button).closest('li').remove();
+                    alert('Post deleted successfully!');
+                    // Tải lại trang sau khi xóa thành công
+               		 location.reload();
+                },
+                error: function (response) {
+                    alert('Error deleting post');
+                }
+            });
+        }
+    </script>
+	
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+	<script defer>
+		$(document).ready(function () {
+			$('form').submit(function (event) {
+				event.preventDefault(); // Prevent the default form submission behavior
+				var postId = $(this).attr('action').split('/').pop();
+				// Get the form data
+				var formData = {
+					content: $('#createCommentInput' + postId).val() // Assuming you have a createCommentInput element
+				};
+
+				// Get the post ID from the form's action attribute
+
+				$.ajax({
+					type: 'POST',
+					url: '/create/' + postId,
+					headers: {
+						'Accept': 'application/json',
+						'Content-Type': 'application/json'
+					},
+					data: JSON.stringify(formData),
+					success: function (response) {
+						console.log(response);
+
+						// Gán giá trị mới cho số lượng bình luận của post
+						if (response) {
+							// Gán giá trị mới cho số lượng bình luận của post
+							const postIdNumeric = parseInt(postId);
+							if (!isNaN(postIdNumeric)) {
+								const commentCountSpan = $('#commentCount' + postIdNumeric);
+								commentCountSpan.text(response);
+							}
+						}
+
+						// Load lại danh sách bình luận
+						loadComments(postId);
+
+						// Xóa nội dung input
+						$('#createCommentInput' + postId).val('');
+					},
+					
+				});
+
+			});
+		});
+
+	</script>
+	<script defer>
+
+		function likePost(postId) {
+			$.ajax({
+				type: 'POST',
+				url: '/like/' + postId,
+				success: function (response) {
+
+					const str = '#likeCount' + postId;
+					const likespan = $(str);
+					const likeicon = $('#likeButton' + postId);
+					likespan.text(response)
+					likespan.html(response)
+					likeicon.toggleClass("liked");
+				},
+				error: function () {
+					alert('Error liking post');
+				}
+			});
+		}
+
+		
+
+		function loadAjax() {
+			console.log("/listpost/group/" + page);
+			$.ajax({
+				type: 'GET',
+				url: '/listpost/group/' + page,  // Thay đổi đường dẫn API và tham số theo nhu cầu của bạn
+
+				success: function (data) {
+					console.log(data);
+					if (data.trim() !== "") {
+						console.log("data k null");
+						loading = true;
+						page++;
+					} else {
+
+						loading = false;
+					}
+					console.log(page);
+
+					$("#listpost").append(data);
+				},
+				error: function (error) {
+					alert("error")
+					console.error('Error loading data:', error);
+					loading = false;
+				}
+			});
+		}
+	</script>
+	<script defer>
+		function loadComments(postId) {
+			const postIdNumeric = parseInt(postId);
+
+			if (!isNaN(postIdNumeric)) {
+				$.ajax({
+					type: 'GET',
+					url: '/comment/' + postIdNumeric,
+					success: function (response) {
+						const commentList = $('#commentList-' + postId);
+						commentList.empty();
+
+						response.forEach(function (comment) {
+							var commentElement = $('<li><span class="comment-content"></span><span class="comment-date"></span><span class="time-diff"></span></li>');
+							commentElement.find('span.comment-content').text(comment.userName + ': ' + comment.content);
+							commentElement.find('span.comment-date').text(comment.commentDate);
+
+							// Calculate and display the time difference
+							var timeDiffElement = commentElement.find('span.time-diff');
+							var commentDate = new Date(comment.commentDate);
+							var now = new Date();
+
+							var timeDiff = now - commentDate;
+							var seconds = Math.floor(timeDiff / 1000);
+							var minutes = Math.floor(seconds / 60);
+							var hours = Math.floor(minutes / 60);
+							var days = Math.floor(hours / 24);
+
+							if (days > 0) {
+								timeDiffElement.text(days + ' days ago');
+							} else if (hours > 0) {
+								timeDiffElement.text(hours + ' hours ago');
+							} else if (minutes > 0) {
+								timeDiffElement.text(minutes + ' minutes ago');
+							} else {
+								timeDiffElement.text('Just now');
+							}
+							// Add the three-dot button for comment options
+							commentElement.append('<button class="comment-options" onclick="toggleCommentOptions(this)" ' +
+								'data-comment-id="' + comment.commentId + '" data-comment-content="' + comment.content + '" id="optionsButton-' + comment.commentId + '">...</button>');
+
+							commentElement.append('<div class="comment-options-menu" style="display: none;" id="commentOptionsMenu-' + comment.commentId + '">' +
+								'<button class="edit-comment-button" onclick="showEditForm(\'' + comment.commentId + '\', \'' + comment.content + '\')">Edit</button>' +
+								'<button class="delete-comment-button" onclick="deleteComment(\'' + comment.commentId + '\')">Delete</button>' +
+								'</div>');
+
+							// Add a class to uniquely identify the comment options menu
+							commentElement.find('.comment-options-menu').addClass('comment-options-menu-' + comment.commentId);
+
+							commentList.append(commentElement);
+
+						});
+					},
+					error: function (xhr, status, error) {
+						console.error("Error loading comments: ", xhr.responseText);
+						alert('Error loading comments');
+					}
+				});
+			} else {
+				alert('Invalid post ID.');
+			}
+		}
+		function toggleCommentOptions(button) {
+			console.log('Toggle Comment Options clicked!');
+
+			// Find the comment-options-menu related to the clicked button
+			const commentOptions = $(button).siblings('.comment-options-menu');
+
+			// Hide all comment-options-menus except the one related to the clicked button
+			$('.comment-options-menu').not(commentOptions).hide();
+
+			// Toggle the display of the comment-options-menu related to the clicked button
+			commentOptions.toggle();
+		}
+		// chỉ chỗ delete trc nha trong này khi console.log data trả về thì có 2 trường hợp 1 trả về theo response hai thì sẽ trả theo data
+		// 
+		function deleteComment(commentId) {
+			const confirmDelete = confirm('Do you want to delete the comment?');
+			if (confirmDelete) {
+				// Get the post ID
+				const postId = $('.comment-options-menu-' + commentId).closest('.col-md-6').find('.comment-button').attr('onclick').match(/\d+/)[0];
+
+				// Perform the delete action here (using AJAX)
+				$.ajax({
+					type: 'DELETE',
+					url: '/comment/delete/' + postId + '/' + commentId,
+					success: function (data, textStatus, xhr, response) {
+						console.log(data);
+						//console.log(xhr);
+
+						if (xhr.status === 200) {
+							if (data) {
+								// Gán giá trị mới cho số lượng bình luận của post
+								const postIdNumeric = parseInt(postId);
+								if (!isNaN(postIdNumeric)) {
+									const commentCountSpan = $('#commentCount' + postIdNumeric);
+									commentCountSpan.text(data);
+								}
+							}
+							alert("Xóa thành công")
+							loadComments(postId);
+
+						} else {
+							// Thất bại
+							alert("Bạn không có quyền xóa bình luận")
+							loadComments(postId);
+						}
+					},
+					error: function (data, textStatus, xhr, response) {
+						console.log(data);
+						//console.log(textStatus);
+						if (xhr.status === 200) {
+							// Thành công
+							alert("Xóa thành công")
+							loadComments(postId);
+
+						} else {
+							// Thất bại
+							alert("Bạn không có quyền xóa bình luận")
+							loadComments(postId);
+						}
+					}
+				});
+			}
+		}
+
+
+
+
+		function showEditForm(commentId, commentContent) {
+			// Check if an edit form is already active for this comment
+			const existingEditForm = $('.comment-options-menu-' + commentId).find('.edit-comment-input');
+			if (existingEditForm.length > 0) {
+				// If an edit form is active, return without creating a new one
+				return;
+			}
+
+			// Display the confirmation window with the input field and Update/Cancel buttons
+			const confirmUpdate = confirm('Do you want to update the comment?');
+			if (confirmUpdate) {
+				const editForm = $('<div><input type="text" class="edit-comment-input" value="' + commentContent + '"/> ' +
+					'<button class="update-comment-button" onclick="updateComment(\'' + commentId + '\')">Update</button>' +
+					'<button class="cancel-comment-button" onclick="cancelEdit()">Cancel</button></div>');
+
+				// Replace the comment content with the edit form
+				const commentOptionsMenu = $('.comment-options-menu-' + commentId);
+				const commentContentSpan = commentOptionsMenu.siblings('.comment-content');
+				commentContentSpan.html(editForm);
+			}
+		}
+
+
+
+		function updateComment(commentId) {
+			// Get the content from the input field
+			const updatedContent = $('.edit-comment-input').val();
+
+			// Get the post ID
+			const postId = $('.comment-options-menu-' + commentId).closest('.col-md-6').find('.comment-button').attr('onclick').match(/\d+/)[0];
+
+			// Perform the AJAX update action
+			$.ajax({
+				type: 'PUT',
+				url: '/comment/update/' + postId,
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json'
+				},
+				data: JSON.stringify({content: updatedContent, commentId: commentId}),
+				success: function (data, textStatus, xhr) {
+					console.log(xhr);
+					if (xhr.status === 200 && data.status === 'thanh cong') {
+						// Thành công
+						alert("Sửa thành công");
+						loadComments(postId);
+					} else {
+						// Thất bại
+						alert("Sửa thành công");
+						loadComments(postId);
+					}
+				},
+				error: function (xhr, textStatus, data) {
+					if (textStatus === 'error') {
+						alert("Bạn không có quyền sửa bình luận");
+						loadComments(postId);
+					}
+					else if (textStatus === 'parsererror') {
+						alert("Sửa thành công");
+						loadComments(postId);
+					}
+
+
+				}
+			});
+		}
+
+
+		function cancelEdit() {
+			// Close the edit form and show the comment content again
+			const commentContentSpan = $('.comment-options:visible').siblings('.comment-content');
+			const commentContent = commentContentSpan.find('.edit-comment-input').val();
+			commentContentSpan.html('' + commentContent);
+
+			// Hide the edit form
+			$('.edit-comment-input').remove();
+			$('.update-comment-button').remove();
+			$('.cancel-comment-button').remove();
 		}
 	</script>
 
