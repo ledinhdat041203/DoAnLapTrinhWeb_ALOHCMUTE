@@ -11,5 +11,10 @@
 			<h2 th:text = "${group.groupName}"></h2>
 		</a>
 	</div>
+	<div>
+		<form th:action="@{/createGroup}" method = "get">
+			<button type="submit">Tạo group cho chính mình</button>
+		</form>
+	</div>
 </body>
 </html>

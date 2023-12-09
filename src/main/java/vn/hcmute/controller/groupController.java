@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,11 +41,74 @@ public class groupController {
 	@Autowired
 	IPostService postService;
 
+	
+	
 	@GetMapping("listgroup")
 	public String findAll(ModelMap model) {
 		model.addAttribute("list", groupService.findAll());
 		return "listGroup";
 	}
+	
+	@GetMapping("createGroup")
+	public String createGroup(Model model) {
+		GroupEntity group = new GroupEntity();
+		model.addAttribute("group", group);
+		return "createGroup";
+	}
+	
+	@PostMapping("saveGroup")
+	public String saveGroup(@ModelAttribute("group") GroupEntity group, HttpSession session) {
+		Long userid = (long) session.getAttribute("userInfoID");
+		UserInfoEntity current_user = userInfo.findById(userid).get();
+		group.setAdmin(current_user);
+		group.setCreateDate(new Date(System.currentTimeMillis()));
+		groupService.save(group);
+		
+		GroupMembersEntity groupMember = new GroupMembersEntity();
+		groupMember.setGroup(group);
+		groupMember.setUserMember(current_user);
+		groupMember.setJoinDate(new Date(System.currentTimeMillis()));
+		groupMemberService.save(groupMember);
+		return "redirect:/listgroup";
+	}
+	
+	@GetMapping("modifyNameGroup/{groupID}")
+	public String modifyNameGroup(Model model, @PathVariable("groupID") Long groupID) {
+		GroupEntity group = groupService.findById(groupID).get();
+		model.addAttribute("group", group);
+		return "modifyNameGroup";
+	}
+	
+	@GetMapping("modifyAvataGroup")
+	public String modifyAvataGroup(Model model) {
+		model.addAttribute("group", new GroupEntity());
+		return "modifyAvataGroup";
+	}
+	
+	@GetMapping("modifyDescriptionGroup")
+	public String modifyDescriptionGroup(Model model) {
+		model.addAttribute("group", new GroupEntity());
+		return "modifyDescriptionGroup";
+	}
+	
+	@GetMapping("modifyGroup/{groupID}")
+	public String modifyGroup(Model model,@PathVariable("groupID") Long groupID) {
+		GroupEntity group = groupService.findById(groupID).get();
+		model.addAttribute("group", group);
+		return "modifyGroup";
+	}
+	
+	@PostMapping("modifyGroup")
+	public String modifyGroup(@ModelAttribute("group") GroupEntity group) {
+		Long groupID = group.getGroupID();
+		GroupEntity groupOld = groupService.findById(groupID).get();
+		groupOld.setGroupName(group.getGroupName());
+		groupOld.setAvataGroup(group.getAvataGroup());
+		groupOld.setDescription(group.getDescription());
+		groupService.save(groupOld);
+		return "redirect:/group/"+groupOld.getGroupID();
+	}
+	
 
 	@GetMapping("group/{groupID}")
 	public String GroupDetail(ModelMap model, @PathVariable long groupID, HttpSession session, ModelMap post, Model listpost) {
