@@ -22,9 +22,12 @@
 		</div>
 		<div th:replace="~{asideMenu::asideMenu}"></div>
 
-	<!-- -----------------------------------------------------------script------------------------------------- -->
+
+
+
+		<!-- -----------------------------------------------------------script------------------------------------- -->
 		<div class="modal js-modal">
-			<form th:object="${post}"  onsubmit="saveImage(); return false;">
+			<form th:object="${post}" onsubmit="saveImage(); return false;">
 				<div class="modal-container">
 					<header class="modal-header">
 						<button type="submit" style="border: none;
@@ -63,11 +66,12 @@
                                     border-bottom: 1px solid rgb(219, 219, 219);
                                     padding-left: 20px;
                                     padding-top: 20px;
-                                " placeholder="Write a caption..." ></textarea>
+                                " placeholder="Write a caption..."></textarea>
 								<div class="modal-picture">
 									<label class="modal-picture-select">
 										<i class="ti-clip"></i>
-										<input type="file" id="file" name="file" accept="image/*" required>Select from computer
+										<input type="file" id="file" name="file" accept="image/*" required>Select from
+										computer
 									</label>
 								</div>
 							</div>
@@ -247,54 +251,54 @@
 	<!-- -----------------------------------------------------------script------------------------------------- -->
 
 	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script>
-        // Hàm xóa bài viết
-        function deletePost(button) {
-            const postId = button.getAttribute("data-post-id");
+	<script>
+		// Hàm xóa bài viết
+		function deletePost(button) {
+			const postId = button.getAttribute("data-post-id");
 			alert(postId);
-            // Gọi endpoint xóa bài viết với postId
-            $.ajax({
-                type: 'DELETE',
-                url: '/post/' + postId,
-                success: function () {
-                    // Xóa phần tử li khỏi danh sách sau khi xóa thành công
-                    $(button).closest('li').remove();
-                    alert('Post deleted successfully!');
-                    // Tải lại trang sau khi xóa thành công
-               		 location.reload();
-                },
-                error: function (response) {
-                    alert('Error deleting post');
-                }
-            });
-        }
-    </script>
-	
+			// Gọi endpoint xóa bài viết với postId
+			$.ajax({
+				type: 'DELETE',
+				url: '/post/' + postId,
+				success: function () {
+					// Xóa phần tử li khỏi danh sách sau khi xóa thành công
+					$(button).closest('li').remove();
+					alert('Post deleted successfully!');
+					// Tải lại trang sau khi xóa thành công
+					location.reload();
+				},
+				error: function (response) {
+					alert('Error deleting post');
+				}
+			});
+		}
+	</script>
+
 
 	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script>
-        // Hàm xóa bài viết
-        function deletePost(button) {
-            const postId = button.getAttribute("data-post-id");
+	<script>
+		// Hàm xóa bài viết
+		function deletePost(button) {
+			const postId = button.getAttribute("data-post-id");
 			alert(postId);
-            // Gọi endpoint xóa bài viết với postId
-            $.ajax({
-                type: 'DELETE',
-                url: '/post/' + postId,
-                success: function () {
-                    // Xóa phần tử li khỏi danh sách sau khi xóa thành công
-                    $(button).closest('li').remove();
-                    alert('Post deleted successfully!');
-                    // Tải lại trang sau khi xóa thành công
-               		 location.reload();
-                },
-                error: function (response) {
-                    alert('Error deleting post');
-                }
-            });
-        }
-    </script>
-	
+			// Gọi endpoint xóa bài viết với postId
+			$.ajax({
+				type: 'DELETE',
+				url: '/post/' + postId,
+				success: function () {
+					// Xóa phần tử li khỏi danh sách sau khi xóa thành công
+					$(button).closest('li').remove();
+					alert('Post deleted successfully!');
+					// Tải lại trang sau khi xóa thành công
+					location.reload();
+				},
+				error: function (response) {
+					alert('Error deleting post');
+				}
+			});
+		}
+	</script>
+
 	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 	<script defer>
 		$(document).ready(function () {
@@ -670,13 +674,36 @@
 			$('.update-comment-button').remove();
 			$('.cancel-comment-button').remove();
 		}
+		
 	</script>
+
 
 	<script>
 		const post = document.querySelector(".js-post");
 		const modal = document.querySelector(".js-modal");
 		const modalClose = document.querySelector(".js-modal-close");
+		function showPost() {
+			modal.classList.add("open");
+		}
 
+		function hidePost() {
+			modal.classList.remove("open");
+		}
+
+		//function showComment() {
+		//listComment.classList.add("open");
+		//}
+
+		//function hideComment() {
+		// listComment.classList.remove("open");
+		//}
+
+		//cmt.addEventListener("click", showComment);
+		//listComment.addEventListener("click", hideComment);
+
+		post.addEventListener("click", showPost);
+		modalClose.addEventListener("click", hidePost);
+	</script>
 	<script defer>
 		function loadComments(postId) {
 			const postIdNumeric = parseInt(postId);
@@ -888,28 +915,6 @@
 	</script>
 
 
-		function showPost() {
-			modal.classList.add("open");
-		}
-
-		function hidePost() {
-			modal.classList.remove("open");
-		}
-
-		//function showComment() {
-		//listComment.classList.add("open");
-		//}
-
-		//function hideComment() {
-		//	listComment.classList.remove("open");
-		//}
-
-		//cmt.addEventListener("click", showComment);
-		//listComment.addEventListener("click", hideComment);
-
-		post.addEventListener("click", showPost);
-		modalClose.addEventListener("click", hidePost);
-	</script>
 
 
 	<!--Lưu ảnh,Post ảnh-->

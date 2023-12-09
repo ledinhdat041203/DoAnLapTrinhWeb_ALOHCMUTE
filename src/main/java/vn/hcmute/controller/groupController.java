@@ -119,7 +119,8 @@ public class groupController {
 		else {
 			model.addAttribute("message", "Bạn không là quản trị viên!");
 		}
-
+		return "redirect:/group/"+group.getGroupID();
+	}
 	
 
 	@GetMapping("group/{groupID}")

@@ -22,7 +22,11 @@
               flex-direction: column;
               justify-content: center;
             ">
-			<h3 class="pb" th:text="${user.fullName}"></h3>
+
+			<div style="display: flex; margin-bottom: 20px; align-items: center">
+				<h3 class="pb" th:text="${user.fullName}"></h3>
+				<a href="/profile/update" class="edit-a">Edit profile</a>
+			</div>
 			<div class="pb">
 				<span class="ui-follow" th:text="${user.countPost + ' post'}"></span>
 				<span class="ui-follow" th:text="${user.countFollower + ' followers'}"></span>
