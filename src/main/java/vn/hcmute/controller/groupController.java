@@ -119,6 +119,7 @@ public class groupController {
 		return "redirect:/group/" + group.getGroupID();
 	}
 
+
 	@GetMapping("group/{groupID}")
 	public String GroupDetail(ModelMap model, @PathVariable long groupID, HttpSession session, ModelMap post,
 			Model listpost) {

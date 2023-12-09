@@ -639,6 +639,7 @@ textarea:focus {
     margin-bottom: 10px;
 }
 
+
 .group-name {
     background-color: transparent;
     padding: 10px;
@@ -1077,31 +1078,25 @@ button:focus {
 }
 
 .flex-container {
-	display: flex;
-	flex-wrap: wrap;
-	margin: -5px;
-	/* Đảm bảo không có khoảng cách bên ngoài container */
+  display: flex;
+  flex-wrap: wrap;
+  margin: -5px; /* Đảm bảo không có khoảng cách bên ngoài container */
 }
 
 .img-w {
-	flex: 0 0 calc(33.33% - 10px);
-	/* Đặt kích thước của mỗi ảnh, trừ đi khoảng cách giữa chúng */
-	margin: 5px;
-	/* Khoảng cách giữa các ảnh */
-	box-sizing: border-box;
-	/* Đảm bảo kích thước tính cả phần border và padding */
-	justify-content: space-between;
+  flex: 0 0 calc(33.33% - 10px); /* Đặt kích thước của mỗi ảnh, trừ đi khoảng cách giữa chúng */
+  margin: 5px; /* Khoảng cách giữa các ảnh */
+  box-sizing: border-box; /* Đảm bảo kích thước tính cả phần border và padding */
+  justify-content: space-between;
 }
 
 .img-w img {
-	/*max-width: 273.3px; */
-	/* Đảm bảo ảnh lấp đầy phần tử cha */
-	width: 260px;
-	height: 260px;
-	/*max-height: 157.82px;*/
-	/* Đảm bảo tỷ lệ chiều cao tự động được bảo toàn */
-	position: relative;
-	object-fit: cover;
+  /*max-width: 273.3px; *//* Đảm bảo ảnh lấp đầy phần tử cha */
+  width: 260px;
+  height: 260px;
+  /*max-height: 157.82px;*/ /* Đảm bảo tỷ lệ chiều cao tự động được bảo toàn */
+  position: relative;
+  object-fit: cover;
 }
 
 /* Media Query để điều chỉnh kích thước ảnh khi màn hình nhỏ */

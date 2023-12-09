@@ -12,5 +12,4 @@ public class UserAcountModel {
 	private String pass;
 	private String checkPass;
 	private boolean remember;
-
 }

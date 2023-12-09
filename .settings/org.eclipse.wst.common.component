@@ -17,6 +17,12 @@
         
         
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+                
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/target/generated-sources/annotations"/>
+=======
+>>>>>>> 67b25e72d2b27b175313c1e2b1be95e97504c040
                         
         
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/target/generated-sources/annotations"/>
@@ -32,6 +38,11 @@
                             
     
     
+=======
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/target/generated-sources/annotations"/>
+        <property name="context-root" value="DemoSpring"/>
+        <property name="java-output-path" value="/DoAnLapTrinhWeb_ALOHCMUTE/target/classes"/>
+>>>>>>> 42665152e6b6699a17e7174ea07916658bdc97fa
     </wb-module>
             
 </project-modules>
