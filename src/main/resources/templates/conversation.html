@@ -60,13 +60,13 @@
 					url: '/delete-chat',
 					data: {uid: recvId},
 					success: function (response) {
-					console.log("Delete Chat Successfully");
+					//console.log("Delete Chat Successfully");
 					$('#chat-frame').empty();
 					$('#listPeople').html(response);
-					
+					alter("Đã xóa cuộc trò chuyện!")
 					},
 					error: function () {
-						alert('Error delete chat');
+						alert("Lỗi xóa!");
 					}
 				});
 
@@ -105,12 +105,13 @@
 				data: {nameSearch: name, action : 0},
 				success: function (data) {
 						// Thay đổi nội dung của #chat-container và cập nhật data-recv-id
+				//$('#chat-frame').empty();
 				$('#listPeople').html(data);
 				$('#nameSearch').val('');
-				alter("Đã xóa cuộc trò chuyện!")
+				
 				},
 				error: function (error) {
-					alert("Lỗi xóa!");
+					
 				}
 			});
 		}
@@ -175,10 +176,10 @@
 								</div>
 								<div id="listPeople" class="mesg-peple">
 									<ul class="nav nav-tabs nav-tabs--vertical msg-pepl-list">
-										<li class="nav-item " th:each="item : ${list}" th:data-userid="${item.userID}">
+										<li class="nav-item " th:each="item : ${list}" th:data-userid="${item?.userID}">
 											<a class="load-chat" data-toggle="tab"
 												th:attr="data-full-name=${item.fullName}, data-recv-id=${item.userID}">
-												<figure><img src="images/resources/friend-avatar3.jpg" alt="">
+												<figure><image th:src = "${item.avata}"></image>
 													<span class="status f-online"></span>
 												</figure>
 												<div class="user-name">

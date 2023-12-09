@@ -10,19 +10,23 @@
 <body>
 	<h2>Add Post</h2>
 
-	<form action="/post" th:object="${post}" method="post" onsubmit="saveImage(); return false;">
+	<form th:action="@{/post/update/{postId}(postId=${post.postID})}" th:object="${post}" method="post">
 
 		<label for="content">Nội dung:</label>
-		
-		<input type="text" id="content" name="content" rows="4" cols="50" th:field="*{content}" required>
+
+		<input type="text" id="content" name="content" rows="4" cols="50" th:field="*{content}" th:texe="post.content"
+			required>
 
 		<br />
-		<div id="imageContainer"></div>
-		<label for="image">Chọn ảnh:</label>	
-		<input type="file" id="file" name="file" accept="image/*" required>
+		<div id="imageContainer">
+			<img th:src="${post.image}" alt="Uploaded Image" id="urlImage">
+			 <input type="hidden" id="imagePath" value="${post.image}" name="image" th:field="*{image}">
+		</div>
+		<label for="image">Chọn ảnh:</label>
+		<input type="file" id="file" name="file" accept="image/*">
 		<br />
 
-		<input type="submit" value="Đăng bài" />
+		<input type="submit" value="Sửa bài" />
 	</form>
 
 	<a th:href="@{/listpost}"><button>Back to List</button></a>
@@ -71,15 +75,20 @@
 					const downloadURL = await getDownloadURL(storageRef);
 
 					// Display the image on the page
-					imageContainer.innerHTML = `<img src="${downloadURL}" alt="Uploaded Image" id = "urlImage">`;
+					imageContainer.innerHTML = `<img src="${downloadURL}" alt="Uploaded Image" id = "urlImage" th:field="*{image}">
+												<input type="hidden" id="imagePath" value="${downloadURL}" name="image" th:field="*{image}">`;
 
+					alert('Successfully uploaded to Firebase Storage!');
 				} catch (error) {
-
+					console.error('Error uploading to Firebase Storage:', error);
+					alert('Error uploading to Firebase Storage. Please try again.');
 				}
+			} else {
+				alert('No file selected.');
 			}
 		});
 	</script>
-	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+	<!--	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 	<script>
 		function saveImage() {
 
@@ -98,8 +107,6 @@
 					contentType: 'application/json',
 					success: function () {
 						alert('Save successfully');
-						// Reload the page upon successful submission
-						location.reload();
 					},
 					error: function () {
 						alert('Error save image');
@@ -111,7 +118,7 @@
 			}
 
 		}
-	</script>
+	</script>-->
 </body>
 
 </html>

@@ -7,12 +7,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import vn.hcmute.Responsitory.NotificationRepository;
 import vn.hcmute.entities.NotificationEntity;
 import vn.hcmute.entities.UserInfoEntity;
-import vn.hcmute.Responsitory.NotificationRepository;
 
 @Service
-public class NotificationService implements INotificationService{
+public class NotificationService implements INotificationService {
 	@Autowired
 	NotificationRepository notificationRepository;
 
@@ -46,6 +46,4 @@ public class NotificationService implements INotificationService{
 	public List<NotificationEntity> findByUserUserID(long userid) {
 		return notificationRepository.findByUserUserID(userid);
 	}
-
-
 }

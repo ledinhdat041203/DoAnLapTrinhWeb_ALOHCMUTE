@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.servlet.http.HttpSession;
 import vn.hcmute.entities.FriendsEntity;
-import vn.hcmute.entities.NotificationEntity;
 import vn.hcmute.entities.UserInfoEntity;
 import vn.hcmute.service.IFriendsService;
 import vn.hcmute.service.INotificationService;
@@ -51,8 +50,6 @@ public class FriendsController {
 		model.addAttribute("listUser2", listUser2);
 		return "listFollowing";
 	}
-
-	
 
 	// Xuất danh sách những user đang theo dõi current user
 	@GetMapping("/follower-list")
@@ -166,5 +163,4 @@ public class FriendsController {
 		model.addAttribute("userList", userList);
 		return "suggestFollowUp";
 	}
-
 }

@@ -14,6 +14,6 @@ public interface INotificationService {
 
 	void createNotification(UserInfoEntity user2, String link, String content, String image);
 
-	List<NotificationEntity> findByUserUserID(long userid);
-
+	List<NotificationEntity> findByUserUserID(long userid);	
 }
+

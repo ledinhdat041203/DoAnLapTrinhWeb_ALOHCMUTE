@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport">
+	<title>Post</title>
+</head>
+
+<body>
+
+	<div th:fragment="user (user)" style="
+            display: flex;
+            border-bottom: solid 1px rgb(219, 219, 219);
+            padding-bottom: 30px;
+          ">
+		<div>
+			<img th:src="${user.avata}" alt="" class="avatar3" />
+		</div>
+		<section style="
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+            ">
+			<h3 class="pb" th:text="${user.fullName}"></h3>
+			<div class="pb">
+				<span class="ui-follow" th:text="${user.countPost + ' post'}"></span>
+				<span class="ui-follow" th:text="${user.countFollower + ' followers'}"></span>
+				<span class="ui-follow" th:text="${user.countFollowing + ' following'}"></span>
+
+			</div>
+			<h5 class="pb" th:text="${user.address}"></h5>
+		</section>
+	</div>
+
+</body>
+
+</html>

@@ -9,7 +9,7 @@
 <ul class="nav nav-tabs nav-tabs--vertical msg-pepl-list">
 	<li class="nav-item " th:each="item : ${listUser}" th:data-userid="${item.userID}">
 		<a class="load-chat" data-toggle="tab" th:attr="data-full-name=${item.fullName}, data-recv-id=${item.userID}">
-			<figure><img src="images/resources/friend-avatar3.jpg" alt="">
+			<figure><image th:src = "${item.avata}"></image>
 				<span class="status f-online"></span>
 			</figure>
 			<div class="user-name">
@@ -19,14 +19,39 @@
 			<div class="more">
 				<div class="more-post-optns"><i class="ti-more-alt"></i>
 					<ul>
-						<li onclick="deleteChat()"><i class="ti-trash "></i>Delete
-						</li>
+						<li onclick="deleteChat();return false;"><i class="ti-trash "></i>Delete</li>
 					</ul>
 				</div>
 			</div>
 		</a>
 	</li>
 </ul>
+
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+	function deleteChat() {
+		// Bắt sự kiện click cho các liên kết
+		const recvId = localStorage.getItem('recvId');
+
+		$.ajax({
+			type: 'GET',
+			url: '/delete-chat',
+			data: {uid: recvId},
+			success: function (response) {
+				console.log("Delete Chat Successfully");
+				$('#chat-frame').empty();
+				$('#listPeople').html(response);
+
+			},
+			error: function () {
+				alert('Error delete chat');
+			}
+		});
+
+	};
+</script>
+
 
 <script src="js/main.min.js"></script>
 <script src="js/script.js"></script>

@@ -18,14 +18,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import jakarta.servlet.http.HttpSession;
 import vn.hcmute.entities.CommentEntity;
 import vn.hcmute.entities.UserInfoEntity;
-import vn.hcmute.entities.LikeEntity;
 import vn.hcmute.model.CommentRequestModel;
 import vn.hcmute.service.ICommentService;
 import vn.hcmute.service.ILikeService;
 import vn.hcmute.service.INotificationService;
 import vn.hcmute.service.IPostService;
 import vn.hcmute.service.IUserInfoService;
-import vn.hcmute.service.PostService;
 
 @Controller
 public class CommentController {
@@ -113,7 +111,6 @@ public class CommentController {
 		}
 	}
 
-	
 	@PutMapping(value = "/comment/update/{postId}", consumes = "application/json")
 	public ResponseEntity<String> updateComment(@PathVariable long postId, @RequestBody CommentRequestModel commentData,
 			HttpSession session) {
@@ -131,5 +128,4 @@ public class CommentController {
 		}
 
 	}
-	
 }

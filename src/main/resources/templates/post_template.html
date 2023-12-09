@@ -9,41 +9,96 @@
 
 <body>
 	<div th:fragment="post_template (post)">
-	<section class=" widget">
-		<div class="widget-controls">
-			<a href="#"><i class="fa fa-refresh"></i></a>
-			<a href="#" data-widgster="close"><i class="glyphicon glyphicon-remove"></i></a>
-		</div>
-		<div class="widget-body">
-			<div class="widget-top-overflow text-white">
-				<img th:src="${post.imageURL}" alt="Post Image">
-				<ul class="tags text-white pull-right">
-					<li><a href="#">design</a></li>
-					<li><a href="#">white</a></li>
+		<section class="widget">
+			<div class="widget-controls">
+				<a href="#"><i class="fa fa-refresh"></i></a>
+				<a href="#" data-widgster="close"><i class="glyphicon glyphicon-remove"></i></a>
+			</div>
+			<div class="widget-body">
+				<div class="widget-top-overflow text-white">
+					<img th:src="${post.imageURL}" alt="Post Image">
+					<ul class="tags text-white pull-right">
+						<li><a href="#">design</a></li>
+						<li><a href="#">white</a></li>
+					</ul>
+				</div>
+				<div class="post-user mt-sm">
+					<span class="thumb pull-left mr">
+						<img class="img-circle" src="https://bootdey.com/img/Content/user_1.jpg" alt="...">
+					</span>
+					<h5 class="mb-xs mt-xs" th:text="${post.userFullName}"></h5>
+					<p class="fs-mini text-muted"><time>25 mins</time> &nbsp; <i class="fa fa-map-marker"></i>
+						&nbsp; near Amsterdam</p>
+				</div>
+				<p class="text-light fs-mini m" th:text="${post.content}"></p>
+
+				<button th:data-post-id="${post.postID}" onclick="deletePost(this)">Delete</button>
+
+				<!-- Display comments -->
+				<ul class="comment-list" th:id="'commentList-' + ${post.postID}">
+					<li th:each="comment : ${response}" class="comment-list-item">
+						<!-- Hiển thị nội dung bình luận -->
+						<span class="comment-content">
+							<span th:text="${comment.userName}"></span>:
+							<span th:text="${comment.content}"></span>
+						</span>
+
+						<!-- Hiển thị ngày bình luận -->
+						<span class="comment-date" th:text="${comment.commentDate}"></span>
+						<span class="comment-count" th:id="'commentCount-' + ${post.postID}"
+							th:text="${post.commentCount}"></span>
+
+						<!-- Nút Options và Nút Update/Delete -->
+						<div class="comment-options">
+							<button class="options-button"
+								onclick="toggleCommentOptions(this, '${comment.commentId}')">...</button>
+
+							<div class="comment-options-menu">
+								<span class="update-comment"
+									onclick="showEditForm('${comment.commentId}', '${comment.content}')">Update</span>
+								<span class="delete-comment"
+									onclick="deleteComment('${comment.commentId')">Delete</span>
+							</div>
+						</div>
+					</li>
 				</ul>
-			</div>
-			<div class="post-user mt-sm">
-				<span class="thumb pull-left mr">
-					<img class="img-circle" src="https://bootdey.com/img/Content/user_1.jpg" alt="...">
-				</span>
-				<h5 class="mb-xs mt-xs" th:text="${post.userFullName}"><span class="fw-semi-bold"></h5>
-				<p class="fs-mini text-muted"><time>25 mins</time> &nbsp; <i class="fa fa-map-marker"></i>
-					&nbsp; near Amsterdam</p>
-			</div>
-			<p class="text-light fs-mini m" th:text="${post.content}"></p>
-		</div>
-		<footer class="bg-body-light">
-			<ul class="post-links no-separator">
-				<li>
-					<a role="button" th:onclick="'likePost(' + ${post.postID} + ')'" th:id="'s' + ${post.postID}">
-						<i class="fa fa-heart" th:id="'likeButton' + ${post.postID}"></i>
-						<!--<i class="fa fa-heart"  ></i>-->
-						<span th:id="'likeCount' + ${post.postID}" th:text="${post.likeCount}"></span>
-					</a>
-				</li>
-				<li><a href="#"><i class="glyphicon glyphicon-comment"></i> 98</a></li>
-			</ul>
-		</footer>
+
+				<div class="comment-section">
+					<!-- Load Comments and Create Comment Buttons -->
+					<div class="comment-buttons">
+						<!-- Create Comment Section -->
+						<div class="create-comment">
+							<form id="createCommentForm" th:action="'/create/' + ${post.postID}" method="post">
+								<input type="text" class="create-comment-input" placeholder="Your comment..."
+									th:id="'createCommentInput' + ${post.postID}" name="content" required />
+								<button type="submit" class="create-comment-button">Create Comment</button>
+
+								<!-- Load Comments Button -->
+								<button th:onclick="'loadComments(' + ${post.postID} + ')'" class="comment-button">Load
+									Comments</button>
+							</form>
+						</div>
+					</div>
+
+					<footer class="bg-body-light">
+						<ul class="post-links no-separator">
+							<li>
+								<a role="button" th:onclick="'likePost(' + ${post.postID} + ')'"
+									th:id="'s' + ${post.postID}">
+									<i class="fa fa-heart" th:id="'likeButton' + ${post.postID}"></i>
+									<span th:id="'likeCount' + ${post.postID}" th:text="${post.likeCount}"></span>
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<i class="glyphicon glyphicon-comment"></i>
+									<span th:id="'commentCount' + ${post.postID}" th:text="${post.commentCount}"></span>
+									Comments
+								</a>
+							</li>
+						</ul>
+					</footer>
+
 		</section>
 	</div>
 </body>

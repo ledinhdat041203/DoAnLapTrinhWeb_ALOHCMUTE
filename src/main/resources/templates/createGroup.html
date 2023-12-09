@@ -3,43 +3,31 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>Update User Info</title>
+	<title>Tạo nhóm</title>
 </head>
 
 <body>
-	<h1>Update User Info</h1>
+	<h1>Tạo nhóm</h1>
 
-	<form th:action="@{/profile/saveUpdate}" th:object="${userInfo}" method="post">
+	<form th:action="@{saveGroup}" th:object="${group}" method="post">
 		<!-- Hidden User ID -->
-		<input type="hidden" th:field="*{userID}" />
+		<input type="hidden" th:field="*{groupID}" />
 
-		<label for="userID">User ID:</label>
-		<input type="text" th:field="*{userID}" readonly />
+		<label for="groupName">Tên nhóm:</label>
+		<input type="text" th:field="*{groupName}" required />
 		<br />
 
-		<label for="fullName">Full Name:</label>
-		<input type="text" th:field="*{fullName}" required />
-		<br />
-
-		<label for="address">Address:</label>
-		<input type="text" th:field="*{address}" required />
+		<label for="description">Mô tả:</label>
+		<input type="text" th:field="*{description}" required />
 		<br />
 
 		<label for="form2Example2">Ảnh đại diện</label>
-		<input type="text" th:field="*{avata}" name="avata" hidden required/>
-		<div id="imageContainer"><img th:src="*{avata}" alt="Uploaded Image" id="urlImage" style="width: 300px; height: 200px;"></div>
+		<input type="text" th:field="*{avataGroup}" name="avataGroup" hidden required/>
+		<div id="imageContainer"><img th:src="*{avataGroup}" alt="Uploaded Image" id="urlImage" style="width: 300px; height: 200px;"></div>
 		<input type="file" id="file">
 		<br />
 
-		<label for="dateOfBirth">Date of Birth:</label>
-		<input type="text" th:field="*{dateOfBirth}" required />
-		<br />
-
-		<label for="phoneNumber">Phone Number:</label>
-		<input type="text" th:field="*{phoneNumber}" required />
-		<br />
-
-		<input type="submit" value="Save" />
+		<input type="submit" value="Tạo" />
 	</form>
 </body>
 <script type="module">
@@ -66,7 +54,7 @@
 	// Add event listener for file input change
 	const fileInput = document.getElementById("file");
 	const imageContainer = document.getElementById("imageContainer");
-	const avataInput = document.querySelector("input[name='avata']");
+	const avataInput = document.querySelector("input[name='avataGroup']");
 
 	fileInput.addEventListener("change", async () => {
 		const file = fileInput.files[0];

@@ -28,6 +28,10 @@
 	<description>Spring Boot with CSRF</description>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
 		<!--
 		https://mvnrepository.com/artifact/com.google.cloud/google-cloud-storage -->
 		<dependency>

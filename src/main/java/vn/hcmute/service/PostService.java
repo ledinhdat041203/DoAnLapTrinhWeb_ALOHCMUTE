@@ -10,25 +10,25 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-
-
+import vn.hcmute.Responsitory.LikeRepository;
 import vn.hcmute.Responsitory.PostRepository;
-import vn.hcmute.entities.CommentEntity;
 import vn.hcmute.entities.LikeEntity;
 import vn.hcmute.entities.PostEntity;
-import vn.hcmute.entities.UserInfoEntity;
 import vn.hcmute.model.PostModel;
 
 @Service
 public class PostService implements IPostService {
 	@Autowired
 	PostRepository postRepo;
-	
+
 	@Autowired
 	IUserInfoService userInfoService;
-	
+
 	@Autowired
 	ILikeService likeService;
+
+	@Autowired
+	LikeRepository likeRepo;
 
 	private PostModel converEntityToModel(PostEntity post, long userid) {
 		PostModel postModel = new PostModel();
@@ -46,23 +46,16 @@ public class PostService implements IPostService {
 				likeCount++;
 			}
 		}
-		int commentCount = 0;
-		List<CommentEntity> listComment = post.getListComments();
-		for (CommentEntity comment : listComment) {
-			if (comment.getCommentId() != 0) {
-			    commentCount++;
-			}
-		}
-		
 		postModel.setLikeCount(likeCount);
-		postModel.setCommentCount(commentCount);
-		
-		UserInfoEntity user = userInfoService.findById(userid).get();
-		LikeEntity LikeEntity = likeService.findLikeByPostAndUser(post, userid);
+
+		System.out.println(post.getPostID());
+		System.out.println(userid);
+		LikeEntity LikeEntity = likeRepo.findByPostAndUserLikeUserID(post, userid);
 		if (LikeEntity == null || !LikeEntity.isStatus())
 			postModel.setLiked(false);
 		else
 			postModel.setLiked(true);
+
 		return postModel;
 	}
 
@@ -88,21 +81,29 @@ public class PostService implements IPostService {
 		List<PostEntity> posts = postPage.getContent();
 		List<PostModel> listPostModel = new ArrayList<>();
 		for (PostEntity post : posts) {
-			listPostModel.add(converEntityToModel(post,userid));
+			listPostModel.add(converEntityToModel(post, userid));
 		}
 		return listPostModel;
 	}
 
 	@Override
-	public List<PostModel> findByUserUserID(long userId, int page, int size) {
-		Pageable pageable = PageRequest.of(page, size);
-		Page<PostEntity> postPage = postRepo.findByUserUserID(userId, pageable);
-		List<PostEntity> posts = postPage.getContent();
+	public List<PostModel> findByUserUserID(long userId) {
+		List<PostEntity> posts = postRepo.findByUserUserID(userId);
+
 		List<PostModel> listPostModel = new ArrayList<>();
 		for (PostEntity post : posts) {
-			listPostModel.add(converEntityToModel(post,userId));
+			listPostModel.add(converEntityToModel(post, userId));
 		}
 		return listPostModel;
 	}
 
+	@Override
+	public boolean existsById(Long id) {
+		return postRepo.existsById(id);
+	}
+
+	@Override
+	public void deleteById(Long id) {
+		postRepo.deleteById(id);
+	}
 }

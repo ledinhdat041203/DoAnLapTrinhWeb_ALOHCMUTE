@@ -83,5 +83,4 @@ public class FriendsService implements IFriendsService {
 
 		friendsRepository.save(newFriends);
 	}
-
 }

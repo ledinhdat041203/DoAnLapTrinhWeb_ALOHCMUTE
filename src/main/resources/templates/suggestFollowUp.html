@@ -25,7 +25,7 @@
 			</thead>
 			<tbody>
 				<tr th:each="user : ${userList}">
-					<td th:text="${user.avata}"></td>
+					<td ><image th:src = "${user.avata}" style="width: 50px; height: 50px;"></image> </td>
 					<td th:text="${user.userID}"></td>
 					<td th:text="${user.fullName}"></td>
 					<!-- Thêm class "btn-follow" và thuộc tính data-user-id để lưu trữ userId -->
