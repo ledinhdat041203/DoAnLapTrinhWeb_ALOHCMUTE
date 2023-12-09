@@ -25,12 +25,6 @@
                             </a>
                             <button class="link-item">
                                 <li class="list-item">
-                                    <i class="fa-solid fa-magnifying-glass list-item-icon"></i
-                                    ><span class="list-item-name">Search</span>
-                                </li>
-                            </button>
-                            <button class="link-item">
-                                <li class="list-item">
                                     <i class="fa-solid fa-user-group list-item-icon"></i
                                     ><span class="list-item-name">Group</span>
                                 </li>
@@ -41,7 +35,7 @@
                                     ><span class="list-item-name">Messages</span>
                                 </li>
                             </a>
-                            <button class="link-item has-noti">
+                            <a href="Message.html" class="link-item has-noti">
                                 <li class="list-item">
                                     <i class="fa-regular fa-heart list-item-icon"></i
                                     ><span class="list-item-name">Notifications</span>
@@ -71,10 +65,17 @@
                                                     vừa theo dõi bạn
                                                 </span>
                                             </li>
+                                            <li class="notify-item">
+                                                <img src="../photo/avatar.jpeg" alt="" />
+                                                <span class="description">
+                                                    <h5>xiaoluan_2011</h5>
+                                                    vừa theo dõi bạn
+                                                </span>
+                                            </li>
                                         </ul>
                                     </div>
                                 </li>
-                            </button>
+                            </a>
                             <button class="link-item js-post">
                                 <li class="list-item">
                                     <i class="fa-regular fa-square-plus list-item-icon"></i
@@ -96,12 +97,6 @@
                                     <i
                                         class="fa-solid fa-arrow-right-from-bracket list-item-icon"></i
                                     ><span class="list-item-name">Log out</span>
-                                </li>
-                            </a>
-                            <a class="link-item">
-                                <li class="list-item">
-                                    <i class="fa-solid fa-repeat list-item-icon"></i
-                                    ><span class="list-item-name">Switch Account</span>
                                 </li>
                             </a>
                         </ul>
@@ -205,7 +200,6 @@
                             <p>Nguyen Vo Minh Luan</p>
                         </div>
                     </div>
-                    <button class="button">Switch</button>
                 </div>
                 <div class="suggest">
                     <p class="suggest-text">Suggested for you</p>
@@ -335,7 +329,7 @@
                                     </span>
                                     <p>
                                         <span style="color: rgb(115, 115, 115)">Just now</span>
-                                        <button class="loadComment-button">
+                                        <button class="loadComment-button js-comment-edit">
                                             <i
                                                 class="fa-solid fa-ellipsis"
                                                 style="color: rgb(115, 115, 115)"></i>
@@ -520,12 +514,28 @@
             </div>
         </div>
 
+        <div class="comment-edit js-comment-edit-form">
+            <div class="comment-edit-form">
+                <div class="comment-edit-link">
+                    <a href="">Delete</a>
+                </div>
+                <div class="comment-edit-link">
+                    <a href="">Edit</a>
+                </div>
+                <div class="comment-edit-link-normal">
+                    <a href="">Cancel</a>
+                </div>
+            </div>
+        </div>
+
         <script>
             const post = document.querySelector(".js-post");
             const modal = document.querySelector(".js-modal");
             const modalClose = document.querySelector(".js-modal-close");
             const cmt = document.querySelector(".js-cmt");
             const listComment = document.querySelector(".js-comment");
+            const commentEdit = document.querySelector(".js-comment-edit");
+            const commentEditForm = document.querySelector(".js-comment-edit-form");
 
             function showPost() {
                 modal.classList.add("open");
@@ -543,11 +553,17 @@
                 listComment.classList.remove("open");
             }
 
+            function showCommentEditForm() {
+                commentEditForm.classList.add("open");
+            }
+
             cmt.addEventListener("click", showComment);
             listComment.addEventListener("click", hideComment);
 
             post.addEventListener("click", showPost);
             modalClose.addEventListener("click", hidePost);
+
+            commentEdit.addEventListener("click", showCommentEditForm);
         </script>
     </body>
 </html>
