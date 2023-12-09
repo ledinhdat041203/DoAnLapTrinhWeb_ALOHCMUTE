@@ -106,21 +106,21 @@ public class groupController {
 	}
 	
 	@PostMapping("modifyGroup")
-	public String modifyGroup(@ModelAttribute("group") GroupEntity group, HttpSession session, Model model) {
-		GroupEntity groupOld = groupService.findById(group.getGroupID()).get();
-		Long userid = (long) session.getAttribute("userInfoID");
-		if(checkIsAdminGroup(group.getGroupID(), userid)==1) {
-			groupOld.setGroupName(group.getGroupName());
-			groupOld.setAvataGroup(group.getAvataGroup());
-			groupOld.setDescription(group.getDescription());
-			groupService.save(groupOld);
-			model.addAttribute("message", "Sửa thành công");
+		public String modifyGroup(@ModelAttribute("group") GroupEntity group, HttpSession session, Model model) {
+			GroupEntity groupOld = groupService.findById(group.getGroupID()).get();
+			Long userid = (long) session.getAttribute("userInfoID");
+			if(checkIsAdminGroup(group.getGroupID(), userid)==1) {
+				groupOld.setGroupName(group.getGroupName());
+				groupOld.setAvataGroup(group.getAvataGroup());
+				groupOld.setDescription(group.getDescription());
+				groupService.save(groupOld);
+				model.addAttribute("message", "Sửa thành công");
+			}
+			else {
+				model.addAttribute("message", "Bạn không là quản trị viên!");
+			}
+			return "redirect:/group/"+group.getGroupID();
 		}
-		else {
-			model.addAttribute("message", "Bạn không là quản trị viên!");
-		}
-		return "redirect:/group/"+group.getGroupID();
-	}
 	
 
 	@GetMapping("group/{groupID}")
