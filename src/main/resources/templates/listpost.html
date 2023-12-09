@@ -23,26 +23,31 @@
 		<div th:replace="~{asideMenu::asideMenu}"></div>
 
 		<div class="modal js-modal">
-			<div class="modal-container">
-				<header class="modal-header">
-					<a href="#">
-						<i class="fa-regular fa-paper-plane list-item-icon"
-							style="color: rgb(0, 0, 0); padding-left: 20px; padding-top: 20px"></i>
-					</a>
-					<h3>Create new post</h3>
-					<button href="#" style="
+			<form th:object="${post}"  onsubmit="saveImage(); return false;">
+				<div class="modal-container">
+					<header class="modal-header">
+						<button type="submit" style="border: none;
+        outline: none;
+        background: none;
+        padding: 0;
+        cursor: pointer;">
+							<i class="fa-regular fa-paper-plane list-item-icon"
+								style="color: rgb(0, 0, 0); padding-left: 20px; padding-top: 20px"></i>
+						</button>
+						<h3>Create new post</h3>
+						<a style="
                             background-color: #fff;
                             border: none;
                             cursor: pointer;
                             padding-bottom: 20px;
                             border-top-right-radius: 10px;
                         " class="js-modal-close">
-						<i class="fa-solid fa-xmark" style="padding-right: 20px; padding-top: 20px"></i>
-					</button>
-				</header>
-				<form >
-				<div class="modal-body">
-					
+							<i class="fa-solid fa-xmark" style="padding-right: 20px; padding-top: 20px"></i>
+						</a>
+					</header>
+
+					<div class="modal-body">
+
 						<div class="modal-img" id="imageContainer">
 						</div>
 						<div class="modal-caption">
@@ -53,22 +58,23 @@
 										<h5 th:text="${userInfo.fullName}">xiaoluan_2011</h5>
 									</div>
 								</div>
-								<textarea name="caption" id="caption" cols="40" rows="10" style="
+								<textarea id="content" name="content" cols="40" rows="10" style="
                                     border-bottom: 1px solid rgb(219, 219, 219);
                                     padding-left: 20px;
                                     padding-top: 20px;
-                                " placeholder="Write a caption..."></textarea>
+                                " placeholder="Write a caption..." ></textarea>
 								<div class="modal-picture">
 									<label class="modal-picture-select">
 										<i class="ti-clip"></i>
-										<input type="file" id="file" name="file">Select from computer
+										<input type="file" id="file" name="file" accept="image/*" required>Select from computer
 									</label>
 								</div>
 							</div>
 						</div>
+					</div>
+
 				</div>
-				</form>
-			</div>
+			</form>
 		</div>
 
 		<!--		<div class="loadComment js-comment">
@@ -422,7 +428,6 @@
 			const imageURL = image.src;
 			const tagContent = document.getElementById("content");
 			const content = tagContent.value;
-
 			try {
 				$.ajax({
 					type: 'POST',
@@ -433,6 +438,7 @@
 					contentType: 'application/json',
 					success: function () {
 						alert('Save successfully');
+						modal.classList.remove("open");
 					},
 					error: function () {
 						alert('Error save image');
