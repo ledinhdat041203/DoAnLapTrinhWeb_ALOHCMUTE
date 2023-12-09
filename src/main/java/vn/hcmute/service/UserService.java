@@ -152,5 +152,11 @@ public class UserService implements IUserService {
 	public Optional<StatusAccountEntity> findBycode(int code) {
 		return verifyResponsitory.findBycode(code);
 	}
+	
+	@Override
+	public UserEntity findByUserInfoId(Long userId)
+	{
+		return userResponsitory.findByUserInfoUserID(userId);
+	}
 }
 

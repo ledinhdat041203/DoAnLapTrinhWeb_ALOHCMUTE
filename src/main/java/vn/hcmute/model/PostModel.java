@@ -13,6 +13,7 @@ public class PostModel {
 		private long postID;
 		private long groupID;
 		private long userID;
+		private String userAccountName;
 		private String avata;
 	    private String imageURL;
 	    private String content;

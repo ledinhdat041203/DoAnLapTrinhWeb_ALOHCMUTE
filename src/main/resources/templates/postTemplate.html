@@ -37,7 +37,7 @@
               </div>
               <div class="post-comment">
 				 <!--Lay userName cho nay nha-->
-                <h5>xiaoluan_2011</h5>
+                <h5 th:text="${post.userAccountName}"></h5>
                 <p th:text="${post.content}"></p>
               </div>
               <textarea
