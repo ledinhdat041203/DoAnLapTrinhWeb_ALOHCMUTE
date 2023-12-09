@@ -49,7 +49,10 @@ public class UserInfoController {
         UserInfoModel userModel = userInfoService.convertToUserInfoModel(user);
         userModel.setCountFollower(follower);
         userModel.setCountFollowing(following);
+        
         userModel.setCountPost((long)posts.size());
+        
+        
         model.addAttribute("info", userModel);
         post.addAttribute("post", new PostEntity());
 

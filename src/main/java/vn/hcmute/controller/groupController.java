@@ -40,7 +40,7 @@ public class groupController {
 
 	@Autowired
 	IUserInfoService userInfo;
-	
+
 	@Autowired
 	IPostService postService;
 	@Autowired
@@ -48,21 +48,19 @@ public class groupController {
 	@Autowired
 	ILikeService likeService;
 
-	
-	
 	@GetMapping("listgroup")
 	public String findAll(ModelMap model) {
 		model.addAttribute("list", groupService.findAll());
 		return "listGroup";
 	}
-	
+
 	@GetMapping("createGroup")
 	public String createGroup(Model model) {
 		GroupEntity group = new GroupEntity();
 		model.addAttribute("group", group);
 		return "createGroup";
 	}
-	
+
 	@PostMapping("saveGroup")
 	public String saveGroup(@ModelAttribute("group") GroupEntity group, HttpSession session) {
 		Long userid = (long) session.getAttribute("userInfoID");
@@ -70,7 +68,7 @@ public class groupController {
 		group.setAdmin(current_user);
 		group.setCreateDate(new Date(System.currentTimeMillis()));
 		groupService.save(group);
-		
+
 		GroupMembersEntity groupMember = new GroupMembersEntity();
 		groupMember.setGroup(group);
 		groupMember.setUserMember(current_user);
@@ -78,33 +76,33 @@ public class groupController {
 		groupMemberService.save(groupMember);
 		return "redirect:/listgroup";
 	}
-	
+
 	@GetMapping("modifyNameGroup/{groupID}")
 	public String modifyNameGroup(Model model, @PathVariable("groupID") Long groupID) {
 		GroupEntity group = groupService.findById(groupID).get();
 		model.addAttribute("group", group);
 		return "modifyNameGroup";
 	}
-	
+
 	@GetMapping("modifyAvataGroup")
 	public String modifyAvataGroup(Model model) {
 		model.addAttribute("group", new GroupEntity());
 		return "modifyAvataGroup";
 	}
-	
+
 	@GetMapping("modifyDescriptionGroup")
 	public String modifyDescriptionGroup(Model model) {
 		model.addAttribute("group", new GroupEntity());
 		return "modifyDescriptionGroup";
 	}
-	
+
 	@GetMapping("modifyGroup/{groupID}")
-	public String modifyGroup(Model model,@PathVariable("groupID") Long groupID) {
+	public String modifyGroup(Model model, @PathVariable("groupID") Long groupID) {
 		GroupEntity group = groupService.findById(groupID).get();
 		model.addAttribute("group", group);
 		return "modifyGroup";
 	}
-	
+
 	@PostMapping("modifyGroup")
 		public String modifyGroup(@ModelAttribute("group") GroupEntity group, HttpSession session, Model model) {
 			GroupEntity groupOld = groupService.findById(group.getGroupID()).get();
@@ -118,11 +116,10 @@ public class groupController {
 			}
 			else {
 				model.addAttribute("message", "Bạn không là quản trị viên!");
-			}
-			return "redirect:/group/"+group.getGroupID();
 		}
+		return"redirect:/group/"+group.getGroupID();
 
-	
+	}
 
 	@GetMapping("group/{groupID}")
 	public String GroupDetail(ModelMap model, @PathVariable long groupID, HttpSession session, ModelMap post, Model listpost) {
@@ -267,6 +264,5 @@ public class groupController {
 		model.addAttribute("list", groupService.findAll());
 		return "listgroup";
 	}
-	
-	
+
 }
