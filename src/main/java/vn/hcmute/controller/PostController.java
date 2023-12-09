@@ -49,7 +49,6 @@ public class PostController {
 		UserInfoEntity userInfo = userInfoService.findById(userid).get();
 		List<PostModel> posts = postService.getPostsByGroupId(1, 0, 2, userid);
 		model.addAttribute("userInfo",userInfo);
-
 		model.addAttribute("list", posts);
 		return "listpost";
 	}
