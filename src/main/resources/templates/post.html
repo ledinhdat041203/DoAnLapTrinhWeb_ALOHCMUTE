@@ -25,7 +25,7 @@
 		<input type="submit" value="Đăng bài" />
 	</form>
 
-	<a th:href="@{/listpost}"><button>Back to List</button></a>
+	<a th:href="@{/Category}"><button>Back to List</button></a>
 	<a href="/logout">logout</a>
 
 
@@ -64,7 +64,7 @@
 				try {
 					const snapshot = await uploadBytes(storageRef, file);
 
-					//console.log("Uploaded:", snapshot.totalBytes);
+					console.log("Uploaded:", snapshot.totalBytes);
 
 					// Get the download URL of the uploaded image
 					const downloadURL = await getDownloadURL(storageRef);
@@ -95,7 +95,6 @@
 				$.ajax({
 					type: 'POST',
 					url: "/post",
-
 					data: JSON.stringify({ "imageURL": imageURL, "content": content }), //Ép kiểu string để tránh bị đôir / thành %
 					contentType: 'application/json',
 					success: function () {

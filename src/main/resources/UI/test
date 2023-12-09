@@ -1,0 +1,83 @@
+
+<article>
+    <div class="post-info">
+        <div class="post-account">
+            <img
+                src="E:/WEB/resources/UI_Login_Home_register_Group/photo/ALOHCMUTE.png"
+                alt="avatar con mèo"
+                class="avatar" />
+            <div class="account-name">
+                <h5>xiaoluan_2011</h5>
+            </div>
+        </div>
+        <i class="fa-solid fa-ellipsis"></i>
+    </div>
+    <div class="post-img">
+        <img src="../ALOHCMUTE.png" alt="genshin"
+            width="500" />
+    </div>
+    <div>
+        <i class="fa-regular fa-heart"></i>
+        <i class="fa-regular fa-comment"></i>
+        <!-- <button class="js-post" style="border: none; background: none;" >
+                    <i class="fa-regular fa-comment" style="font-size: 20px;"></i>
+            </button> -->
+    </div>
+    <div class="post-like">
+        <p>62 likes</p>
+    </div>
+    <div class="post-comment">
+        <h5>xiaoluan_2011</h5>
+        <p>Truyền thuyết thủy thần</p>
+    </div>
+    <textarea
+        name="comment"
+        id="comment"
+        placeholder="Add a comment..."
+        rows="2"
+        cols="50"></textarea>
+</div>
+</article>
+
+                <div class="container">
+                    <article>
+                        <div class="post-info">
+                            <div class="post-account">
+                                <img
+                                    src="../photo/avatar.jpeg"
+                                    alt="avatar con mèo"
+                                    class="avatar" />
+                                <div class="account-name">
+                                    <h5>xiaoluan_2011</h5>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-ellipsis"></i>
+                        </div>
+                        <div class="post-img">
+                            <img src="../ALOHCMUTE.png" alt="genshin"
+                                width="500" />
+                        </div>
+                        <div>
+                            <div class="post-icon">
+                                <i class="fa-regular fa-heart"></i>
+                                <button class="link-item js-post">
+                                    <i class="fa-regular fa-comment"></i>
+                                </button>
+                            </div>
+                            <div class="post-like">
+                                <p>62 likes</p>
+                            </div>
+                            <div class="post-comment">
+                                <h5>xiaoluan_2011</h5>
+                                <p>Truyền thuyết thủy thần</p>
+                            </div>
+
+                            <textarea
+                                name="comment"
+                                id="comment"
+                                placeholder="Add a comment..."
+                                rows="2"
+                                cols="50"></textarea>
+                        </div>
+                    </article>
+                </div>
