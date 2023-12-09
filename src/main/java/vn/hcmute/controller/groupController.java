@@ -121,7 +121,8 @@ public class groupController {
 			}
 			return "redirect:/group/"+group.getGroupID();
 		}
-
+		return "redirect:/group/"+group.getGroupID();
+	}
 	
 
 	@GetMapping("group/{groupID}")
