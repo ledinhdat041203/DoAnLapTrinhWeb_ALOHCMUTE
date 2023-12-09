@@ -117,8 +117,8 @@ public class groupController {
 			model.addAttribute("message", "Bạn không là quản trị viên!");
 		}
 		return "redirect:/group/" + group.getGroupID();
-
 	}
+
 
 	@GetMapping("group/{groupID}")
 	public String GroupDetail(ModelMap model, @PathVariable long groupID, HttpSession session, ModelMap post,
