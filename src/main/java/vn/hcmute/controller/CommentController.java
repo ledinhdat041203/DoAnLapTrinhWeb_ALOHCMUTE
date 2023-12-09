@@ -128,4 +128,9 @@ public class CommentController {
 		}
 
 	}
+	
+	@GetMapping("/cmt-template")
+	public String suggest() {
+		return "commentTemplate";
+	}
 }

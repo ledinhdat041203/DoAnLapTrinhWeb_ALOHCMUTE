@@ -55,6 +55,7 @@ public class PostController {
 		
 		model.addAttribute("listSuggest", listSuggest);
 		model.addAttribute("list", posts);
+		model.addAttribute("demo", posts.get(1));
 		return "listpost";
 	}
 
@@ -64,7 +65,7 @@ public class PostController {
 		return "post";
 	}
 
-	@PostMapping(value = "/post/{groupID}", produces = "text/html;charset=UTF-8")
+	@PostMapping(value = "/post/{groupID}")
 	public String savePost(@PathVariable long groupID, @RequestBody PostModel request, HttpSession session) {
 		// lay tu session
 		Long userID = (Long) session.getAttribute("userInfoID");
@@ -103,10 +104,21 @@ public class PostController {
 		List<PostModel> posts = postService.getPostsByGroupId(1, page, size, userid);
 		System.out.println(page);
 		model.addAttribute("list", posts);
-		return "listpost :: #listpost";
+		model.addAttribute("fragment", "post");  // Sửa dòng này để truyền danh sách bài viết vào fragment
+	    return "listpost :: #listpost";
 
 	}
-
+	@GetMapping("/post/detail/{postId}")
+	public String postDetail(@PathVariable long postId,ModelMap model)
+	{
+		PostEntity post = postService.findById(postId).get();
+		PostModel postModel = postService.converEntityToModel(post, post.getUser().getUserID());
+		
+		
+		model.addAttribute("post", postModel);
+		return "commentTemplate";
+	}
+	
 	@GetMapping("/post/update/{postID}")
 	public String getUpdatePost(Model post, @PathVariable long postID) {
 		PostEntity existingPost = postService.findById(postID).get();

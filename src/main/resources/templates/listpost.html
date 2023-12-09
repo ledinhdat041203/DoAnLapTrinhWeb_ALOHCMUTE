@@ -17,11 +17,30 @@
 			<!--bắt đầu 1 post -->
 			<div th:each="post : ${list}">
 				<div th:replace="~{postTemplate::post(${post})}"></div>
+				
 			</div>
 			<!-- Kết thúc vòng lặp -->
 		</div>
 		<div th:replace="~{asideMenu::asideMenu(${listSuggest})}"></div>
+	
 	</div>
+	
+	
+	
+	
+<!-- 	<div class="comment-edit js-comment-edit-form">
+		<div class="comment-edit-form">
+			<div class="comment-edit-link">
+				<a href="">Delete</a>
+			</div>
+			<div class="comment-edit-link">
+				<a href="">Edit</a>
+			</div>
+			<div class="comment-edit-link-normal">
+				<a href="">Cancel</a>
+			</div>
+		</div>
+	</div> -->
 
 	<!-- -----------------------------------------------------------script------------------------------------- -->
 		<!-- Bootstrap JS and dependencies (optional) -->
@@ -53,7 +72,6 @@
         }
     </script>
 	
-	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 	<script defer>
 		$(document).ready(function () {
 			$('form').submit(function (event) {
@@ -432,8 +450,7 @@
             }
 
             btn.addEventListener("click", changeClass);
-        </script>
-
+	</script>
 </body>
 
 </html>

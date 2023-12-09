@@ -168,9 +168,5 @@ public class FriendsController {
 		}
 		return userList;
 	}
-	
-	@GetMapping("/suggest")
-	public String suggest() {
-		return "Suggested";
-	}
+
 }

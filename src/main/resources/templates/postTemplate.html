@@ -30,7 +30,16 @@
             <div>
               <div class="post-icon">
                 <i th:classappend="${post.liked} ? 'fa fa-heart tym' : 'fa fa-heart'" th:onclick="'likePost(' + ${post.postID} + ')'" th:id="'likeButton' + ${post.postID}"></i>
-                <i class="fa-regular fa-comment"></i>
+                <a th:href="@{'/post/detail/' + ${post.postID}}"
+                                        class="js-cmt" th:id = " 'js-cmt' + ${post.postID}"
+                                        style="
+                                            border: none;
+                                            background-color: #fff;
+                                            font-size: 24px;
+                                            cursor: pointer;
+                                        ">
+                                        <i class="fa-regular fa-comment"></i>
+                                    </a>
               </div>
               <div class="post-like">
                 <p th:text=" ${post.likeCount}+' Likes' " th:id="'likeCount' + ${post.postID}"></p>

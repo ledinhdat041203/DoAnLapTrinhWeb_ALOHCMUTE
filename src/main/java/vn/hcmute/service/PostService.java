@@ -18,6 +18,9 @@ import vn.hcmute.model.PostModel;
 
 @Service
 public class PostService implements IPostService {
+	
+	@Autowired
+	LikeRepository likeRepo;
 	@Autowired
 	PostRepository postRepo;
 
@@ -27,10 +30,8 @@ public class PostService implements IPostService {
 	@Autowired
 	ILikeService likeService;
 
-	@Autowired
-	LikeRepository likeRepo;
-
-	private PostModel converEntityToModel(PostEntity post, long userid) {
+	@Override
+	public PostModel converEntityToModel(PostEntity post, long userid) {
 		PostModel postModel = new PostModel();
 		postModel.setPostID(post.getPostID());
 		postModel.setContent(post.getContent());
@@ -39,6 +40,7 @@ public class PostService implements IPostService {
 		postModel.setPostDate(post.getPostDate());
 		postModel.setUserID(post.getUser().getUserID());
 		postModel.setUserFullName(post.getUser().getFullName());
+		postModel.setAvata(post.getUser().getAvata());
 		int likeCount = 0;
 		List<LikeEntity> listLike = post.getListLikes();
 		for (LikeEntity like : listLike) {
@@ -55,7 +57,7 @@ public class PostService implements IPostService {
 			postModel.setLiked(false);
 		else
 			postModel.setLiked(true);
-
+		postModel.setListComment(post.getListComments());
 		return postModel;
 	}
 
