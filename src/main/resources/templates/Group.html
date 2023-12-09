@@ -10,15 +10,15 @@
 </head>
 
 <body>
-	<img th:src="*{group.avataGroup}" alt="Uploaded Image" id="urlImage" style="width: 300px; height: 200px;"></image>
+	<img th:src="*{group.avataGroup}" alt="Uploaded Image" id="avata" style="width: 300px; height: 200px;"></image>
 	<h2 th:text=" 'Group ID: ' + ${group.groupID}"></h2>
 	<h2 th:text="${'Group Name: ' + group.groupName}"></h2>
 	<h2 th:text="${'Description: ' + group.description}"></h2>
 	<h2 th:text="${'Admin: ' + group.admin.fullName}"></h2>
 	<h2 th:text="${'Ngày  tạo: ' + group.createDate}"></h2>
 	<h2><a th:href="'/group/list_member/' + ${group.groupID}">Thành viên nhóm</a></h2>
-	</br>
-	<a th:href="@{/modifyGroup/{groupID}(groupID=${group.groupID})}">Modify Group</a>
+	<h2><a th:href="@{/modifyGroup/{groupID}(groupID=${group.groupID})}">Modify Group</a></h2>
+	<h2><a th:href="@{/deleteGroup/{groupID}(groupID=${group.groupID})}">Giải tán</a></h2>
 	<form th:action=" '/post/' + ${group.groupID} " th:object="${post}" method="post"
 		th:onsubmit="saveImage(); return false;">
 
@@ -93,7 +93,7 @@
 					const downloadURL = await getDownloadURL(storageRef);
 
 					// Display the image on the page
-					imageContainer.innerHTML = `<img src="${downloadURL}" alt="Uploaded Image" id = "urlImage">`;
+					imageContainer.innerHTML = `<img src="${downloadURL}" alt="Uploaded Image" id = "imagePost">`;
 
 					alert('Successfully uploaded to Firebase Storage!');
 				} catch (error) {
@@ -109,7 +109,7 @@
 	<script>
 		function saveImage() {
 
-			const image = document.getElementById("urlImage");
+			const image = document.getElementById("imagePost");
 			const imageURL = image.src;
 			const tagContent = document.getElementById("content");
 			const content = tagContent.value;

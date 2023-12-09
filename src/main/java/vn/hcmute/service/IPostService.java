@@ -23,4 +23,6 @@ public interface IPostService {
 
 	<S extends PostEntity> S save(S entity);
 
+	int deleteByGroupPostGroupID(long groupID);
+
 }

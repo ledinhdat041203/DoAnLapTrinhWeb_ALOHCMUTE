@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 import vn.hcmute.entities.GroupEntity;
 import vn.hcmute.entities.GroupMembersEntity;
 import vn.hcmute.entities.PostEntity;
@@ -225,4 +226,12 @@ public class groupController {
 
 	}
 
+	@GetMapping("/deleteGroup/{groupID}")
+	@Transactional
+	public String deleteGroup(@PathVariable("groupID") Long groupID) {
+		postService.deleteByGroupPostGroupID(groupID);
+		return "redirect:/listgroup";
+	}
+	
+	
 }
