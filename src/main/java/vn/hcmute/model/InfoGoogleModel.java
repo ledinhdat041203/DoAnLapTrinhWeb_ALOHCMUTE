@@ -2,11 +2,11 @@ package vn.hcmute.model;
 
 public class InfoGoogleModel {
 
-	public static String GOOGLE_CLIENT_ID = "123838352882-n3n3fdbnu8ulqvbr7ethoaof319b95l5.apps.googleusercontent.com";
+	public static String GOOGLE_CLIENT_ID = "123838352882-sai9m7cs513nsq30phl3f4mptce2sttj.apps.googleusercontent.com";
 
-	public static String GOOGLE_CLIENT_SECRET = "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";
+	public static String GOOGLE_CLIENT_SECRET = "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";
 
-	public static String GOOGLE_REDIRECT_URI = "http://localhost:8088/LoginGoogle/LoginGooleHandler";
+	public static String GOOGLE_REDIRECT_URI = "http://localhost:8088/LoginGoogle";
 	
 	public static String GOOGLE_LINK_GET_TOKEN = "https://oauth2.googleapis.com/token";
 

@@ -282,7 +282,7 @@ public class UserController {
 	 * @GetMapping("updatePass") public String Show(ModelMap model) {
 	 * model.addAttribute("pass", new updatePassModel()); return "updatePass"; }
 	 */
-	@GetMapping("/LoginGoogle/LoginGooleHandler")
+	@GetMapping("/LoginGoogle")
 	public String processRequest(@RequestParam("code") String code,HttpSession session) throws ClientProtocolException, IOException {
 		String accessToken = getToken(code);
 		UserGoogle user = getUserInfo(accessToken);
@@ -313,7 +313,7 @@ public class UserController {
 			session.setAttribute("userFullName",
 					user_service.findByemailContaining(user.getEmail()).get().getUserInfo().getFullName());
 			
-			//System.out.println("Emai-----------"+user.getEmail());
+			System.out.println("Emai-----------"+user.getEmail());
 			return "home";
 	}
 
