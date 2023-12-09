@@ -98,6 +98,8 @@
 					contentType: 'application/json',
 					success: function () {
 						alert('Save successfully');
+						// Reload the page upon successful submission
+						location.reload();
 					},
 					error: function () {
 						alert('Error save image');

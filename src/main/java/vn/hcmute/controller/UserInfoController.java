@@ -1,22 +1,24 @@
 package vn.hcmute.controller;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import jakarta.servlet.http.HttpSession;
-import vn.hcmute.entities.FriendsEntity;
-import vn.hcmute.entities.LikeEntity;
 import vn.hcmute.entities.PostEntity;
 import vn.hcmute.entities.UserInfoEntity;
 import vn.hcmute.model.PostModel;
 import vn.hcmute.model.UserInfoModel;
 import vn.hcmute.service.IPostService;
 import vn.hcmute.service.IUserInfoService;
-
-import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/profile")

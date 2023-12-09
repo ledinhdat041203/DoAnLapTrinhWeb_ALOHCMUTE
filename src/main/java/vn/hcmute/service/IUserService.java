@@ -1,10 +1,7 @@
 package vn.hcmute.service;
 
-import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
-
-import org.springframework.stereotype.Service;
 
 import vn.hcmute.entities.ResetPasswordEntity;
 import vn.hcmute.entities.StatusAccountEntity;
@@ -50,7 +47,7 @@ public interface IUserService {
 	Optional<StatusAccountEntity> findByuserCode(UserEntity user);
 
 	Optional<StatusAccountEntity> findBycode(int code);
-	
+
 	ResetPasswordEntity findByToken(String token);
 
 }

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages</title>
+    <link rel="stylesheet" href="/css/PostStyle.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <form th:action="@{/modifyGroup/{groupId}(groupId=${group.groupID})}" method="post">
+        <img th:src="*{group.avataGroup}" alt="Uploaded Image" id="urlImage" style="width: 300px; height: 200px;">
+        <h2 th:text=" 'Group ID: ' + ${group.groupID}"></h2>
+        <input type="text" name="groupName" placeholder="${group.groupName}">
+        <button type="submit">Lưu</button>
+        <h2 th:text="${'Description: ' + group.description}"></h2>
+        <h2 th:text="${'Admin: ' + group.admin.fullName}"></h2>
+        <h2 th:text="${'Ngày tạo: ' + group.createDate}"></h2>
+    </form>
+    <h2><a th:href="'/group/list_member/' + ${group.groupID}">Thành viên nhóm</a></h2>
+    <form action="@{/modifyGroup}" method="get">
+        <button>Chỉnh sửa thông tin</button>
+    </form>
+    <br>
+</body>
+
+</html>
