@@ -130,7 +130,9 @@
                             <span class="suggest-span2">Suggested for you </span>
                         </div>
                     </div>
-                    <button class="button" style="font-size: 14px; font-weight: 500">Follow</button>
+                    <button class="button js-click" style="font-size: 14px; font-weight: 500">
+                        Follow
+                    </button>
                 </container>
                 <container class="suggest-container">
                     <div class="suggest-people">
@@ -197,5 +199,30 @@
                 </container>
             </main>
         </div>
+
+        <script>
+            const btn = document.querySelector(".js-click");
+
+            function changeClass() {
+                // Check if the button has the "button" class
+                if (btn.classList.contains("button")) {
+                    // Remove "button" and add "following-btn"
+                    btn.classList.remove("button");
+                    btn.classList.add("following-btn");
+
+                    // Toggle the text content between "Follow" and "Following"
+                    btn.textContent = "Following";
+                } else {
+                    // Remove "following-btn" and add "button"
+                    btn.classList.remove("following-btn");
+                    btn.classList.add("button");
+
+                    // Toggle the text content between "Follow" and "Following"
+                    btn.textContent = "Follow";
+                }
+            }
+
+            btn.addEventListener("click", changeClass);
+        </script>
     </body>
 </html>
