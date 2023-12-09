@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
+import vn.hcmute.entities.FriendsEntity;
 import vn.hcmute.entities.GroupEntity;
 import vn.hcmute.entities.PostEntity;
 import vn.hcmute.entities.UserInfoEntity;
@@ -42,14 +43,20 @@ public class PostController {
 
 	@Autowired
 	IUserInfoService userInfoService;
+	@Autowired
+	FriendsController friendController;
 
 	@GetMapping("/listpost")
 	public String post(Model model, HttpSession session) {
 		Long userid = (long) session.getAttribute("userInfoID");
 		UserInfoEntity userInfo = userInfoService.findById(userid).get();
 		List<PostModel> posts = postService.getPostsByGroupId(1, 0, 2, userid);
+		List<UserInfoEntity> listSuggest = friendController.suggest(userid, 5);
+		
+		model.addAttribute("listSuggest", listSuggest);
 		model.addAttribute("userInfo",userInfo);
 		model.addAttribute("list", posts);
+		model.addAttribute("demo", posts.get(1));
 		return "listpost";
 	}
 
@@ -59,7 +66,7 @@ public class PostController {
 		return "post";
 	}
 
-	@PostMapping(value = "/post/{groupID}", produces = "text/html;charset=UTF-8")
+	@PostMapping(value = "/post/{groupID}")
 	public String savePost(@PathVariable long groupID, @RequestBody PostModel request, HttpSession session) {
 		// lay tu session
 		Long userID = (Long) session.getAttribute("userInfoID");
@@ -98,10 +105,21 @@ public class PostController {
 		List<PostModel> posts = postService.getPostsByGroupId(1, page, size, userid);
 		System.out.println(page);
 		model.addAttribute("list", posts);
-		return "listpost :: #listpost";
+		model.addAttribute("fragment", "post");  // Sửa dòng này để truyền danh sách bài viết vào fragment
+	    return "listpost :: #listpost";
 
 	}
-
+	@GetMapping("/post/detail/{postId}")
+	public String postDetail(@PathVariable long postId,ModelMap model)
+	{
+		PostEntity post = postService.findById(postId).get();
+		PostModel postModel = postService.converEntityToModel(post, post.getUser().getUserID());
+		
+		
+		model.addAttribute("post", postModel);
+		return "commentTemplate";
+	}
+	
 	@GetMapping("/post/update/{postID}")
 	public String getUpdatePost(Model post, @PathVariable long postID) {
 		PostEntity existingPost = postService.findById(postID).get();

@@ -1,4 +1,4 @@
-package vn.hcmute.entities;
+	package vn.hcmute.entities;
 
 import java.io.Serializable;
 
