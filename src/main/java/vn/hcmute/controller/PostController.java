@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
+import vn.hcmute.entities.FriendsEntity;
 import vn.hcmute.entities.GroupEntity;
 import vn.hcmute.entities.PostEntity;
 import vn.hcmute.entities.UserInfoEntity;
@@ -42,13 +43,17 @@ public class PostController {
 
 	@Autowired
 	IUserInfoService userInfoService;
+	@Autowired
+	FriendsController friendController;
 
 	@GetMapping("/listpost")
 	public String post(Model model, HttpSession session) {
 		Long userid = (long) session.getAttribute("userInfoID");
 
 		List<PostModel> posts = postService.getPostsByGroupId(1, 0, 2, userid);
-
+		List<UserInfoEntity> listSuggest = friendController.suggest(userid, 5);
+		
+		model.addAttribute("listSuggest", listSuggest);
 		model.addAttribute("list", posts);
 		return "listpost";
 	}

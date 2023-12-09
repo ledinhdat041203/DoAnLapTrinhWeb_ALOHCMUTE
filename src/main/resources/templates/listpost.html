@@ -20,11 +20,15 @@
 			</div>
 			<!-- Kết thúc vòng lặp -->
 		</div>
-		<div th:replace="~{asideMenu::asideMenu}"></div>
+		<div th:replace="~{asideMenu::asideMenu(${listSuggest})}"></div>
 	</div>
 
 	<!-- -----------------------------------------------------------script------------------------------------- -->
-
+		<!-- Bootstrap JS and dependencies (optional) -->
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
         // Hàm xóa bài viết
@@ -373,6 +377,62 @@
 		}
 	</script>
 
+	<script>
+		$(document).ready(function() {
+			$(".btn-follow").click(function() {
+				var userId = $(this).data("user-id");
+				var followStatus = $(this).data("follow-status");
+				$.ajax({
+					type : "GET",
+					url : "./follow/" + userId,
+					success : function(respone) {
+						//Xử lý phản hồi từ server
+						alert(respone);
+					},
+					error : function(error) {
+						alert(userId);
+						alert(error);
+						console.error("Error:", error);
+					}
+				});
+			});
+		});
+	</script>
+
+	<script>
+		function followUser(button) {
+			if (button.innerText.toLowerCase() === 'follow') {
+				button.innerText = 'Following';
+			} else {
+				button.innerText = 'Follow';
+			}
+		}
+	</script>
+	
+	<script>
+            const btn = document.querySelector(".js-click");
+
+            function changeClass() {
+                // Check if the button has the "button" class
+                if (btn.classList.contains("button")) {
+                    // Remove "button" and add "following-btn"
+                    btn.classList.remove("button");
+                    btn.classList.add("following-btn");
+
+                    // Toggle the text content between "Follow" and "Following"
+                    btn.textContent = "Following";
+                } else {
+                    // Remove "following-btn" and add "button"
+                    btn.classList.remove("following-btn");
+                    btn.classList.add("button");
+
+                    // Toggle the text content between "Follow" and "Following"
+                    btn.textContent = "Follow";
+                }
+            }
+
+            btn.addEventListener("click", changeClass);
+        </script>
 
 </body>
 
