@@ -621,6 +621,7 @@ textarea:focus {
 	margin-bottom: 10px;
 }
 
+
 .post-comment>* {
 	display: inline;
 }
@@ -883,8 +884,8 @@ textarea:focus {
 }
 
 .img-w {
-	width: 292px;
-	height: 292px;
+	width: 260px;
+	height: 260px;
 }
 
 
@@ -1052,7 +1053,7 @@ textarea:focus {
 }
 
 .post-comment>* {
-	display: inline;
+	display: inline-block;
 }
 
 .post-comment {
@@ -1335,7 +1336,7 @@ button:focus {
 .loadComment-list {
 	width: calc(1046px / 2);
 	overflow-y: auto;
-	height: 633px;
+	height: 100%;
 }
 
 .loadComment-header {
@@ -1446,9 +1447,9 @@ button:focus {
 }
 
 /* Media Query để điều chỉnh kích thước ảnh khi màn hình nhỏ */
-@media (max-width: 767px) {
+@media (max-width: 500px) {
 	.img-w {
-		flex: 0 0 calc(33.33% - 10px);
+		flex: 0 0 calc(50% - 10px);
 		/* Hiển thị 2 ảnh trên mỗi hàng khi màn hình nhỏ */
 	}
 }

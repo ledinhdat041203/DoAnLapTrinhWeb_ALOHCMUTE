@@ -89,10 +89,10 @@ public class FriendsController {
 	// Xử lý theo dõi
 	@GetMapping("/follow/{user2Id}")
 	public ResponseEntity<String> followUsers(@PathVariable long user2Id, HttpSession session) {
-
+		System.out.println("-----------------------DÂÂ FLLLLLLLLLLLLLLLLLLL---------------");
 		Long idUsercurrent = (long) session.getAttribute("userInfoID");
 		FriendsEntity friend = friendsService.findByUser1IDAndUser2ID(idUsercurrent, user2Id);
-
+		System.out.println("-----------------------DÂÂ FLLLLLLLLLLLLLLLLLLL---------------");
 		if (friend != null) {
 			if (friend.isStatus()) {
 				friend.setStatus(false);

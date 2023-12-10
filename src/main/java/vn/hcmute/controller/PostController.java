@@ -1,6 +1,7 @@
 package vn.hcmute.controller;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -88,8 +89,9 @@ public class PostController {
 		post.setContent(request.getContent());
 
 		// Tạo đối tượng java.sql.Date từ thời gian hiện tại
-		Date currentSQLDate = new Date(System.currentTimeMillis());
-		post.setPostDate(currentSQLDate);
+		long currentSQLDate = System.currentTimeMillis();
+		Timestamp currentTimestamp = new Timestamp(currentSQLDate);
+		post.setPostDate(currentTimestamp);
 
 		postService.save(post);
 		return "redirect:/listpost";
@@ -126,34 +128,43 @@ public class PostController {
 		post.addAttribute("post", existingPost);
 		return "updatepost";
 	}
-
+	
+	@GetMapping("/post/post-info/{postID}")
+	public ResponseEntity<PostModel> findPostInfoByID(@PathVariable long postID, HttpSession session)
+	{
+		long userID = (long)session.getAttribute("userInfoID");
+		PostEntity postEntity = postService.findById(postID).get();
+		PostModel postMoel = postService.converEntityToModel(postEntity, userID);
+		return ResponseEntity.ok(postMoel);
+	}
+	
 	@PostMapping("/post/update/{postId}")
-	public String updatePost(@PathVariable Long postId, @ModelAttribute("post") PostEntity updatedPost) {
-		// Lấy ra post cần cập nhật
-		PostEntity existingPost = postService.findById(postId).get();
+	public String updatePost(@PathVariable Long postId, @RequestBody PostModel request) {
+		System.out.println("----------------------------------------------" +request.getContent());
+		PostEntity post = postService.findById(postId).get();
+		post.setImage(request.getImageURL());
+		post.setContent(request.getContent());
+		// Tạo đối tượng java.sql.Date từ thời gian hiện tại
+		long currentSQLDate = System.currentTimeMillis();
+		Timestamp currentTimestamp = new Timestamp(currentSQLDate);
+		post.setPostDate(currentTimestamp);
 
-		// Cập nhật thông tin từ biểu mẫu chỉnh sửa
-		existingPost.setContent(updatedPost.getContent());
-		existingPost.setImage(updatedPost.getImage());
-
-		postService.save(existingPost);
+		postService.save(post);
 
 		return "redirect:/listpost";
 	}
 
-	@DeleteMapping("/post/{postId}")
+	@GetMapping("/deletepost/{postId}")
 	@Transactional
-	public ResponseEntity<String> deletePost(@PathVariable long postId) {
+	public String deletePost(@PathVariable long postId) {
 		System.out.println(postId);
 		if (postService.existsById(postId)) {
 			commentService.deleteAllByPostId(postId);
 			likeService.deleteAllByPostPostId(postId);
 			postService.deleteById(postId);
-			return ResponseEntity.ok("Bài viết đã được xóa thành công!");
-		} else {
-			System.out.println("");
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tìm thấy bài viết có ID: " + postId);
 		}
+		
+		return "redirect:/listpost";
 
 	}
 

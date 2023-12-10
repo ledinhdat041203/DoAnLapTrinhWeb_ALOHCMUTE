@@ -1,6 +1,7 @@
 package vn.hcmute.model;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -21,7 +22,7 @@ public class PostModel {
 		private String avata;
 	    private String imageURL;
 	    private String content;
-	    private Date postDate;
+	    private Timestamp postDate;
 	    private long likeCount;
 	    private String userFullName;
 	    private boolean liked;

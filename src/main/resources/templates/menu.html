@@ -79,7 +79,7 @@
 								class="list-item-name">Create</span>
 						</li>
 					</a>
-					<a class="link-item" href="/profile" role="button">
+					<a class="link-item" th:href="@{'/profile/' + ${session.userInfoID}}" role="button">
 						<li class="list-item">
 							<i class="fa-regular fa-user list-item-icon"></i>
 							<span class="list-item-name">Profile</span>

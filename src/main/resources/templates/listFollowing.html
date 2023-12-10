@@ -1,64 +1,77 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Insert title here</title>
+	<meta charset="UTF-8" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>ALOHCMUTE</title>
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/fontawesome-free-6.5.1-web/css/all.min.css" />
+	<link rel="stylesheet" href="/fontawesome-free-6.5.1-web/css/styleAll.css" />
+	<link rel="stylesheet" href="/css/style.css" />
+	<style>
+		.user-info {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-bottom: 20px;
+		}
+
+		.user-info-details {
+			display: flex;
+			align-items: center;
+		}
+
+		.user-info-address {
+			margin-top: 5px;
+		}
+	</style>
 </head>
+
 <body>
+	<div style="display: flex">
+		<div th:replace="~{menu::menu}"></div>
+		<main class="suggest-main" style="padding-top: 30px;">
+			<h2 style="padding-bottom: 30px;">You are following</h2>
+			<div th:each="user : ${listUser2}">
+				<div class="user-info">
+					<div class="user-info-details">
+						<a th:href="@{'/profile/' + ${user.userID}}">
+							<img th:src="${user.avata}"
+								style="width: 44px; height: 44px; margin-right: 30px; border-radius: 50%">
+						</a>
+						<div>
+							<h5 th:text="${user.fullName}"></h5>
+							<span class="user-info-address" th:text="${user.address}"></span>
+						</div>
+					</div>
+					<div>
+						<button class="js-click following-btn btn-follow" th:data-user-id="${user.userID}"
+							data-follow-status="false" onclick="followUser(this)">Following
+						</button>
+					</div>
+				</div>
+			</div>
+		</main>
+	</div>
 
-    <div class="container mt-4">
-        <!-- Iterate over the list of friends and display their information -->
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Avatar</th>
-                    <th>User ID</th>
-                    <th>Full name</th>
-                    <th>Status</th>
-                    <!-- Add other fields as needed -->
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="user : ${listUser2}">
-                    <td ><image th:src = "${user.avata}" style="width: 50px; height: 50px;"></image> </td>
-                    <td th:text="${user.userID}"></td>
-                    <td th:text="${user.fullName}"></td>
-                    <td>
-                        <button class="btn btn-success btn-follow"
-                            th:data-user-id="${user.userID}"
-                            data-follow-status="false"
-                            onclick="followUser(this)">Đang theo dõi</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <a class="btn btn-primary" th:href="@{'./suggest-follow-up'}" th:text="'Xem đề xuất theo dõi'"></a>
-    </div>
-
-    <!-- Bootstrap JS and dependencies (optional) -->
-	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>	
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-	<script
-		src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 	<script>
-		$(document).ready(function() {
-			$(".btn-follow").click(function() {
+		$(document).ready(function () {
+			$(".btn-follow").click(function () {
 				var userId = $(this).data("user-id");
 				var followStatus = $(this).data("follow-status");
 				$.ajax({
-					type : "GET",
-					url : "./follow/" + userId,
-					success : function(respone) {
+					type: "GET",
+					url: "./follow/" + userId,
+					success: function (respone) {
 						// Xử lý phản hồi từ server
 						//alert(respone);
 					},
-					error : function(error) {
+					error: function (error) {
 						alert(error);
 						console.error("Error:", error);
 					}
@@ -66,20 +79,28 @@
 			});
 		});
 	</script>
-	
-	<script>
-        function followUser(button) {
-            if(button.innerText === 'Theo dõi') {
-            	button.innerText = 'Đang theo dõi';
-                button.classList.remove('btn-primary');
-                button.classList.add('btn-success');	
-            } else {
-            	button.innerText = 'Theo dõi';
-                button.classList.remove('btn-success');
-                button.classList.add('btn-primary');
-            }
-        }
-    </script>
 
+	<script>
+		const btns = document.querySelectorAll(".js-click");
+
+		function changeClass(event) {
+			const btn = event.target;
+
+			if (!btn.classList.contains("button")) {
+				btn.classList.remove("following-btn");
+				btn.classList.add("button");
+				btn.textContent = "Follow";
+			} else {
+				btn.classList.remove("button");
+				btn.classList.add("following-btn");
+				btn.textContent = "Following";
+			}
+		}
+
+		for (const btn of btns) {
+			btn.addEventListener("click", changeClass);
+		}
+	</script>
 </body>
+
 </html>

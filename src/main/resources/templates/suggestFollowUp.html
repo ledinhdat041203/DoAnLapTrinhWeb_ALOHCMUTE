@@ -62,29 +62,35 @@
 	</script>
 	
 	<script>
-            const btn = document.querySelector(".js-click");
+		const btns = document.querySelectorAll(".js-click");
 
-            function changeClass() {
-                // Check if the button has the "button" class
-                if (btn.classList.contains("button")) {
-                    // Remove "button" and add "following-btn"
-                    btn.classList.remove("button");
-                    btn.classList.add("following-btn");
+		function changeClass(event) {
+			// Get the specific button that was clicked
+			const btn = event.target;
 
-                    // Toggle the text content between "Follow" and "Following"
-                    btn.textContent = "Following";
-                } else {
-                    // Remove "following-btn" and add "button"
-                    btn.classList.remove("following-btn");
-                    btn.classList.add("button");
+			// Check if the button has the "button" class
+			if (btn.classList.contains("button")) {
+				// Remove "button" and add "following-btn"
+				btn.classList.remove("button");
+				btn.classList.add("following-btn");
 
-                    // Toggle the text content between "Follow" and "Following"
-                    btn.textContent = "Follow";
-                }
-            }
+				// Toggle the text content between "Follow" and "Following"
+				btn.textContent = "Following";
+			} else {
+				// Remove "following-btn" and add "button"
+				btn.classList.remove("following-btn");
+				btn.classList.add("button");
 
-            btn.addEventListener("click", changeClass);
-        </script>
+				// Toggle the text content between "Follow" and "Following"
+				btn.textContent = "Follow";
+			}
+		}
+
+		// Iterate through each button and add a click event listener
+		for (const btn of btns) {
+			btn.addEventListener("click", changeClass);
+		}
+	</script>
 
 
 </body>

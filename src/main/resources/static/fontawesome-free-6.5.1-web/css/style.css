@@ -15411,11 +15411,12 @@ a.shopping-cart > i {
 .mesg-peple {
     display: inline-block;
     width: 100%;
+    height: 78%;
 }
 .nav.nav-tabs.nav-tabs--vertical.msg-pepl-list {
     margin-bottom: 0;
     margin-top: -10px;
-    max-height: 505px;
+    max-height: 100%;
     padding-right: 10px;
     position: relative;
 }
@@ -15594,6 +15595,8 @@ a.shopping-cart > i {
     margin-top: 20px;
     position: relative;
     width: 100%;
+    max-height: 550px;
+    height: 95%;
 }
 .conversations {
     display: inline-block;
@@ -15603,9 +15606,9 @@ a.shopping-cart > i {
     padding-right: 20px;
     position: relative;
     width: 100%;
-	max-height: 488px;
-	height: 488px;
-	min-height: 488px;
+	max-height: 550px;
+	height: 100%;
+	min-height: 520px;
 	
 }
 .conversations > li {

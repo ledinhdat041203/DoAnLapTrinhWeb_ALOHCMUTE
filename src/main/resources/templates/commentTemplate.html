@@ -1,15 +1,48 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<style>
+	.comment-actions {
+		display: flex;
+	}
+
+	.comment-action {
+		background-color: #3498db;
+		color: #fff;
+		border: none;
+		padding: 8px 12px;
+		margin-right: 8px;
+		cursor: pointer;
+		border-radius: 4px;
+	}
+
+	.comment-action:hover {
+		background-color: #2980b9;
+	}
+
+	.comment-action.delete {
+		background-color: #e74c3c;
+	}
+
+	.comment-options-menu {
+		display: none;
+	}
+
+	.comment-options-menu.active {
+		display: flex;
+	}
+
+	.comment-action.edit {
+		background-color: #2ecc71;
+	}
+</style>
 
 <head>
-<meta charset="UTF-8" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ALOHCMUTE</title>
+	<meta charset="UTF-8" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>ALOHCMUTE</title>
 
-<link rel="stylesheet"
-	href="/fontawesome-free-6.5.1-web/css/all.min.css" />
-<link rel="stylesheet"
-	href="/fontawesome-free-6.5.1-web/css/styleAll.css" />
+	<link rel="stylesheet" href="/fontawesome-free-6.5.1-web/css/all.min.css" />
+	<link rel="stylesheet" href="/fontawesome-free-6.5.1-web/css/styleAll.css" />
 </head>
 
 <body style="background-color: white">
@@ -17,7 +50,7 @@
 		<div th:replace="~{menu::menu}"></div>
 		<div class="container">
 
-			<div class="loadComment-container">
+			<div class="loadComment-container" style="display: flex;" data-post-id="${post.postID}">
 				<div class="loadComment-img">
 					<img th:src="${post.imageURL}" alt="Bài post" />
 				</div>
@@ -30,54 +63,83 @@
 						<ul id="commentList">
 							<li class="notify-item" th:each="comment : ${post.listComment}"
 								th:style="'border: none; padding-top: 10px; padding-bottom: 10px'">
-								<img th:src="${comment.userComment.avata}" alt=""
-								style="height: 35px; width: 35px" />
+								<img th:src="${comment.userComment.avata}" alt="" style="height: 35px; width: 35px" />
 								<div class="loadComment-info">
+									<h5 th:text="${comment.userComment.fullName}"></h5>
 									<span class="description" th:text="${comment.content}">
-										<h5 th:text="${comment.userComment.fullName}"></h5>
-									</span>
-									<p>
-										<span style="color: rgb(115, 115, 115)"
-											th:text="${comment.commentDate}"></span>
-										<button class="loadComment-button js-comment-edit">
-											<i class="fa-solid fa-ellipsis"
-												style="color: rgb(115, 115, 115)"></i>
-										</button>
-									</p>
-								</div>
-							</li>
-						</ul>
-					</div>
 
+									</span>
+
+									<p>
+										<span style="color: rgb(115, 115, 115)" th:text="${comment.commentDate}"></span>
+										<!-- Add a button for comment actions -->
+									<div class="comment-actions">
+										<span class="comment-action edit js-comment-edit"
+											data-comment-id="${comment.commentId}">
+											Edit
+										</span>
+										<div class="edit-form" style="display: none;"
+											id="edit-form-${comment.commentId}">
+											<input type="text" class="edit-comment-input"
+												th:id="'commentInput' + ${comment.commentId}"
+												value="${comment.content}" />
+
+
+											<span class="dropdown-item update js-comment-update"
+												th:onclick="'updateComment(\'' + ${post.postID} + '\', \'' + ${comment.commentId} + '\')'">
+												Update
+											</span>
+
+											<span class="comment-action cancel js-comment-cancel"
+												data-comment-id="${comment.commentId}">
+												Cancel
+											</span>
+										</div>
+
+										<span class="dropdown-item delete js-comment-delete"
+											th:onclick="'deleteComment(\'' + ${post.postID} + '\', \'' + ${comment.commentId} + '\')'">Delete</span>
+
+
+									</div>
+								</div>
+								</p>
+					</div>
+					</li>
 					<div class="loadComment-footer">
+
 						<div class="loadComment-icon">
-							<i class="fa-regular fa-heart"></i> <i
-								class="fa-regular fa-comment js-cmt"></i>
+							<i class="fa-regular fa-heart"></i> <i class="fa-regular fa-comment js-cmt"></i>
+							<a href="#">
+
+								<span th:id="'commentCount'" th:text="${post.commentCount}"></span>
+								Comments
+							</a>
 						</div>
+
 						<div class="create-comment loadComment-input">
-							<form id="createCommentForm"
-								th:action="'/create/' + ${post.postID}" method="post">
-								<i class="fa-regular fa-face-smile"></i> <input type="text"
-									placeholder="Add a comment..."
-									th:id="'createCommentInput' + ${post.postID}" name="content"
-									required />
-								<button type="submit" class="button">Post</button>
+							<form id="createCommentForm" th:action="'/create/' + ${post.postID}" method="post">
+								<i class="fa-regular fa-face-smile"></i>
+								<input type="text" class="create-comment-input" placeholder="Your comment..."
+									th:id="'createCommentInput' + ${post.postID}" name="content" required />
+								<button type="submit" class="button">Create Comment</button>
 							</form>
 						</div>
 					</div>
 
+					</ul>
 				</div>
+
+
+
 			</div>
-
-
 		</div>
 	</div>
 
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-	<script
-		src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	<!-- jQuery -->
 	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+	<!-- Your custom scripts -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 	<script>
 		// Hàm xóa bài viết
 		function deletePost(button) {
@@ -85,102 +147,186 @@
 			alert(postId);
 			// Gọi endpoint xóa bài viết với postId
 			$.ajax({
-				type : 'DELETE',
-				url : '/post/' + postId,
-				success : function() {
+				type: 'DELETE',
+				url: '/post/' + postId,
+				success: function () {
 					// Xóa phần tử li khỏi danh sách sau khi xóa thành công
 					$(button).closest('li').remove();
 					alert('Post deleted successfully!');
 					// Tải lại trang sau khi xóa thành công
 					location.reload();
 				},
-				error : function(response) {
+				error: function (response) {
 					alert('Error deleting post');
 				}
 			});
 		}
 	</script>
-
 	<script defer>
-		$(document)
-				.ready(
-						function() {
-							$('form')
-									.submit(
-											function(event) {
-												event.preventDefault(); // Prevent the default form submission behavior
-												var postId = $(this).attr(
-														'action').split('/')
-														.pop();
-												// Get the form data
-												var formData = {
-													content : $(
-															'#createCommentInput'
-																	+ postId)
-															.val()
-												// Assuming you have a createCommentInput element
-												};
+		$('.js-comment-edit').on('click', function () {
+			const commentId = $(this).data('comment-id');
 
-												// Get the post ID from the form's action attribute
+			// Load the comment content into the edit form
+			const commentContent = $(this).closest('.comment-actions').siblings('.loadComment-info').find('.description').text();
+			$(this).siblings('.edit-form').find('.edit-comment-input').val(commentContent);
 
-												$
-														.ajax({
-															type : 'POST',
-															url : '/create/'
-																	+ postId,
-															headers : {
-																'Accept' : 'application/json',
-																'Content-Type' : 'application/json'
-															},
-															data : JSON
-																	.stringify(formData),
-															success : function(
-																	response) {
-																console
-																		.log(response);
+			// Hide the comment content
+			$(this).closest('.comment-actions').siblings('.loadComment-info').find('.description').hide();
 
-																// Gán giá trị mới cho số lượng bình luận của post
-																if (response) {
-																	// Gán giá trị mới cho số lượng bình luận của post
-																	const postIdNumeric = parseInt(postId);
-																	if (!isNaN(postIdNumeric)) {
-																		const commentCountSpan = $('#commentCount'
-																				+ postIdNumeric);
-																		commentCountSpan
-																				.text(response);
-																	}
-																}
+			// Show the edit form
+			$(this).siblings('.edit-form').show();
+		});
 
-																// Load lại danh sách bình luận
-																loadComments(postId);
 
-																// Xóa nội dung input
-																$(
-																		'#createCommentInput'
-																				+ postId)
-																		.val('');
-															},
-															error : function(
-																	xhr,
-																	status,
-																	error) {
-																console
-																		.error(
-																				"Error creating comment: ",
-																				xhr.responseText);
-																alert('Error creating comment');
-															}
-														});
 
-											});
-						});
+		$('.js-comment-cancel').on('click', function () {
+			const commentId = $(this).data('comment-id');
+
+			// Show the comment content
+			$(this).closest('.edit-form').siblings('.description').show();
+
+			// Hide the edit form
+			$(this).closest('.edit-form').hide();
+		});
+
+		$('.js-comment-update').on('click', function () {
+			const commentId = $(this).data('comment-id');
+			const updatedContent = $(this).siblings('.edit-comment-input').val();
+
+			// Perform the update action using AJAX
+
+			// On success, update the comment content, hide the edit form, and show the comment content
+			$(this).closest('.edit-form').siblings('.description').text(updatedContent).show();
+			$(this).closest('.edit-form').hide();
+		});
+
+	</script>
+	<script>
+
+
+		$('.js-comment-delete').on('click', function () {
+			const commentId = $(this).data('comment-id');
+			const postId = $(this).data('post-id');
+			deleteComment(commentId, postId);
+		});
+
+
 	</script>
 	<script defer>
+		function toggleCommentOptions(button) {
+			const commentOptionsMenu = $(button).siblings('.comment-options-menu');
+			commentOptionsMenu.toggleClass('active');
+		}
+
+		$(document).ready(function () {
+			$('form').submit(function (event) {
+				event.preventDefault(); // Prevent the default form submission behavior
+				var postId = $(this).attr('action').split('/').pop();
+
+				// Get the form data
+				var formData = {
+					content: $('#createCommentInput' + postId).val(),
+				};
+
+				// Get the post ID from the form's action attribute
+				$.ajax({
+					type: 'POST',
+					url: '/create/' + postId,
+					headers: {
+						'Accept': 'application/json',
+						'Content-Type': 'application/json'
+					},
+					data: JSON.stringify(formData),
+					success: function (response) {
+						console.log(response);
+
+						// Update the comment count on the UI
+						if (response) {
+							const postIdNumeric = parseInt(postId);
+							if (!isNaN(postIdNumeric)) {
+								const commentCountSpan = $('#commentCount');
+								commentCountSpan.text(response);
+							}
+						}
+
+						// Load comments automatically after posting
+						loadComments1(postId);
+
+						// Clear the input field
+						$('#createCommentInput' + postId).val('');
+					},
+					error: function (xhr, status, error) {
+						console.error("Error creating comment: ", xhr.responseText);
+						alert('Error creating comment');
+					}
+				});
+			});
+		});
+	</script>
+
+	<script defer>
+		function loadComments(postId) {
+			const postIdNumeric = parseInt(postId);
+
+			if (!isNaN(postIdNumeric)) {
+				$.ajax({
+					type: 'GET',
+					url: '/comment/' + postIdNumeric,
+					success: function (response, data, xhr) {
+						console.log(data);
+						const commentList = $('#commentList');
+
+
+						// Lặp qua phản hồi và kiểm tra xem mỗi bình luận đã tồn tại chưa
+						// Trong vòng lặp forEach của bạn
+						response.forEach(function (comment) {
+							const existingComment = commentList.find(`[data-comment-id="${comment.commentID}"]`);
+
+
+							if (existingComment.length === 0) {
+								console.log(commentList.commentCountSpan)
+								const userAvata = comment.userComment ? comment.userComment.avata : ''; // Kiểm tra nếu userComment tồn tại
+								const newComment = `
+	                            <li class="notify-item" data-comment-id="${comment.commentId}" style="border: none; padding-top: 10px; padding-bottom: 10px">
+	                                <img src="${userAvata}" alt="" style="height: 35px; width: 35px" />
+	                                <div class="loadComment-info">
+	                                    <span class="description" th:text="${comment.content}">
+	                                        <h5 th:text="${comment.userComment ? comment.userComment.fullName : ''}"></h5>
+	                                    </span>
+	                                    <p>
+	                                        <span style="color: rgb(115, 115, 115)" th:text="${comment.commentDate}"></span>
+	                                        <button class="loadComment-button js-comment-options">
+                                               
+                                            </button>
+	                                    </p>
+	                                   
+	                                </div>
+	                            </li>`;
+
+
+
+							}
+						});
+					},
+					error: function (xhr, status, error, data) {
+						const postIdNumeric = parseInt(postId);
+						if (!isNaN(postIdNumeric)) {
+							const commentCountSpan = $('#commentCount');
+							commentCountSpan.text(data.responseJSON.length);
+						}
+						console.error("Lỗi khi tải bình luận: ", xhr.responseText);
+						alert('Lỗi khi tải bình luận');
+					}
+				});
+			} else {
+				alert('ID bài viết không hợp lệ.');
+			}
+		}
 		function likePost(postId) {
 			$.ajax({
-				type : 'POST',
-				url : '/like/' + postId,
-				success : function(response) {
+				type: 'POST',
+				url: '/like/' + postId,
+				success: function (response) {
 
 					const str = '#likeCount' + postId;
 					const likespan = $(str);
@@ -189,7 +335,7 @@
 					likespan.html(response + " Likes")
 					likeicon.toggleClass("tym");
 				},
-				error : function() {
+				error: function () {
 					alert('Error liking post');
 				}
 			});
@@ -197,7 +343,7 @@
 
 		var page = 1;
 		var loading = true;
-		$(window).scroll(function() {
+		$(window).scroll(function () {
 			var windowHeight = $(window).height();
 			var documentHeight = $(document).height();
 			var scrollTop = $(window).scrollTop();
@@ -213,10 +359,10 @@
 		function loadAjax() {
 			console.log("/listpost/group/" + page);
 			$.ajax({
-				type : 'GET',
-				url : '/listpost/group/' + page, // Thay đổi đường dẫn API và tham số theo nhu cầu của bạn
+				type: 'GET',
+				url: '/listpost/group/' + page, // Thay đổi đường dẫn API và tham số theo nhu cầu của bạn
 
-				success : function(data) {
+				success: function (data) {
 					console.log(data);
 					if (data.trim() !== "") {
 						console.log("data k null");
@@ -230,7 +376,7 @@
 
 					$("#listpost").append(data);
 				},
-				error : function(error) {
+				error: function (error) {
 					alert("error")
 					console.error('Error loading data:', error);
 					loading = false;
@@ -238,284 +384,195 @@
 			});
 		}
 	</script>
+
 	<script defer>
-		function loadComments(postId) {
+		function loadComments1(postId) {
 			const postIdNumeric = parseInt(postId);
 
 			if (!isNaN(postIdNumeric)) {
 				$.ajax({
-							type : 'GET',
-							url : '/comment/' + postIdNumeric,
-							success : function(response) {
-								const commentList = $('#commentList');
-								commentList.empty();
-								
-								response
-								.forEach(function(comment) {
-								const newcomment = `<li class="notify-item"
-									th:style="'border: none; padding-top: 10px; padding-bottom: 10px'">
-									<img th:src="${comment.commentId}" alt=""
-									style="height: 35px; width: 35px" />
-									<div class="loadComment-info">
-										<span class="description" th:text="${comment.content}">
-											<h5 th:text="${comment.content}"></h5>
-										</span>
-										<p>
-											<span style="color: rgb(115, 115, 115)"
-												th:text="${comment.content}"></span>
-											<button class="loadComment-button js-comment-edit">
-												<i class="fa-solid fa-ellipsis"
-													style="color: rgb(115, 115, 115)"></i>
-											</button>
-										</p>
-									</div>
-								</li>`;
-								
-								commentList.append(newcomment);
-								});
-								
-								response
-										.forEach(function(comment) {
-													
-											var commentElement = $('<li><span class="comment-content"></span><span class="comment-date"></span><span class="time-diff"></span></li>');
-											commentElement
-													.find(
-															'span.comment-content')
-													.text(
-															comment.userName
-																	+ ': '
-																	+ comment.content);
-											commentElement.find(
-													'span.comment-date').text(
-													comment.commentDate);
+					type: 'GET',
+					url: '/comment/' + postIdNumeric,
+					success: function (response, xhr, data) {
 
-											// Calculate and display the time difference
-											var timeDiffElement = commentElement
-													.find('span.time-diff');
-											var commentDate = new Date(
-													comment.commentDate);
-											var now = new Date();
+						const commentList = $('#commentList');
+						commentList.empty();
 
-											var timeDiff = now - commentDate;
-											var seconds = Math
-													.floor(timeDiff / 1000);
-											var minutes = Math
-													.floor(seconds / 60);
-											var hours = Math
-													.floor(minutes / 60);
-											var days = Math.floor(hours / 24);
+						response.forEach(function (comment) {
 
-											if (days > 0) {
-												timeDiffElement.text(days
-														+ ' days ago');
-											} else if (hours > 0) {
-												timeDiffElement.text(hours
-														+ ' hours ago');
-											} else if (minutes > 0) {
-												timeDiffElement.text(minutes
-														+ ' minutes ago');
-											} else {
-												timeDiffElement
-														.text('Just now');
-											}
-											// Add the three-dot button for comment options
-											commentElement
-													.append('<button class="comment-options" onclick="toggleCommentOptions(this)" '
-															+ 'data-comment-id="'
-															+ comment.commentId
-															+ '" data-comment-content="'
-															+ comment.content
-															+ '" id="optionsButton-'
-															+ comment.commentId
-															+ '">...</button>');
 
-											commentElement
-													.append('<div class="comment-options-menu" style="display: none;" id="commentOptionsMenu-' + comment.commentId + '">'
-															+ '<button class="edit-comment-button" onclick="showEditForm(\''
-															+ comment.commentId
-															+ '\', \''
-															+ comment.content
-															+ '\')">Edit</button>'
-															+ '<button class="delete-comment-button" onclick="deleteComment(\''
-															+ comment.commentId
-															+ '\')">Delete</button>'
-															+ '</div>');
+							const newComment = `
+                        <li class="notify-item" data-comment-id="${comment.commentID}" style="border: none; padding-top: 10px; padding-bottom: 10px">
+                            <img src="${comment.avata}" alt="" style="height: 35px; width: 35px" />
+                            <div class="loadComment-info">
+								<h5>${comment.userFullName}</h5>                            
+                                <span class="description" >${comment.content}</span>
+                                
+                                <p>
+                                    <span style="color: rgb(115, 115, 115)">${comment.commentDate}</span>
+                                    <div class="comment-actions">
+                                        <button class="comment-action edit js-comment-edit" data-comment-id="${comment.commentID}">
+                                            Edit
+                                        </button>
+                                        <div class="edit-form" style="display: none;" id="edit-form-${comment.commentID}">
+                                            	<input type="text" class="edit-comment-input"
+												id="commentInput${comment.commentID}"
+												value="${comment.content}" />
+                                            <button class="dropdown-item update js-comment-update" onclick="updateComment(${postId}, ${comment.commentID})">
+                                                Update
+                                            </button>
+                                            <button class="comment-action cancel js-comment-cancel" data-comment-id="${comment.commentID}">
+                                                Cancel
+                                            </button>
+                                        </div>
+                                        <button class="dropdown-item delete js-comment-delete" onclick="deleteComment(${postId}, ${comment.commentID})">
+                                            Delete
+                                        </button>
+                                    </div>
+                                </p>
+                            </div>
+                        </li>`;
 
-											// Add a class to uniquely identify the comment options menu
-											commentElement
-													.find(
-															'.comment-options-menu')
-													.addClass(
-															'comment-options-menu-'
-																	+ comment.commentId);
+							const commentElement = $(newComment);
+							commentList.append(commentElement);
 
-											commentList.append(commentElement);
+							commentElement.find('.js-comment-edit').on('click', function () {
+								const commentId = $(this).data('comment-id');
 
-										});
-							},
-							error : function(xhr, status, error) {
-								console.error("Error loading comments: ",
-										xhr.responseText);
-								alert('Error loading comments');
-							}
+								// Load the comment content into the edit form
+								const commentContent = $(this).closest('.comment-actions').siblings('.loadComment-info').find('.description').text();
+								$(this).siblings('.edit-form').find('.edit-comment-input').val(commentContent);
+
+								// Hide the comment content
+								$(this).closest('.comment-actions').siblings('.loadComment-info').find('.description').hide();
+
+								// Show the edit form
+								$(this).siblings('.edit-form').show();
+							});
+
+							commentElement.find('	.js-comment-update').on('click', function () {
+								const commentId = $(this).data('comment-id');
+								const updatedContent = $(this).siblings('.edit-comment-input').val();
+
+								// Perform the update action using AJAX
+
+								// On success, update the comment content, hide the edit form, and show the comment content
+								$(this).closest('.edit-form').siblings('.description').text(updatedContent).show();
+								$(this).closest('.edit-form').hide();
+							});
+
+							commentElement.find('.js-comment-cancel').on('click', function () {
+								// Your cancel logic here
+							});
+
+							commentElement.find('.js-comment-delete').on('click', function () {
+								// Your delete logic here
+							});
+
 						});
+					},
+					error: function (xhr, status, error) {
+						console.error("Error loading comments: ", xhr.responseText);
+						alert('Error loading comments');
+					}
+				});
 			} else {
 				alert('Invalid post ID.');
 			}
 		}
-		function toggleCommentOptions(button) {
-			console.log('Toggle Comment Options clicked!');
 
-			// Find the comment-options-menu related to the clicked button
-			const commentOptions = $(button).siblings('.comment-options-menu');
 
-			// Hide all comment-options-menus except the one related to the clicked button
-			$('.comment-options-menu').not(commentOptions).hide();
-
-			// Toggle the display of the comment-options-menu related to the clicked button
-			commentOptions.toggle();
-		}
-		// chỉ chỗ delete trc nha trong này khi console.log data trả về thì có 2 trường hợp 1 trả về theo response hai thì sẽ trả theo data
-		// 
-		function deleteComment(commentId) {
+		function deleteComment(postId, commentId) {
 			const confirmDelete = confirm('Do you want to delete the comment?');
 			if (confirmDelete) {
-				// Get the post ID
-				const postId = $('.comment-options-menu-' + commentId).closest(
-						'.col-md-6').find('.comment-button').attr('onclick')
-						.match(/\d+/)[0];
-
-				// Perform the delete action here (using AJAX)
+				// Thực hiện xóa comment thông qua AJAX
 				$.ajax({
-					type : 'DELETE',
-					url : '/comment/delete/' + postId + '/' + commentId,
-					success : function(data, textStatus, xhr, response) {
-						console.log(data);
-						//console.log(xhr);
-
+					type: 'DELETE',
+					url: '/comment/delete/' + postId + '/' + commentId,
+					success: function (data, textStatus, xhr) {
 						if (xhr.status === 200) {
 							if (data) {
-								// Gán giá trị mới cho số lượng bình luận của post
+								// Cập nhật số lượng comment trên giao diện
 								const postIdNumeric = parseInt(postId);
 								if (!isNaN(postIdNumeric)) {
-									const commentCountSpan = $('#commentCount'
-											+ postIdNumeric);
+									const commentCountSpan = $('#commentCount');
 									commentCountSpan.text(data);
 								}
 							}
-							alert("Xóa thành công")
-							loadComments(postId);
-
+							alert('Comment deleted successfully');
+							loadComments1(postId);
 						} else {
-							// Thất bại
-							alert("Bạn không có quyền xóa bình luận")
-							loadComments(postId);
+							// Xóa thất bại
+							alert('You do not have permission to delete this comment');
+							loadComments1(postId);
 						}
 					},
-					error : function(data, textStatus, xhr, response) {
-						console.log(data);
-						//console.log(textStatus);
-						if (xhr.status === 200) {
-							// Thành công
-							alert("Xóa thành công")
-							loadComments(postId);
-
-						} else {
-							// Thất bại
-							alert("Bạn không có quyền xóa bình luận")
-							loadComments(postId);
-						}
+					error: function (xhr, textStatus, error) {
+						console.log(xhr);
+						console.error('Error deleting comment: ', error);
+						alert('Error deleting comment');
+						loadComments1(postId);
 					}
 				});
 			}
 		}
 
-		function showEditForm(commentId, commentContent) {
-			// Check if an edit form is already active for this comment
-			const existingEditForm = $('.comment-options-menu-' + commentId)
-					.find('.edit-comment-input');
-			if (existingEditForm.length > 0) {
-				// If an edit form is active, return without creating a new one
-				return;
-			}
+		function updateComment(postId, commentId,) {
+			// Get the content from the input field of the specific edit form
+			const updatedContent = $('#commentInput' + commentId).val()
 
-			// Display the confirmation window with the input field and Update/Cancel buttons
-			const confirmUpdate = confirm('Do you want to update the comment?');
-			if (confirmUpdate) {
-				const editForm = $('<div><input type="text" class="edit-comment-input" value="' + commentContent + '"/> '
-						+ '<button class="update-comment-button" onclick="updateComment(\''
-						+ commentId
-						+ '\')">Update</button>'
-						+ '<button class="cancel-comment-button" onclick="cancelEdit()">Cancel</button></div>');
 
-				// Replace the comment content with the edit form
-				const commentOptionsMenu = $('.comment-options-menu-'
-						+ commentId);
-				const commentContentSpan = commentOptionsMenu
-						.siblings('.comment-content');
-				commentContentSpan.html(editForm);
-			}
-		}
 
-		function updateComment(commentId) {
-			// Get the content from the input field
-			const updatedContent = $('.edit-comment-input').val();
-
-			// Get the post ID
-			const postId = $('.comment-options-menu-' + commentId).closest(
-					'.col-md-6').find('.comment-button').attr('onclick').match(
-					/\d+/)[0];
 
 			// Perform the AJAX update action
 			$.ajax({
-				type : 'PUT',
-				url : '/comment/update/' + postId,
-				headers : {
-					'Accept' : 'application/json',
-					'Content-Type' : 'application/json'
+				type: 'PUT',
+				url: '/comment/update/' + postId,  // Updated the URL to include both post and comment IDs
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json'
 				},
-				data : JSON.stringify({
-					content : updatedContent,
-					commentId : commentId
-				}),
-				success : function(data, textStatus, xhr) {
-					console.log(xhr);
-					if (xhr.status === 200 && data.status === 'thanh cong') {
-						// Thành công
-						alert("Sửa thành công");
-						loadComments(postId);
-					} else {
-						// Thất bại
-						alert("Sửa thành công");
-						loadComments(postId);
-					}
-				},
-				error : function(xhr, textStatus, data) {
-					if (textStatus === 'error') {
-						alert("Bạn không có quyền sửa bình luận");
-						loadComments(postId);
-					} else if (textStatus === 'parsererror') {
-						alert("Sửa thành công");
-						loadComments(postId);
-					}
+				data: JSON.stringify({content: updatedContent, commentId: commentId}),
+				success: function (data, textStatus, xhr, response) {
+					console.log(xhr.responseText);
+					if (xhr.status === 200 && data.status === 'success') {
+						// Success
+						alert("Update successful");
 
+						loadComments1(postId);
+					} else {
+						// Failure
+						alert("Thành công");
+						if (xhr.responseText) {
+							const postIdNumeric = parseInt(postId);
+							if (!isNaN(postIdNumeric)) {
+								const commentCountSpan = $('#commentCount');
+								commentCountSpan.text(xhr.responseText);
+							}
+						}
+						loadComments1(postId);
+					}
+				},
+				error: function (xhr, textStatus, errorThrown, response) {
+					console.log(response);
+					if (xhr.status === 403) {
+						// User doesn't have permission
+						alert("You don't have permission to update this comment");
+					} else {
+						// Other errors
+						alert("Update failed");
+					}
+					loadComments1(postId);
 				}
 			});
 		}
 
-		function cancelEdit() {
-			// Close the edit form and show the comment content again
-			const commentContentSpan = $('.comment-options:visible').siblings(
-					'.comment-content');
-			const commentContent = commentContentSpan.find(
-					'.edit-comment-input').val();
-			commentContentSpan.html('' + commentContent);
-
-			// Hide the edit form
-			$('.edit-comment-input').remove();
-			$('.update-comment-button').remove();
-			$('.cancel-comment-button').remove();
+		// Hàm xử lý hiển thị dropdown menu
+		function toggleCommentOptions(button) {
+			const commentOptionsMenu = $(button).siblings('.comment-actions').find('.dropdown-menu');
+			commentOptionsMenu.toggleClass('active');
 		}
 	</script>
 </body>
+
 </html>

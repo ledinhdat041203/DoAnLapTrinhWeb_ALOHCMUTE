@@ -13,6 +13,7 @@ import vn.hcmute.Responsitory.CommentRepository;
 import vn.hcmute.entities.CommentEntity;
 import vn.hcmute.entities.LikeEntity;
 import vn.hcmute.entities.PostEntity;
+import vn.hcmute.model.CommentModel;
 
 
 
@@ -21,6 +22,18 @@ public class CommentService implements ICommentService{
 
 	@Autowired
 	CommentRepository commentRepo;
+	
+	@Override
+	public CommentModel convertEntityToModel(CommentEntity comment) {
+		CommentModel commentModel = new CommentModel();
+		commentModel.setCommentID(comment.getCommentId());
+		commentModel.setAvata(comment.getUserComment().getAvata());
+		commentModel.setCommentDate(comment.getCommentDate());
+		commentModel.setContent(comment.getContent());
+		commentModel.setUserFullName(comment.getUserComment().getFullName());
+		return commentModel;
+	}
+	
 	@Override
 	public <S extends CommentEntity> S save(S entity) {
         if (entity == null) {

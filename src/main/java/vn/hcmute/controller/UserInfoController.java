@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -29,11 +30,11 @@ public class UserInfoController {
     @Autowired
     private IPostService postService;
 
-    @GetMapping("")
-    public String list(ModelMap model, HttpSession session, ModelMap post, Model listpost) {
-        Long userID = (Long) session.getAttribute("userInfoID");
+    @GetMapping("/{userID}")
+    public String list(ModelMap model, HttpSession session, ModelMap post, Model listpost, @PathVariable long userID) {
         
-        if (userID == null) {
+        
+        if (userID == 0) {
             // Xử lý trường hợp userID là null
             return "redirect:/login"; // hoặc chuyển hướng đến trang đăng nhập khác
         }

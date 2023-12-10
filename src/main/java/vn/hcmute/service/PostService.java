@@ -50,6 +50,7 @@ public class PostService implements IPostService {
 		postModel.setUserID(post.getUser().getUserID());
 		postModel.setUserFullName(post.getUser().getFullName());
 		postModel.setAvata(post.getUser().getAvata());
+		postModel.setCommentCount(post.getListComments().size());
 
 		postModel.setAvata(userInfo.getAvata());
 		postModel.setUserAccountName(userAcc.getUserName());

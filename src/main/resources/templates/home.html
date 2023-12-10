@@ -12,7 +12,7 @@
 
 <nav>
     <ul>
-        <li><a href ="/profile" th:text="'Xin chào: '+${session.userFullName}"></a></li>
+        <li><a th:href="@{'/profile/' + ${session.userID}}" th:text="'Xin chào: '+${session.userFullName}"></a></li>
         <li><a href="list_Conversation">Nhắn tin</a></li>
         <li><a href="post">Đăng bài viết</a></li>
         <li><a href="listpost">Bài viết</a></li>

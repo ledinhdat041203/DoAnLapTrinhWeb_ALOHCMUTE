@@ -1,6 +1,7 @@
 package vn.hcmute.entities;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -39,8 +40,8 @@ public class PostEntity {
 
 	@JsonProperty("image")
 	private String image;
-	@Column(name = "postdate", columnDefinition = "DATE")
-	private Date postDate;
+	@Column(name = "postdate", columnDefinition = "DATETIME")
+	private Timestamp postDate;
 	
 	 @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
 	 private List<LikeEntity> listLikes;

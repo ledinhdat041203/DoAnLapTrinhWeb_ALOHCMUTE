@@ -2,24 +2,14 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport">
-<title>Post</title>
+	<meta charset="UTF-8">
+	<meta name="viewport">
+	<title>Post</title>
 </head>
 
 <body>
-<div></div>
+	<div></div>
 	<aside class="asideMenu" th:fragment="asideMenu (list)">
-		<div class="account">
-			<div class="account-info">
-				<img src="./photo/avatar.jpeg" alt="avatar con mèo" class="avatar" />
-				<div class="account-name">
-					<h5>xiaoluan_2011</h5>
-					<p>Nguyen Vo Minh Luan</p>
-				</div>
-			</div>
-			<button class="button">Switch</button>
-		</div>
 		<div class="suggest">
 			<p class="suggest-text">Suggested for you</p>
 			<a href="/friends/suggest-follow-up" class="suggest-link">See All</a>
@@ -33,10 +23,9 @@
 						<p th:text="${user.userID}"></p>
 					</div>
 				</div>
-				<button class="button js-click" 
-		 				th:data-user-id="${user.userID}"
-                            data-follow-status="false"
-                            onclick="followUser(this)">Follow</button>
+				<button class="button btn-follow js-click" style="font-size: 14px; font-weight: 500"
+					th:data-user-id="${user.userID}" data-follow-status="false"
+					onclick="followUser(this)">Follow</button>
 			</div>
 		</div>
 	</aside>
