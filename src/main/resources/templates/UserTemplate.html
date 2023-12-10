@@ -5,6 +5,23 @@
 	<meta charset="UTF-8">
 	<meta name="viewport">
 	<title>Post</title>
+	<style>
+		.ui-follow {
+			color: black;
+			/* Màu chữ đen */
+			text-decoration: none;
+			/* Loại bỏ đường gạch chân mặc định */
+			margin-right: 10px;
+			/* Khoảng cách giữa các thành phần */
+			cursor: pointer;
+			/* Biểu tượng con trỏ khi di chuột qua */
+		}
+
+		.ui-follow:hover {
+			color: #007bff;
+			/* Màu chữ khi di chuột qua */
+		}
+	</style>
 </head>
 
 <body>
@@ -22,16 +39,21 @@
               flex-direction: column;
               justify-content: center;
             ">
-
 			<div style="display: flex; margin-bottom: 20px; align-items: center">
 				<h3 class="pb" th:text="${user.fullName}"></h3>
-				<a href="/profile/update" class="edit-a">Edit profile</a>
+				<th:block th:if="${user.userID == session.userInfoID}">
+					<a href="/profile/update" class="edit-a">Edit profile</a>
+				</th:block>
+
+
+
 			</div>
 			<div class="pb">
 				<span class="ui-follow" th:text="${user.countPost + ' post'}"></span>
-				<span class="ui-follow" th:text="${user.countFollower + ' followers'}"></span>
-				<span class="ui-follow" th:text="${user.countFollowing + ' following'}"></span>
-
+				<a th:href="@{'/friends/follower-list/' + ${user.userID}}" class="ui-follow"
+					th:text="${user.countFollower + ' followers'}" style="text-decoration: none; color: black;"></a>
+				<a th:href="@{'/friends/following-list/' + ${user.userID}}" class="ui-follow"
+					th:text="${user.countFollowing + ' following'}" style="text-decoration: none; color: black;"></a>
 			</div>
 			<h5 class="pb" th:text="${user.address}"></h5>
 		</section>

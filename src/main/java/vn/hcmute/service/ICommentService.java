@@ -6,6 +6,7 @@ import java.util.List;
 import vn.hcmute.entities.CommentEntity;
 import vn.hcmute.entities.LikeEntity;
 import vn.hcmute.entities.PostEntity;
+import vn.hcmute.model.CommentModel;
 
 public interface ICommentService {
 
@@ -27,6 +28,8 @@ public interface ICommentService {
 	Long countCommentsByPostId(long postId);
 
 	void deleteAllByPostId(long postId);
+
+	CommentModel convertEntityToModel(CommentEntity comment);
 
 	
 }

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport">
+	<title>Post</title>
+</head>
+
+<body>
+	<div th:fragment="postGroup (post)">
+		<div class="post-info">
+			<div class="post-account">
+				<img th:src="${post.avata}" alt="avatar con mèo" class="avatar" />
+				<div class="account-name">
+					<h5 th:text="${post.userFullName}"></h5>
+				</div>
+			</div>
+			<i class="fa-solid fa-ellipsis"></i>
+			
+		</div>
+		<div class="post-img">
+			<img th:src="${post.imageURL}" alt="genshin" class="postimg" />
+		</div>
+		<div>
+			<div class="post-icon">
+				<i th:classappend="${post.liked} ? 'fa fa-heart tym' : 'fa fa-heart'"
+					th:onclick="'likePost(' + ${post.postID} + ')'" th:id="'likeButton' + ${post.postID}"></i>
+				<a th:href="@{'/post/detail/' + ${post.postID}}" class="js-cmt" th:id=" 'js-cmt' + ${post.postID}"
+					style="
+                                            border: none;
+                                            background-color: #fff;
+                                            font-size: 24px;
+                                            cursor: pointer;
+                                        ">
+					<i class="fa-regular fa-comment"></i>
+				</a>
+			</div>
+			<div class="post-like">
+				<p th:text=" ${post.likeCount}+' Likes' " th:id="'likeCount' + ${post.postID}">
+					</pth>
+			</div>
+			<div class="post-comment">
+				<h5 th:text="${post.userAccountName}"></h5>
+				<p th:text="${post.content}"></p>
+			</div>
+			<div style="display: flex; justify-content:space-between">
+				<textarea name="comment" id="comment" placeholder="Add a comment..." rows="2" cols="50"
+					style="margin-right: 10px;"></textarea>
+				<button class="button" style="margin-bottom: 20px;">Send</button>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

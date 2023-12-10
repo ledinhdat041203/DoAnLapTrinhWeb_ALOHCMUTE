@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>ALOHCMUTE</title>
+	<link rel="icon" href="/images/Logo1.png" type="image/png" sizes="16x8">
+	<link rel="stylesheet" href="/fontawesome-free-6.5.1-web/css/all.min.css" />
+	<link rel="stylesheet" href="/fontawesome-free-6.5.1-web/css/styleAll.css" />
+</head>
+
+<body style="background-color: white">
+	<div class="homePage">
+		<div th:replace="~{menu::menu}"></div>
+		<div id="listpost">
+			<!--bắt đầu 1 post -->
+			<div th:each="post : ${list}">
+				<div th:replace="~{postTemplate::post(${post})}"></div>
+			</div>
+			<!-- Kết thúc vòng lặp -->
+		</div>
+		<div th:replace="~{asideMenu::asideMenu(${listSuggest})}"></div>
+		
+		<div class="modal js-modal">
+			<form th:object="${post}" onsubmit="saveImage(); return false;">
+				<div class="modal-container">
+					<header class="modal-header">
+						<button type="submit" style="border: none;
+        outline: none;
+        background: none;
+        padding: 0;
+        cursor: pointer;">
+							<i class="fa-regular fa-paper-plane list-item-icon"
+								style="color: rgb(0, 0, 0); padding-left: 20px; padding-top: 20px"></i>
+						</button>
+						<h3>Create new post</h3>
+						<a style="
+                            background-color: #fff;
+                            border: none;
+                            cursor: pointer;
+                            padding-bottom: 20px;
+                            border-top-right-radius: 10px;
+                        " class="js-modal-close">
+							<i class="fa-solid fa-xmark" style="padding-right: 20px; padding-top: 20px"></i>
+						</a>
+					</header>
+
+					<div class="modal-body">
+
+						<div class="modal-img" id="imageContainer">
+						</div>
+						<div class="modal-caption">
+							<div class="modal-text">
+								<div class="modal-account">
+									<img th:src="${userInfo.avata}" alt="avatar con mèo" class="avatar" />
+									<div class="account-name">
+										<h5 th:text="${userInfo.fullName}">xiaoluan_2011</h5>
+									</div>
+								</div>
+								<textarea id="content" name="content" cols="40" rows="10" style="
+                                    border-bottom: 1px solid rgb(219, 219, 219);
+                                    padding-left: 20px;
+                                    padding-top: 20px;
+                                " placeholder="Write a caption..."></textarea>
+								<div class="modal-picture">
+									<label class="modal-picture-select">
+										<i class="ti-clip"></i>
+										<input type="file" id="file" name="file" accept="image/*" required>Select from
+										computer
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</form>
+		</div>
+		
+		
+		<div class="comment-edit js-comment-edit">
+			<div class="comment-edit-form js-comment-edit-form">
+				<div class="comment-edit-link">
+					<a id="deletepost">Delete</a>
+				</div>
+				<div class=" comment-edit-link">
+					<a id="editpost" onclick="showEditForm()" style="cursor: pointer;">Edit</a>
+				</div>
+				<div class="comment-edit-link-normal">
+					<a class="js-post-edit-close " style="cursor: pointer;">Cancel</a>
+				</div>
+			</div>
+		</div>
+
+
+
+		<div class="modal js-edit-modal">
+			<form  th:object="${post}" onsubmit="saveUpdate(); return false;">
+				<div class="modal-container">
+					<header class="modal-header">
+						<button type="submit" style="border: none;
+        outline: none;
+        background: none;
+        padding: 0;
+        cursor: pointer;">
+							<i class="fa-regular fa-paper-plane list-item-icon"
+								style="color: rgb(0, 0, 0); padding-left: 20px; padding-top: 20px"></i>
+						</button>
+						<h3>Update post</h3>
+						<a style="
+                            background-color: #fff;
+                            border: none;
+                            cursor: pointer;
+                            padding-bottom: 20px;
+                            border-top-right-radius: 10px;
+                        " class="js-modal-edit-close">
+							<i class="fa-solid fa-xmark" style="padding-right: 20px; padding-top: 20px"></i>
+						</a>
+					</header>
+
+					<div class="modal-body">
+
+						<div class="modal-img" id="imageContainer-update">
+						</div>
+						<div class="modal-caption">
+							<div class="modal-text">
+								<div class="modal-account">
+									<img id="avata-user-post-update" alt="avatar con mèo" class="avatar" />
+									<div class="account-name">
+										<h5 id="name-user-post-update">xiaoluan_2011</h5>
+									</div>
+								</div>
+								<textarea id="content-update" name="content-update" cols="40" rows="10" style="
+                                    border-bottom: 1px solid rgb(219, 219, 219);
+                                    padding-left: 20px;
+                                    padding-top: 20px;
+                                " placeholder="Write a caption..."></textarea>
+								<div class="modal-picture">
+									<label class="modal-picture-select">
+										<i class="ti-clip"></i>
+										<input type="file" id="file-update" name="file-update" accept="image/*" >Select from
+										computer
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</form>
+		</div>
+
+
+		
+
+	</div>
+
+	<!-- -----------------------------------------------------------script------------------------------------- -->
+
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+	<script>
+		// Hàm xóa bài viết
+		function deletePost(button) {
+			const postId = button.getAttribute("data-post-id");
+			alert(postId);
+			// Gọi endpoint xóa bài viết với postId
+			$.ajax({
+				type: 'DELETE',
+				url: '/post/' + postId,
+				success: function () {
+					// Xóa phần tử li khỏi danh sách sau khi xóa thành công
+					$(button).closest('li').remove();
+					alert('Post deleted successfully!');
+					// Tải lại trang sau khi xóa thành công
+					location.reload();
+				},
+				error: function (response) {
+					alert('Error deleting post');
+				}
+			});
+		}
+	</script>
+
+	<script>
+		// Hàm xóa bài viết
+		function deletePost(button) {
+			const postId = button.getAttribute("data-post-id");
+			alert(postId);
+			// Gọi endpoint xóa bài viết với postId
+			$.ajax({
+				type: 'DELETE',
+				url: '/post/' + postId,
+				success: function () {
+					// Xóa phần tử li khỏi danh sách sau khi xóa thành công
+					$(button).closest('li').remove();
+					alert('Post deleted successfully!');
+					// Tải lại trang sau khi xóa thành công
+					location.reload();
+				},
+				error: function (response) {
+					alert('Error deleting post');
+				}
+			});
+		}
+	</script>
+
+	<script defer>
+		$(document).ready(function () {
+			$('form').submit(function (event) {
+				event.preventDefault(); // Prevent the default form submission behavior
+				var postId = $(this).attr('action').split('/').pop();
+				// Get the form data
+				var formData = {
+					content: $('#createCommentInput' + postId).val() // Assuming you have a createCommentInput element
+				};
+
+				// Get the post ID from the form's action attribute
+
+				$.ajax({
+					type: 'POST',
+					url: '/create/' + postId,
+					headers: {
+						'Accept': 'application/json',
+						'Content-Type': 'application/json'
+					},
+					data: JSON.stringify(formData),
+					success: function (response) {
+						console.log(response);
+
+						// Gán giá trị mới cho số lượng bình luận của post
+						if (response) {
+							// Gán giá trị mới cho số lượng bình luận của post
+							const postIdNumeric = parseInt(postId);
+							if (!isNaN(postIdNumeric)) {
+								const commentCountSpan = $('#commentCount' + postIdNumeric);
+								commentCountSpan.text(response);
+							}
+						}
+
+						// Load lại danh sách bình luận
+						loadComments(postId);
+
+						// Xóa nội dung input
+						$('#createCommentInput' + postId).val('');
+					},
+					error: function (xhr, status, error) {
+						console.error("Error creating comment: ", xhr.responseText);
+						alert('Error creating comment');
+					}
+				});
+
+			});
+		});
+
+	</script>
+
+	<script defer>
+
+		function likePost(postId) {
+			$.ajax({
+				type: 'POST',
+				url: '/like/' + postId,
+				success: function (response) {
+
+					const str = '#likeCount' + postId;
+					const likespan = $(str);
+					const likeicon = $('#likeButton' + postId);
+					likespan.text(response + "Likes")
+					likespan.html(response + " Likes")
+					likeicon.toggleClass("tym");
+				},
+				error: function () {
+					alert('Error liking post');
+				}
+			});
+		}
+
+		
+
+
+
+
+	</script>
+
+
+	<script>
+		const post = document.querySelector(".js-post");
+		const modal = document.querySelector(".js-modal");
+		const modalEditClose = document.querySelector(".js-post-edit-close");
+		const modalClose = document.querySelector(".js-modal-close");
+		const commentEdit = document.querySelector(".js-comment-edit");
+		const postEdits = document.querySelectorAll(".js-post-edit");
+		const btndelete = document.querySelectorAll(".js-post-edit");
+		const btndeletepost = document.getElementById("deletepost");
+		const btnEditpost = document.getElementById("editpost");
+		const modalEdit = document.querySelector(".js-edit-modal");
+		const modalEditPostClose = document.querySelector(".js-modal-edit-close");
+
+		function showPost() {
+			modal.classList.add("open");
+		}
+
+		function hidePost() {
+			modal.classList.remove("open");
+			$('#imageContainer').empty();
+			$('#content').val('');	
+		}
+		function showCommentEditForm() {
+			commentEdit.classList.add("open");
+		}
+		function hideCommentEditForm() {
+			commentEdit.classList.remove("open");
+		}
+		
+		function showEditForm() {
+			var postId = $('#editpost').attr('editPostId');
+			$.ajax({
+				type: 'GET',
+				url: '/post/post-info/' + postId,  
+
+				success: function (data) {
+					$('#content-update').text(data.content);
+					$('#avata-user-post-update').attr('src', data.avata);
+					$('#imageContainer-update').html(`<img src="${data.imageURL}" id = "urlImageUpdate" alt="Uploaded Image" width="100%" height="100%" max-width="567" max-height="386">`);
+					$('#name-user-post-update').text(data.userFullName);
+
+				},
+				error: function (error) {
+					alert("error")
+					console.error('Error loading data:', error);
+					loading = false;
+				}
+			});
+			
+			
+			
+			modalEdit.classList.add("open");
+			commentEdit.classList.remove("open");
+			
+			
+		}
+		function hideEditForm() {
+			modalEdit.classList.remove("open");
+			
+		}
+		//Hiện form edit post
+		for (const postEdit of postEdits) {
+			postEdit.addEventListener("click", showCommentEditForm);
+		}
+
+		function setAttr(postid) {
+			commentEdit.classList.add("open");
+			btndeletepost.href = "/deletepost/" + postid;
+			
+			$('#editpost').attr('editPostId',postid);
+		}
+		
+
+
+		//function showComment() {
+		//listComment.classList.add("open");
+		//}
+
+		//function hideComment() {
+		//	listComment.classList.remove("open");
+		//}
+
+
+		//cmt.addEventListener("click", showComment);
+		//listComment.addEventListener("click", hideComment);
+
+		post.addEventListener("click", showPost);
+		modalClose.addEventListener("click", hidePost);
+		modalEditClose.addEventListener("click", hideCommentEditForm);
+		modalEditPostClose.addEventListener("click", hideEditForm);
+	</script>
+
+
+	<!--Lưu ảnh,Post ảnh-->
+	<script type="module">
+
+		import {initializeApp} from "https://www.gstatic.com/firebasejs/9.0.1/firebase-app.js";
+		import {getStorage, ref, uploadBytes, getDownloadURL} from "https://www.gstatic.com/firebasejs/9.0.1/firebase-storage.js";
+
+		const firebaseConfig = {
+			key: "AIzaSyAktz6fBLYH1GcUykJi8JF5WHwI6dNncuY",
+			apiKey: "AIzaSyAktz6fBLYH1GcUykJi8JF5WHwI6dNncuY",
+			authDomain: "chatrealtime-7e7e8.firebaseapp.com",
+			databaseURL: "https://chatrealtime-7e7e8-default-rtdb.firebaseio.com",
+			projectId: "chatrealtime-7e7e8",
+			storageBucket: "chatrealtime-7e7e8.appspot.com",
+			messagingSenderId: "206925157542",
+			appId: "1:206925157542:web:7e254501d41af820ed9067",
+			measurementId: "G-0PDLXSS9SN",
+		};
+
+		// Initialize Firebase
+		const app = initializeApp(firebaseConfig);
+		const storage = getStorage();
+
+		// Add event listener for file input change
+		const fileInput = document.getElementById("file");
+		const imageContainer = document.getElementById("imageContainer");
+
+		fileInput.addEventListener("change", async () => {
+			const file = fileInput.files[0];
+
+			// Check if a file is selected
+			if (file) {
+				// Upload the selected file to Firebase Storage
+				const storageRef = ref(storage, file.name);
+				try {
+					const snapshot = await uploadBytes(storageRef, file);
+
+					//console.log("Uploaded:", snapshot.totalBytes);
+
+					// Get the download URL of the uploaded image
+					const downloadURL = await getDownloadURL(storageRef);
+
+					// Display the image on the page
+					imageContainer.innerHTML = `<img src="${downloadURL}" alt="Uploaded Image" id = "urlImage" width="100%" height="100%" max-width="567" max-height="386">`;
+
+				} catch (error) {
+
+				}
+			}
+		});
+		
+		
+		
+		
+		const fileInputUpdate = document.getElementById("file-update");
+		const imageContainerUpdate = document.getElementById("imageContainer-update");
+
+		fileInputUpdate.addEventListener("change", async () => {
+			const file = fileInputUpdate.files[0];
+
+			// Check if a file is selected
+			if (file) {
+				// Upload the selected file to Firebase Storage
+				const storageRef = ref(storage, file.name);
+				try {
+					const snapshot = await uploadBytes(storageRef, file);
+
+					//console.log("Uploaded:", snapshot.totalBytes);
+
+					// Get the download URL of the uploaded image
+					const downloadURL = await getDownloadURL(storageRef);
+
+					// Display the image on the page
+					imageContainerUpdate.innerHTML = `<img src="${downloadURL}" alt="Uploaded Image" id = "urlImageUpdate" width="100%" height="100%" max-width="567" max-height="386">`;
+
+				} catch (error) {
+
+				}
+			}
+		});
+		
+		
+	</script>
+
+
+
+	<script>
+		function saveImage() {
+
+			const image = document.getElementById("urlImage");
+			const imageURL = image.src;
+			const tagContent = document.getElementById("content");
+			const content = tagContent.value;
+			try {
+				$.ajax({
+					type: 'POST',
+
+					url: "/post/1",
+
+					data: JSON.stringify({"imageURL": imageURL, "content": content}), //Ép kiểu string để tránh bị đôir / thành %
+					contentType: 'application/json',
+					success: function () {
+						alert('Save successfully');
+						modal.classList.remove("open");
+						window.location.replace("/listpost");
+					},
+					error: function () {
+						alert('Error save image');
+					}
+				});
+
+			} catch (error) {
+				console.error('Error uploading to Firebase Storage:', error);
+			}
+
+		}
+	</script>
+
+	<script>
+		
+		
+		function saveUpdate() {
+
+			const imageUpdate = document.getElementById("urlImageUpdate");
+			const imageURLUpdate = imageUpdate.src;
+			const tagContentUpdate = document.getElementById("content-update");
+			const contentUpdate = tagContentUpdate.value;
+			var postId = $('#editpost').attr('editPostId');
+			try {
+				$.ajax({
+					type: 'POST',
+
+					url: "/post/update/" + postId,
+
+					data: JSON.stringify({"imageURL": imageURLUpdate, "content": contentUpdate}), //Ép kiểu string để tránh bị đôir / thành %
+					contentType: 'application/json',
+					success: function () {
+						alert('Update successfully');
+						//modal.classList.remove("open");
+						window.location.replace("/listpost");
+					},
+					error: function () {
+						alert('Error update image');
+					}
+				});
+
+			} catch (error) {
+				console.error('Error uploading to Firebase Storage:', error);
+			}
+
+		}
+		
+		
+	</script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+	<script>
+		$(document).ready(function () {
+			$(".btn-follow").click(function () {
+				var userId = $(this).data("user-id");
+				var followStatus = $(this).data("follow-status");
+				$.ajax({
+					type: "GET",
+					url: "/friends/follow/" + userId,
+					success: function (respone) {
+						//Xử lý phản hồi từ server
+						alert(respone);
+					},
+					error: function (error) {
+						alert(userId);
+						alert(error);
+						console.error("Error:", error);
+					}
+				});
+			});
+		});
+	</script>
+
+	<script>
+		function followUser(button) {
+			if (button.innerText.toLowerCase() === 'follow') {
+				button.innerText = 'Following';
+			} else {
+				button.innerText = 'Follow';
+			}
+		}
+	</script>
+
+	<script>
+		const btns = document.querySelectorAll(".js-click");
+
+		function changeClass(event) {
+			// Get the specific button that was clicked
+			const btn = event.target;
+
+			// Check if the button has the "button" class
+			if (btn.classList.contains("button")) {
+				// Remove "button" and add "following-btn"
+				btn.classList.remove("button");
+				btn.classList.add("following-btn");
+
+				// Toggle the text content between "Follow" and "Following"
+				btn.textContent = "Following";
+			} else {
+				// Remove "following-btn" and add "button"
+				btn.classList.remove("following-btn");
+				btn.classList.add("button");
+
+				// Toggle the text content between "Follow" and "Following"
+				btn.textContent = "Follow";
+			}
+		}
+
+		// Iterate through each button and add a click event listener
+		for (const btn of btns) {
+			btn.addEventListener("click", changeClass);
+		}
+	</script>
+	.
+
+</body>
+
+</html>

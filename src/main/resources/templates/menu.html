@@ -20,13 +20,14 @@
 							<i class="fa-solid fa-house list-item-icon"></i><span class="list-item-name">Home</span>
 						</li>
 					</a>
-					<a class="link-item">
+					<a class="link-item" href="/explore">
 						<li class="list-item">
-							<i class="fa-solid fa-magnifying-glass list-item-icon"></i><span
-								class="list-item-name">Search</span>
+							<i class="fa-regular fa-compass list-item-icon"></i><span
+								class="list-item-name">Explore</span>
 						</li>
 					</a>
-					<a href="/listgroup" class="link-item">
+					<a class="link-item" href="/listgroup">
+
 						<li class="list-item">
 							<i class="fa-solid fa-user-group list-item-icon"></i><span
 								class="list-item-name">Group</span>
@@ -78,7 +79,7 @@
 								class="list-item-name">Create</span>
 						</li>
 					</a>
-					<a class="link-item" href="/profile" role="button">
+					<a class="link-item" th:href="@{'/profile/' + ${session.userInfoID}}" role="button">
 						<li class="list-item">
 							<i class="fa-regular fa-user list-item-icon"></i>
 							<span class="list-item-name">Profile</span>
@@ -97,9 +98,8 @@
 				</ul>
 			</div>
 		</div>
-	
 	</header>
-	
+
 </body>
 
 </html>
