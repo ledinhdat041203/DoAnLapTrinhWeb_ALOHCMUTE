@@ -3,6 +3,8 @@ package vn.hcmute.entities;
 import java.sql.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.*;
 
 import lombok.AllArgsConstructor;
@@ -29,10 +31,13 @@ public class PostEntity {
     @JoinColumn(name = "groupid")
     private GroupEntity groupPost;
 	
+	@JsonProperty("content")
 	@Column(name = "content", columnDefinition = "NTEXT")
 
 	private String content;
 	@Column(name = "image", columnDefinition = "nvarchar(255)")
+
+	@JsonProperty("image")
 	private String image;
 	@Column(name = "postdate", columnDefinition = "DATE")
 	private Date postDate;
@@ -43,6 +48,8 @@ public class PostEntity {
 
 	 @OneToMany(mappedBy = "postCommnent", fetch = FetchType.LAZY)
 	 private List<CommentEntity> listComments;
+	 
+	 
 	
 }
 

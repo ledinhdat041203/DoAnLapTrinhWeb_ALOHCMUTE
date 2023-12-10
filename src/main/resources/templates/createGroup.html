@@ -2,33 +2,53 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<meta charset="UTF-8">
-	<title>Tạo nhóm</title>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>EditProfile</title>
+	<link rel="stylesheet" href="/fontawesome-free-6.5.1-web/css/all.min.css" />
+	<link rel="stylesheet" href="/fontawesome-free-6.5.1-web/css/styleAll.css" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
 </head>
 
 <body>
-	<h1>Tạo nhóm</h1>
+	<div style="display: flex; justify-content: space-between">
+		<div th:replace="~{menu::menu}"></div>
+		<main class="edit-info">
+			<div style="text-align: center; margin-top: 30px">
+				<h2>Tạo nhóm mới</h2>
+			</div>
 
-	<form th:action="@{saveGroup}" th:object="${group}" method="post">
-		<!-- Hidden User ID -->
-		<input type="hidden" th:field="*{groupID}" />
 
-		<label for="groupName">Tên nhóm:</label>
-		<input type="text" th:field="*{groupName}" required />
-		<br />
+			<form class="row g-3 needs-validation" novalidate th:action="@{/saveGroup}" th:object="${group}" method="post">
+				<input type="hidden" th:field="*{groupID}" />
+				<div class="col-md-12">
+					
+					<div id="imageContainer"><img th:src="*{avataGroup}" alt="Uploaded Image" id="urlImage"
+						style="width: 300px; height: 200px;"></div>
+					<input type="text" th:field="*{avataGroup}" name="avataGroup" hidden required/>
+					<label for="formFile" class="form-label">Select profile photo</label>
+					<input class="form-control" type="file" id="file" />
+				</div>
+				<div class="col-md-12">
+					<label for="fullName" class="form-label">Tên nhóm:</label>
+					<input type="text" class="form-control" id="fullName" th:field="*{groupName}" required  />
+					<div class="valid-feedback">Success!</div>
+				</div>
+				<div class="col-md-12">
+					<label for="phone" class="form-label">Mô tả: </label>
+					<input type="text" class="form-control" id="phone" th:field="*{description}" required />
+					<div class="valid-feedback">Success!</div>
+				</div>
+				
+				<div class="col-12">
+					<input type="submit" value="Lưu chỉnh sửa" />
+				</div>
+			</form>
+		</main>
 
-		<label for="description">Mô tả:</label>
-		<input type="text" th:field="*{description}" required />
-		<br />
-
-		<label for="form2Example2">Ảnh đại diện</label>
-		<input type="text" th:field="*{avataGroup}" name="avataGroup" hidden required/>
-		<div id="imageContainer"><img th:src="*{avataGroup}" alt="Uploaded Image" id="urlImage" style="width: 300px; height: 200px;"></div>
-		<input type="file" id="file">
-		<br />
-
-		<input type="submit" value="Tạo" />
-	</form>
+	</div>
 </body>
 <script type="module">
 

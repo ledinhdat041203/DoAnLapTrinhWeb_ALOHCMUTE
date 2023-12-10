@@ -13,7 +13,13 @@
 <body>
 	<div style="display: flex; justify-content: space-between">
 		<div th:replace="~{menu::menu}"></div>
-		<h2 th:text="${message}"></h2>
+		<div th:if="${message}">
+			<script th:inline="javascript">
+				/* <![CDATA[ */
+				alert('[[${message}]]');
+        /* ]]> */
+			</script>
+		</div>
 		<div class="group-container">
 			<div th:each="group : ${list}">
 
@@ -42,53 +48,7 @@
 			</form>
 		</div>
 	</div>
-	<div class="modal js-modal">
-		<div class="modal-container">
-			<header class="modal-header">
-				<a href="#">
-					<i class="fa-regular fa-paper-plane list-item-icon"
-						style="color: rgb(0, 0, 0); padding-left: 20px; padding-top: 20px"></i>
-				</a>
-				<h3>Create new post</h3>
-				<button href="#" style="
-                            background-color: #fff;
-                            border: none;
-                            cursor: pointer;
-                            padding-bottom: 20px;
-                            border-top-right-radius: 10px;
-                        " class="js-modal-close">
-					<i class="fa-solid fa-xmark" style="padding-right: 20px; padding-top: 20px"></i>
-				</button>
-			</header>
-
-			<div class="modal-body">
-				<div class="modal-img">
-					<img src="./photo/post.jpeg" class="modal-img-resize" alt="bài post" />
-				</div>
-				<div class="modal-caption">
-					<div class="modal-text">
-						<div class="modal-account">
-							<img src="./photo/avatar.jpeg" alt="avatar con mèo" class="avatar" />
-							<div class="account-name">
-								<h5>xiaoluan_2011</h5>
-							</div>
-						</div>
-						<textarea name="caption" id="caption" cols="40" rows="10" style="
-                                    border-bottom: 1px solid rgb(219, 219, 219);
-                                    padding-left: 20px;
-                                    padding-top: 20px;
-                                " placeholder="Write a caption..."></textarea>
-						<div class="modal-picture">
-							<a href="#" class="modal-picture-select">
-								<span> Select from computer </span>
-								<i class="fa-regular fa-image"></i>
-							</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+	
 
 	<script>
 		const post = document.querySelector(".js-post");

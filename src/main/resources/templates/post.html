@@ -2,27 +2,25 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Post</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Post</title>
 </head>
 
 <body>
 	<h2>Add Post</h2>
 
+
 	<form th:object="${post}" method="post" onsubmit="saveImage(); return false;">
 
-		<label for="content">Nội dung:</label>
-		
-		<input type="text" id="content" name="content" rows="4" cols="50" th:field="*{content}" required>
+		<label for="content">Nội dung:</label> <input type="text" id="content"
+			name="content" rows="4" cols="50" th:field="*{content}" required>
 
 		<br />
 		<div id="imageContainer"></div>
-		<label for="image">Chọn ảnh:</label>	
-		<input type="file" id="file" name="file" accept="image/*" required>
-		<br />
-
-		<input type="submit" value="Đăng bài" />
+		<label for="image">Chọn ảnh:</label> <input type="file" id="file"
+			name="file" accept="image/*" required> <br /> <input
+			type="submit" value="Đăng bài" />
 	</form>
 
 	<a th:href="@{/listpost}"><button>Back to List</button></a>
@@ -90,18 +88,21 @@
 
 			try {
 				$.ajax({
-					type: 'POST',
+					type : 'POST',
 
-					url: "/post/1",
+					url : "/post/1",
 
-					data: JSON.stringify({ "imageURL": imageURL, "content": content }), //Ép kiểu string để tránh bị đôir / thành %
-					contentType: 'application/json',
-					success: function () {
+					data : JSON.stringify({
+						"imageURL" : imageURL,
+						"content" : content
+					}), //Ép kiểu string để tránh bị đôir / thành %
+					contentType : 'application/json',
+					success : function() {
 						alert('Save successfully');
 						// Reload the page upon successful submission
 						location.reload();
 					},
-					error: function () {
+					error : function() {
 						alert('Error save image');
 					}
 				});

@@ -119,14 +119,21 @@ public class FriendsController {
 	// Đề xuất theo dõi
 	@GetMapping("/suggest-follow-up")
 	public String suggestFollowUp(ModelMap model, HttpSession session) {
+		
+		Long idUsercurrent = (long) session.getAttribute("userInfoID");
+		List<UserInfoEntity> userList = suggest(idUsercurrent, 20);
+		model.addAttribute("userList", userList);
+		return "suggestFollowUp";
+	}
+	
+	public List<UserInfoEntity> suggest(long idUsercurrent, long sizeList) {
 		Random random = new Random();
 		List<UserInfoEntity> userList = new ArrayList<>();
-		long sizeList = 20; // cần kiểm tra hệ thống có đủ bạn cho usercurrent hay không
-
+		
 		// Kiểm tra xem hệ thống có còn đủ 20 user để đề xuất hay không
 		long numberUser = userService.count();
 		long numberFollowing = 0;
-		Long idUsercurrent = (long) session.getAttribute("userInfoID");
+		
 		List<FriendsEntity> listFollowing = friendsService.findByuser1userID(idUsercurrent);
 		for (FriendsEntity following : listFollowing) {
 			if (following.isStatus())
@@ -159,8 +166,7 @@ public class FriendsController {
 			UserInfoEntity user = userInfoService.findById(userid).get();
 			userList.add(user);
 		}
-
-		model.addAttribute("userList", userList);
-		return "suggestFollowUp";
+		return userList;
 	}
+
 }

@@ -2,60 +2,44 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport">
-	<title>Post</title>
+<meta charset="UTF-8">
+<meta name="viewport">
+<title>Post</title>
 </head>
 
 <body>
-		<aside class="asideMenu" th:fragment="asideMenu">
-			<div class="account">
+<div></div>
+	<aside class="asideMenu" th:fragment="asideMenu (list)">
+		<div class="account">
+			<div class="account-info">
+				<img src="./photo/avatar.jpeg" alt="avatar con mèo" class="avatar" />
+				<div class="account-name">
+					<h5>xiaoluan_2011</h5>
+					<p>Nguyen Vo Minh Luan</p>
+				</div>
+			</div>
+			<button class="button">Switch</button>
+		</div>
+		<div class="suggest">
+			<p class="suggest-text">Suggested for you</p>
+			<a href="/friends/suggest-follow-up" class="suggest-link">See All</a>
+		</div>
+		<div class="listFriend">
+			<div th:each="user : ${list}" class="account">
 				<div class="account-info">
-					<img src="./photo/avatar.jpeg" alt="avatar con mèo" class="avatar" />
+					<img th:src="${user.avata}" alt="avatar con mèo" class="avatar" />
 					<div class="account-name">
-						<h5>xiaoluan_2011</h5>
-						<p>Nguyen Vo Minh Luan</p>
+						<h5 th:text="${user.fullName}"></h5>
+						<p th:text="${user.userID}"></p>
 					</div>
 				</div>
-				<button class="button">Switch</button>
+				<button class="button js-click" 
+		 				th:data-user-id="${user.userID}"
+                            data-follow-status="false"
+                            onclick="followUser(this)">Follow</button>
 			</div>
-			<div class="suggest">
-				<p class="suggest-text">Suggested for you</p>
-				<a href="#" class="suggest-link">See All</a>
-			</div>
-			<div class="listFriend">
-				<div class="account">
-					<div class="account-info">
-						<img src="./photo/avatar.jpeg" alt="avatar con mèo" class="avatar" />
-						<div class="account-name">
-							<h5>xiaoluan_2011</h5>
-							<p>Nguyen Vo Minh Luan</p>
-						</div>
-					</div>
-					<button class="button">Follow</button>
-				</div>
-				<div class="account">
-					<div class="account-info">
-						<img src="./photo/avatar.jpeg" alt="avatar con mèo" class="avatar" />
-						<div class="account-name">
-							<h5>xiaoluan_2011</h5>
-							<p>Nguyen Vo Minh Luan</p>
-						</div>
-					</div>
-					<button class="button">Follow</button>
-				</div>
-				<div class="account">
-					<div class="account-info">
-						<img src="./photo/avatar.jpeg" alt="avatar con mèo" class="avatar" />
-						<div class="account-name">
-							<h5>xiaoluan_2011</h5>
-							<p>Nguyen Vo Minh Luan</p>
-						</div>
-					</div>
-					<button class="button">Follow</button>
-				</div>
-			</div>
-		</aside>
+		</div>
+	</aside>
 
 </body>
 

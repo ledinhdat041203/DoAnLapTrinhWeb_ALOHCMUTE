@@ -119,16 +119,20 @@ public class groupController {
 		return "redirect:/group/" + group.getGroupID();
 	}
 
+
 	@GetMapping("group/{groupID}")
 	public String GroupDetail(ModelMap model, @PathVariable long groupID, HttpSession session, ModelMap post,
 			Model listpost) {
 		Long userid = (long) session.getAttribute("userInfoID");
-
+		UserInfoEntity user = userInfo.findById(userid).get();
 		GroupMembersEntity groupMember = groupMemberService.findByUserMemberUserIDAndGroupGroupID(userid, groupID);
 		if (groupMember != null) {
 			GroupEntity group = groupService.findById(groupID).get();
 			model.addAttribute("group", group);
 			post.addAttribute("post", new PostEntity());
+			List<GroupEntity> listgroup = groupService.findGroupsByUserId(userid);
+			model.addAttribute("listgroup", listgroup);
+			model.addAttribute("userInfo", user);
 
 			List<PostModel> posts = postService.getPostsByGroupId(groupID, 0, 2, userid);
 			listpost.addAttribute("list", posts);

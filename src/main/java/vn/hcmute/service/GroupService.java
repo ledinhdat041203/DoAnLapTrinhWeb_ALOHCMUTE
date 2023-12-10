@@ -36,6 +36,11 @@ public class GroupService implements IGroupService{
 	public void deleteById(Long id) {
 		groupRepo.deleteById(id);
 	}
+
+	@Override
+	public List<GroupEntity> findGroupsByUserId(Long userId) {
+		return groupRepo.findGroupsByUserId(userId);
+	}
 	
 	
 	

@@ -11,4 +11,7 @@ public interface UserResponsitory extends JpaRepository<UserEntity, Long>{
 
 	Optional<UserEntity> findByemailContaining(String email);
 	
+	
+	UserEntity findByUserInfoUserID(Long userId);
+
 }
