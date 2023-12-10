@@ -116,7 +116,9 @@
                                     <h5>xiaoluan_2011</h5>
                                 </div>
                             </div>
-                            <i class="fa-solid fa-ellipsis"></i>
+                            <button style="cursor: pointer; font-size: 20px" class="js-post-edit">
+                                <i class="fa-solid fa-ellipsis"></i>
+                            </button>
                         </div>
                         <div class="post-img">
                             <img src="../photo/post.jpeg" alt="genshin" />
@@ -163,7 +165,9 @@
                                     <h5>xiaoluan_2011</h5>
                                 </div>
                             </div>
-                            <i class="fa-solid fa-ellipsis"></i>
+                            <button style="cursor: pointer; font-size: 20px" class="js-post-edit">
+                                <i class="fa-solid fa-ellipsis"></i>
+                            </button>
                         </div>
                         <div class="post-img">
                             <img src="../photo/post.jpeg" alt="genshin" />
@@ -434,6 +438,94 @@
                                     </p>
                                 </div>
                             </li>
+                            <li
+                                class="notify-item"
+                                style="border: none; padding-top: 10px; padding-bottom: 10px">
+                                <img
+                                    src="../photo/post.jpeg"
+                                    alt=""
+                                    style="height: 35px; width: 35px" />
+                                <div class="loadComment-info">
+                                    <span class="description">
+                                        <h5>xiaoluan_2011</h5>
+                                        vừa theo dõi bạn
+                                    </span>
+                                    <p>
+                                        <span style="color: rgb(115, 115, 115)">Just now</span>
+                                        <button class="loadComment-button js-loadComment-button">
+                                            <i
+                                                class="fa-solid fa-ellipsis"
+                                                style="color: rgb(115, 115, 115)"></i>
+                                        </button>
+                                    </p>
+                                </div>
+                            </li>
+                            <li
+                                class="notify-item"
+                                style="border: none; padding-top: 10px; padding-bottom: 10px">
+                                <img
+                                    src="../photo/post.jpeg"
+                                    alt=""
+                                    style="height: 35px; width: 35px" />
+                                <div class="loadComment-info">
+                                    <span class="description">
+                                        <h5>xiaoluan_2011</h5>
+                                        vừa theo dõi bạn
+                                    </span>
+                                    <p>
+                                        <span style="color: rgb(115, 115, 115)">Just now</span>
+                                        <button class="loadComment-button js-loadComment-button">
+                                            <i
+                                                class="fa-solid fa-ellipsis"
+                                                style="color: rgb(115, 115, 115)"></i>
+                                        </button>
+                                    </p>
+                                </div>
+                            </li>
+                            <li
+                                class="notify-item"
+                                style="border: none; padding-top: 10px; padding-bottom: 10px">
+                                <img
+                                    src="../photo/post.jpeg"
+                                    alt=""
+                                    style="height: 35px; width: 35px" />
+                                <div class="loadComment-info">
+                                    <span class="description">
+                                        <h5>xiaoluan_2011</h5>
+                                        vừa theo dõi bạn
+                                    </span>
+                                    <p>
+                                        <span style="color: rgb(115, 115, 115)">Just now</span>
+                                        <button class="loadComment-button js-loadComment-button">
+                                            <i
+                                                class="fa-solid fa-ellipsis"
+                                                style="color: rgb(115, 115, 115)"></i>
+                                        </button>
+                                    </p>
+                                </div>
+                            </li>
+                            <li
+                                class="notify-item"
+                                style="border: none; padding-top: 10px; padding-bottom: 10px">
+                                <img
+                                    src="../photo/post.jpeg"
+                                    alt=""
+                                    style="height: 35px; width: 35px" />
+                                <div class="loadComment-info">
+                                    <span class="description">
+                                        <h5>xiaoluan_2011</h5>
+                                        vừa theo dõi bạn
+                                    </span>
+                                    <p>
+                                        <span style="color: rgb(115, 115, 115)">Just now</span>
+                                        <button class="loadComment-button js-loadComment-button">
+                                            <i
+                                                class="fa-solid fa-ellipsis"
+                                                style="color: rgb(115, 115, 115)"></i>
+                                        </button>
+                                    </p>
+                                </div>
+                            </li>
                         </ul>
                     </div>
                     <div class="loadComment-footer">
@@ -476,6 +568,7 @@
             const loadCommentBtns = document.querySelectorAll(".js-loadComment-button");
             const commentEdit = document.querySelector(".js-comment-edit");
             const comentEditForm = document.querySelector(".js-comment-edit-form");
+            const postEdits = document.querySelectorAll(".js-post-edit");
 
             function showPost() {
                 modal.classList.add("open");
@@ -501,6 +594,7 @@
                 commentEdit.classList.remove("open");
             }
 
+            // Hiện toàn bộ comment
             for (const cmt of cmts) {
                 cmt.addEventListener("click", showComment);
             }
@@ -509,6 +603,7 @@
                 event.stopPropagation();
             });
 
+            // Hiện creat post
             post.addEventListener("click", showPost);
             modalClose.addEventListener("click", hidePost);
             modal.addEventListener("click", hidePost);
@@ -516,6 +611,7 @@
                 event.stopPropagation();
             });
 
+            // Hiện form edit comment
             for (const loadCommentBtn of loadCommentBtns) {
                 loadCommentBtn.addEventListener("click", showCommentEditForm);
             }
@@ -523,6 +619,11 @@
             comentEditForm.addEventListener("click", function (event) {
                 event.stopPropagation();
             });
+
+            //Hiện form edit post
+            for (const postEdit of postEdits) {
+                postEdit.addEventListener("click", showCommentEditForm);
+            }
         </script>
     </body>
 </html>
