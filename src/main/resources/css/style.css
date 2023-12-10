@@ -875,3 +875,59 @@ textarea:focus {
     -ms-border-radius: 5px;
     -o-border-radius: 5px;
 }
+
+/*Wellcome*/
+
+.wellcome-background {
+    background-image: url("../photo/wellcom2.jpg");
+    width: 100%;
+    height: 100vh;
+    filter: blur(5px);
+    -webkit-filter: blur(5px);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.wellcome-header {
+    background-color: white;
+    height: 100px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 20px 20px 20px white;
+    padding: 10px 0;
+}
+
+.wellcom-link {
+    text-decoration: none;
+    padding: 10px;
+    color: black;
+    list-style: none;
+    margin-right: 20px;
+    font-size: 20px;
+}
+
+.wellcom-link:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+}
+
+.wellcom-slogan {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+    font-size: 50px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    width: 80%;
+    padding: 20px;
+    text-align: center;
+}
