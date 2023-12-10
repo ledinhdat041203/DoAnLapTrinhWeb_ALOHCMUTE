@@ -73,23 +73,25 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each="notification : ${listNotification}"
-						th:class="${notification.status == false} ? 'unread' : 'read-row'"
-						th:onclick="window.location.href='${notification.link}'">
-						<td class="height-notification">
-							<div class="avatar-container">
-								<img th:src="${notification.image}" class="avatar">
-							</div>
-						</td>
-						<td class="height-notification truncate-text" th:text="${notification.content}"></td>
-						<td class="height-notification" th:text="${notification.timeNotify}"></td>
-					</tr>
+					<div th:each="notification : ${listNotification}">
+						<tr th:class=" ${notification.status==false} ? 'unread' : 'read-row'" th:attr="onclick='sendNotify(\'' + ${notification.link} + '\')'">
+							<td class="avatar-container">
+									<img th:src="${notification.image}" class="avatar">
+								</td>
+							<td class="height-notification truncate-text" th:text="${notification.content}"></td>
+							<td class="height-notification" th:text="${notification.timeNotify}"></td>
+						</tr>
+					</div>
 				</tbody>
 			</table>
 
 		</main>
 	</div>
-
+	<script>
+		function sendNotify(link) {
+			window.location.href = link;
+		}
+	</script>
 </body>
 
 </html>

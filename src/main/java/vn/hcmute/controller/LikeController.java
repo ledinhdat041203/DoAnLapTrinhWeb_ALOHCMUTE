@@ -60,7 +60,7 @@ public class LikeController {
 
 			if (post.getUser().getUserID() != userid) {
 				// xử lý thông báo
-				String link = "Chưa có gì cả";
+				String link = "/post/detail/"+postId;
 				String content = user.getFullName() + " đã thả tim bài viết của bạn";
 				UserInfoEntity user2 = post.getUser();
 				notificationService.createNotification(user2, link, content, user.getAvata());

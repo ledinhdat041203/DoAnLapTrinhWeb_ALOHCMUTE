@@ -94,7 +94,7 @@ public class CommentController {
 		if (post.getUser().getUserID() == userid) {
 			UserInfoEntity user = userInfoService.findById(userid).get();
 			UserInfoEntity userNotice = postservice.findById(postId).get().getUser();
-			String link = "Chưa có gì";
+			String link = "/post/detail/"+postId;
 			String contentNotice = user.getFullName() + " đã bình luận về bài viết của bạn";
 			notificationService.createNotification(userNotice, link, contentNotice, user.getAvata());
 		}
