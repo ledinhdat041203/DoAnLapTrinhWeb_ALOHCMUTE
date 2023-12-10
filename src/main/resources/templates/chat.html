@@ -99,7 +99,7 @@
 					const downloadURL = await getDownloadURL(storageRef);
 
 					// Hiển thị ảnh 
-					imageContainer.innerHTML = `<img src="${downloadURL}" alt="Uploaded Image" id="urlImage" style="width: 300px; height: 200px;">`;
+					imageContainer.innerHTML = `<img src="${downloadURL}" alt="Uploaded Image" id="urlImage" style="width: 90px; height: 50px;">`;
 				} catch (error) {
 					console.error('Error uploading to Firebase Storage:', error);
 				}
