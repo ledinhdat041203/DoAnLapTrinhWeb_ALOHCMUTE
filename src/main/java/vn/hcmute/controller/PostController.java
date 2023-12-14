@@ -1,4 +1,4 @@
-package vn.hcmute.controller;
+  package vn.hcmute.controller;
 
 import java.sql.Date;
 import java.util.List;
@@ -93,7 +93,7 @@ public class PostController {
             @PathVariable int page,
             @RequestParam(defaultValue = "2") int size,
             Model model,
-            HttpSession session) {
+            HttpSession session)   {
 		Long userid = (long) session.getAttribute("userInfoID");
 		List<PostModel> posts = postService.getPostsByGroupId(1, page, size, userid);
 		System.out.println(page);

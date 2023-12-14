@@ -741,7 +741,7 @@ textarea:focus {
 	/* Đặt kích thước của mỗi ảnh, trừ đi khoảng cách giữa chúng */
 	margin: 5px;
 	/* Khoảng cách giữa các ảnh */
-	box-sizing: border-box;
+	box-sizing: border-box;  
 	/* Đảm bảo kích thước tính cả phần border và padding */
 	justify-content: space-between;
 }

@@ -80,7 +80,7 @@ public class MessageService {
 		createConversation(user1, user2);
 
 		// Tạo một tham chiếu đến nút "messages"
-		DatabaseReference messagesRef = databaseReference.child("messages").child(conversationId).child("messages");
+		DatabaseReference messagesRef = databaseReference.child("RealTimeChat").child(conversationId).child("messages");
 
 		List<MessagesEntity> messages = new ArrayList<>();
 

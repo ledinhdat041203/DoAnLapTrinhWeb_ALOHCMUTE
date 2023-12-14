@@ -37,13 +37,13 @@ public class MessageController {
 			// mặc định
 			return "conversation";
 		}
-		List<MessagesEntity> messages = messageService.getAllMessagesFromFirebase(user1, user2);
+		//List<MessagesEntity> messages = messageService.getAllMessagesFromFirebase(user1, user2);
 		String conversationId = messageService.generateConversationId(user1, user2);
 		// System.out.println(conversationId);
 		UserInfoEntity userInfo = userInfoService.findByUserIDEquals(user2).get();
 		// System.out.println(userInfo.getPhoneNumber());
 		model.addAttribute("conversationId", conversationId);
-		model.addAttribute("messages", messages);
+		//model.addAttribute("messages", messages);
 		model.addAttribute("recipientInfo", userInfo);
 		return "chat";
 	}
