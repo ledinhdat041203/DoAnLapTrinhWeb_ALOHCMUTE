@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport">
+<title>Post</title>
+</head>
+
+<body>
+	<div th:fragment="user (user)">
+
+		<container class="suggest-container">
+		<div class="suggest-people" style="height: 44px; margin-bottom: 20px">
+			<a th:href="@{'/profile/' + ${user.userID}}">			
+			<img th:src="${user.avata}" class="avatar"
+				style="margin-right: 5px" />
+			</a>
+			<div class="account-name"
+				style="display: flex; flex-direction: column; justify-content: space-between;
+				padding-left: 30px; padding-bottom: 5px;">
+				<h5 th:text="${user.fullName}" style="padding-bottom: 5px;"></h5>
+				<span class="suggest-span2">Suggested for you</span>
+			</div>
+			
+		</div>
+		 <button class="button btn-follow js-click" style="font-size: 14px; font-weight: 500" 
+		 				th:data-user-id="${user.userID}"
+                            data-follow-status="false"
+                            onclick="followUser(this)">Follow</button>
+		</container>
+
+	</div>
+</body>
+
+</html>

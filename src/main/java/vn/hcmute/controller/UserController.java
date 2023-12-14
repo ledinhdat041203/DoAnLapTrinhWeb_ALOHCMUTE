@@ -1,11 +1,16 @@
 package vn.hcmute.controller;
 
+import java.io.IOException;
+
+import java.util.Map;
+
 import java.util.Optional;
 import java.util.UUID;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.mail.javamail.JavaMailSender;
 //import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
@@ -14,6 +19,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.fluent.Form;
+import org.apache.http.client.fluent.Request;
+
+import jakarta.mail.internet.MimeMessage;
 import org.springframework.web.servlet.ModelAndView;
 
 import jakarta.servlet.http.Cookie;
@@ -22,11 +43,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import vn.hcmute.entities.ResetPasswordEntity;
 import vn.hcmute.entities.StatusAccountEntity;
-
 import vn.hcmute.entities.UserEntity;
 import vn.hcmute.entities.UserInfoEntity;
 import vn.hcmute.model.EmailInfo;
+import vn.hcmute.model.InfoGoogleModel;
 import vn.hcmute.model.UserAcountModel;
+
+import vn.hcmute.model.UserGoogle;
+import vn.hcmute.model.UserInfoModel;
+
 import vn.hcmute.model.updatePassModel;
 import vn.hcmute.service.IMailService;
 import vn.hcmute.service.IUserInfoService;
@@ -40,8 +65,6 @@ public class UserController {
 	IUserService user_service;
 	@Autowired
 	IUserInfoService user_info_service;
-	@Autowired
-	JavaMailSender mailSender;
 	@Autowired
 	IMailService imail;
 	// lưu trữ cookie cho đăng nhập đợt sau
@@ -89,7 +112,7 @@ public class UserController {
 			session.setAttribute("userFullName",
 					user_service.findByemailContaining(Email).get().getUserInfo().getFullName());
 
-			return "home";
+			return "redirect:/listpost";
 		} else if (user_service.checkLogin(Email, pass) && status.get().getStatus() == false) {
 			session.setAttribute("email", Email);
 			return "redirect:login?false";
@@ -218,6 +241,85 @@ public class UserController {
 			model.addAttribute("pass", new updatePassModel());
 			return "updatePass";
 		}
+	}
+
+	@GetMapping("/LoginGoogle")
+	public String processRequest(@RequestParam("code") String code,HttpSession session) throws ClientProtocolException, IOException {
+		String accessToken = getToken(code);
+		UserGoogle user = getUserInfo(accessToken);
+		Optional<UserEntity> user_check = user_service.findByemailContaining(user.getEmail());
+		if(user_check.isEmpty())
+		{
+			UserEntity user_entity = new UserEntity();
+			user_entity.setPass("");
+			user_entity.setEmail(user.getEmail());
+			UserInfoEntity user_info= new UserInfoEntity();
+			StatusAccountEntity status = new StatusAccountEntity();
+			user_info.setFullName(user.getName());
+			user_info.setAvata(user.getPicture());
+			
+			user_entity.setUserName(user.getGiven_name());
+			user_info_service.save(user_info);
+			user_entity.setUserInfo(user_info);
+			user_service.save(user_entity);
+			status.setUserCode(user_entity);
+			status.setStatus(true);
+			user_service.save(status);
+		}
+			session.setAttribute("email", user_service.findByemailContaining(user.getEmail()));
+	
+			session.setAttribute("userID", user_service.findByemailContaining(user.getEmail()).get().getIdAccount());
+			session.setAttribute("userInfoID",
+					user_service.findByemailContaining(user.getEmail()).get().getUserInfo().getUserID());
+			session.setAttribute("userFullName",
+					user_service.findByemailContaining(user.getEmail()).get().getUserInfo().getFullName());
+			
+			System.out.println("Emai-----------"+user.getEmail());
+			return "home";
+	}
+
+	public static String getToken(String code) throws ClientProtocolException, IOException {
+		// call api to get token
+		try {
+			String response = Request.Post(InfoGoogleModel.GOOGLE_LINK_GET_TOKEN)
+					.bodyForm(Form.form().add("client_id", InfoGoogleModel.GOOGLE_CLIENT_ID)
+							.add("client_secret", InfoGoogleModel.GOOGLE_CLIENT_SECRET)
+							.add("redirect_uri", InfoGoogleModel.GOOGLE_REDIRECT_URI).add("code", code)
+							.add("grant_type", InfoGoogleModel.GOOGLE_GRANT_TYPE).build())
+					.execute().returnContent().asString();
+
+			// Xử lý response, ví dụ:
+			//System.out.println("Server response: " + response);
+
+			// Đọc và xử lý access token từ response (đối với mục đích của bạn)
+			JsonObject jobj = new Gson().fromJson(response, JsonObject.class);
+			String accessToken = jobj.get("access_token").toString().replaceAll("\"", "");
+			return accessToken;
+		} catch (Exception e) {
+			// Xử lý lỗi, ví dụ:
+			e.printStackTrace();
+			System.out.println("Loi---------------------------------------------" + e.getMessage());
+			System.out.println("Request body: " + Form.form()
+			.add("link token", InfoGoogleModel.GOOGLE_LINK_GET_TOKEN)
+	        .add("client_id", InfoGoogleModel.GOOGLE_CLIENT_ID)
+	        .add("client_secret", InfoGoogleModel.GOOGLE_CLIENT_SECRET)
+	        .add("redirect_uri", InfoGoogleModel.GOOGLE_REDIRECT_URI)
+	        .add("code", code)
+	        .add("grant_type", InfoGoogleModel.GOOGLE_GRANT_TYPE)
+	        .build().toString());
+
+		}
+		
+		return "home";
+	}
+
+	public static UserGoogle getUserInfo(final String accessToken) throws ClientProtocolException, IOException {
+		String link = InfoGoogleModel.GOOGLE_LINK_GET_USER_INFO + accessToken;
+		String response = Request.Get(link).execute().returnContent().asString();
+		System.out.print(response);
+		UserGoogle googlePojo = new Gson().fromJson(response, UserGoogle.class);
+
+		return googlePojo;
 	}
 
 	@PostMapping("user/updatePassword")

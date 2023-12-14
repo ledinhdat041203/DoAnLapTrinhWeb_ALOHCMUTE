@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import jakarta.transaction.Transactional;
 import vn.hcmute.Responsitory.LikeRepository;
 import vn.hcmute.Responsitory.PostRepository;
 import vn.hcmute.entities.LikeEntity;
@@ -21,6 +22,9 @@ import vn.hcmute.model.PostModel;
 
 @Service
 public class PostService implements IPostService {
+	
+	@Autowired
+	LikeRepository likeRepo;
 	@Autowired
 	PostRepository postRepo;
 
@@ -33,10 +37,8 @@ public class PostService implements IPostService {
 	@Autowired
 	ILikeService likeService;
 
-	@Autowired
-	LikeRepository likeRepo;
-
-	private PostModel converEntityToModel(PostEntity post, long userid) {
+	@Override
+	public PostModel converEntityToModel(PostEntity post, long userid) {
 		PostModel postModel = new PostModel();
 		UserInfoEntity userInfo = userInfoService.findById(post.getUser().getUserID()).get();
 		UserEntity userAcc = userAccService.findByUserInfoId(post.getUser().getUserID());
@@ -47,6 +49,9 @@ public class PostService implements IPostService {
 		postModel.setPostDate(post.getPostDate());
 		postModel.setUserID(post.getUser().getUserID());
 		postModel.setUserFullName(post.getUser().getFullName());
+		postModel.setAvata(post.getUser().getAvata());
+		postModel.setCommentCount(post.getListComments().size());
+
 		postModel.setAvata(userInfo.getAvata());
 		postModel.setUserAccountName(userAcc.getUserName());
 		int likeCount = 0;
@@ -63,7 +68,7 @@ public class PostService implements IPostService {
 			postModel.setLiked(false);
 		else
 			postModel.setLiked(true);
-
+		postModel.setListComment(post.getListComments());
 		return postModel;
 	}
 
@@ -84,7 +89,7 @@ public class PostService implements IPostService {
 
 	@Override
 	public List<PostModel> getPostsByGroupId(long groupId, int page, int size, long userid) {
-		Pageable pageable = PageRequest.of(page, size);
+		Pageable pageable = PageRequest.of(page, size, Sort.by("postDate").descending());
 		Page<PostEntity> postPage = postRepo.findByGroupPostGroupID(groupId, pageable);
 		List<PostEntity> posts = postPage.getContent();
 		List<PostModel> listPostModel = new ArrayList<>();
@@ -96,7 +101,8 @@ public class PostService implements IPostService {
 
 	@Override
 	public List<PostModel> findByUserUserID(long userId) {
-		List<PostEntity> posts = postRepo.findByUserUserID(userId);
+		Sort sortByDateDesc = Sort.by("postDate").descending();
+		List<PostEntity> posts = postRepo.findByUserUserID(userId,sortByDateDesc);
 
 		List<PostModel> listPostModel = new ArrayList<>();
 		for (PostEntity post : posts) {

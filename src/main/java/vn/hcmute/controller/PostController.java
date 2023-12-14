@@ -1,18 +1,16 @@
   package vn.hcmute.controller;
 
-import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,11 +18,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
+import vn.hcmute.entities.FriendsEntity;
 import vn.hcmute.entities.GroupEntity;
 import vn.hcmute.entities.PostEntity;
 import vn.hcmute.entities.UserInfoEntity;
 import vn.hcmute.model.PostModel;
 import vn.hcmute.service.ICommentService;
+import vn.hcmute.service.IFriendsService;
 import vn.hcmute.service.ILikeService;
 import vn.hcmute.service.IPostService;
 import vn.hcmute.service.IUserInfoService;
@@ -42,17 +42,71 @@ public class PostController {
 
 	@Autowired
 	IUserInfoService userInfoService;
-
+	@Autowired
+	FriendsController friendController;
+	@Autowired
+	IFriendsService friendsService;
+	
+	
+	
 	@GetMapping("/listpost")
+	public String postFriend(Model model, HttpSession session) {
+		Long userid = (long) session.getAttribute("userInfoID");
+		UserInfoEntity userInfo = userInfoService.findById(userid).get();
+		List<FriendsEntity> listFollow = friendsService.findByuser1userID(userid);
+		List<UserInfoEntity> listFriend = new ArrayList<>();
+		for (FriendsEntity follow : listFollow) {
+			if (follow.isStatus()) {
+				UserInfoEntity user2 = follow.getUser2();
+				listFriend.add(user2);
+			}
+		}
+		List<PostModel> listPost = new ArrayList<>();
+		for (UserInfoEntity user : listFriend) {
+			List<PostModel> postFriend = postService.findByUserUserID(user.getUserID()); 
+			for (PostModel post : postFriend) {
+				listPost.add(post);
+			}
+		}
+		
+		List<UserInfoEntity> listSuggest = friendController.suggest(userid, 5);
+		
+		model.addAttribute("listSuggest", listSuggest);
+		model.addAttribute("userInfo",userInfo);
+		model.addAttribute("list", listPost);
+		return "listPostFriend";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	@GetMapping("/explore")
 	public String post(Model model, HttpSession session) {
 		Long userid = (long) session.getAttribute("userInfoID");
 		UserInfoEntity userInfo = userInfoService.findById(userid).get();
 		List<PostModel> posts = postService.getPostsByGroupId(1, 0, 2, userid);
+		List<UserInfoEntity> listSuggest = friendController.suggest(userid, 5);
+		
+		model.addAttribute("listSuggest", listSuggest);
 		model.addAttribute("userInfo",userInfo);
 		model.addAttribute("list", posts);
+		model.addAttribute("demo", posts.get(1));
 		return "listpost";
 	}
-
+	
+	
+	
+	
 	@GetMapping("/post")
 	public String post(ModelMap model) {
 		model.addAttribute("post", new PostEntity());
@@ -81,8 +135,9 @@ public class PostController {
 		post.setContent(request.getContent());
 
 		// Tạo đối tượng java.sql.Date từ thời gian hiện tại
-		Date currentSQLDate = new Date(System.currentTimeMillis());
-		post.setPostDate(currentSQLDate);
+		long currentSQLDate = System.currentTimeMillis();
+		Timestamp currentTimestamp = new Timestamp(currentSQLDate);
+		post.setPostDate(currentTimestamp);
 
 		postService.save(post);
 		return "redirect:/listpost";
@@ -98,44 +153,64 @@ public class PostController {
 		List<PostModel> posts = postService.getPostsByGroupId(1, page, size, userid);
 		System.out.println(page);
 		model.addAttribute("list", posts);
-		return "listpost :: #listpost";
+		//model.addAttribute("fragment", "post");  // Sửa dòng này để truyền danh sách bài viết vào fragment
+	    return "listpost :: #listpost";
 
 	}
-
+	@GetMapping("/post/detail/{postId}")
+	public String postDetail(@PathVariable long postId,ModelMap model)
+	{
+		PostEntity post = postService.findById(postId).get();
+		PostModel postModel = postService.converEntityToModel(post, post.getUser().getUserID());
+		
+		
+		model.addAttribute("post", postModel);
+		return "commentTemplate";
+	}
+	
 	@GetMapping("/post/update/{postID}")
 	public String getUpdatePost(Model post, @PathVariable long postID) {
 		PostEntity existingPost = postService.findById(postID).get();
 		post.addAttribute("post", existingPost);
 		return "updatepost";
 	}
-
+	
+	@GetMapping("/post/post-info/{postID}")
+	public ResponseEntity<PostModel> findPostInfoByID(@PathVariable long postID, HttpSession session)
+	{
+		long userID = (long)session.getAttribute("userInfoID");
+		PostEntity postEntity = postService.findById(postID).get();
+		PostModel postMoel = postService.converEntityToModel(postEntity, userID);
+		return ResponseEntity.ok(postMoel);
+	}
+	
 	@PostMapping("/post/update/{postId}")
-	public String updatePost(@PathVariable Long postId, @ModelAttribute("post") PostEntity updatedPost) {
-		// Lấy ra post cần cập nhật
-		PostEntity existingPost = postService.findById(postId).get();
+	public String updatePost(@PathVariable Long postId, @RequestBody PostModel request) {
+		System.out.println("----------------------------------------------" +request.getContent());
+		PostEntity post = postService.findById(postId).get();
+		post.setImage(request.getImageURL());
+		post.setContent(request.getContent());
+		// Tạo đối tượng java.sql.Date từ thời gian hiện tại
+		long currentSQLDate = System.currentTimeMillis();
+		Timestamp currentTimestamp = new Timestamp(currentSQLDate);
+		post.setPostDate(currentTimestamp);
 
-		// Cập nhật thông tin từ biểu mẫu chỉnh sửa
-		existingPost.setContent(updatedPost.getContent());
-		existingPost.setImage(updatedPost.getImage());
-
-		postService.save(existingPost);
+		postService.save(post);
 
 		return "redirect:/listpost";
 	}
 
-	@DeleteMapping("/post/{postId}")
+	@GetMapping("/deletepost/{postId}")
 	@Transactional
-	public ResponseEntity<String> deletePost(@PathVariable long postId) {
+	public String deletePost(@PathVariable long postId) {
 		System.out.println(postId);
 		if (postService.existsById(postId)) {
 			commentService.deleteAllByPostId(postId);
 			likeService.deleteAllByPostPostId(postId);
 			postService.deleteById(postId);
-			return ResponseEntity.ok("Bài viết đã được xóa thành công!");
-		} else {
-			System.out.println("");
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tìm thấy bài viết có ID: " + postId);
 		}
+		
+		return "redirect:/listpost";
 
 	}
 

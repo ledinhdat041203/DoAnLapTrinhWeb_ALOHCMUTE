@@ -2,22 +2,67 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Messages</title>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>ALOHCMUTE</title>
+	<link rel="stylesheet" href="/fontawesome-free-6.5.1-web/css/styleAll.css" />
+	<link rel="stylesheet" href="/fontawesome-free-6.5.1-web/css/all.min.css" />
 </head>
 
 <body>
-	<h2 th:text="${message}"></h2>
-	<div th:each="group : ${list}">
-		<a th:href="'/group/' + ${group.groupID}">
-			<h2 th:text="${group.groupName}"></h2>
-		</a>
-	</div>
-	<div>
-		<form th:action="@{/createGroup}" method = "get">
-			<button type="submit">Tạo group cho chính mình</button>
-		</form>
-	</div>
-</html>
+	<div style="display: flex; justify-content: space-between">
+		<div th:replace="~{menu::menu}"></div>
+		<div th:if="${message}">
+			<script th:inline="javascript">
+				/* <![CDATA[ */
+				alert('[[${message}]]');
+        /* ]]> */
+			</script>
+		</div>
+		<div class="group-container">
+			<div th:each="group : ${list}">
 
+				<aside class="asideMenu" style="width: 50%; margin-left: 25%;">
+					<div class="group">
+						<div class="account">
+							<div class="account-info">
+								<img th:src="${group.avataGroup}" alt="avatar" class="avatar"></img>
+								<div class="account-name">
+									<h5 th:text="${group.groupName}"></h5>
+									<p th:text="${group.description}"></p>
+								</div>
+							</div>
+							<form th:action="@{/group/{groupId}(groupId=${group.groupID})}" method="get">
+								<button type="submit" class="button">Xem</button>
+							</form>
+						</div>
+					</div>
+				</aside>
+				</br>
+			</div>
+		</div>
+		<div>
+			<form th:action="@{/createGroup}" method="get">
+				<button class="button" type="submit">Tạo nhóm mới</button>
+			</form>
+		</div>
+	</div>
+	
+
+	<script>
+		const post = document.querySelector(".js-post");
+		const modal = document.querySelector(".js-modal");
+		const modalClose = document.querySelector(".js-modal-close");
+		function showPost() {
+			modal.classList.add("open");
+		}
+		function hidePost() {
+			modal.classList.remove("open");
+		}
+		post.addEventListener("click", showPost);
+		modalClose.addEventListener("click", hidePost);
+		modal.addEventListener("click", hidePost);
+	</script>
+
+</html>

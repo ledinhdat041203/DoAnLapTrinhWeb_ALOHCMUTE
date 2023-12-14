@@ -58,11 +58,13 @@ public class LikeController {
 			like.setPost(post);
 			like.setUserLike(user);
 
-			// xử lý thông báo
-			String link = "Chưa có gì cả";
-			String content = user.getFullName() + " đã thả tim bài viết của bạn";
-			UserInfoEntity user2 = post.getUser();
-			notificationService.createNotification(user2, link, content, user.getAvata());
+			if (post.getUser().getUserID() != userid) {
+				// xử lý thông báo
+				String link = "/post/detail/"+postId;
+				String content = user.getFullName() + " đã thả tim bài viết của bạn";
+				UserInfoEntity user2 = post.getUser();
+				notificationService.createNotification(user2, link, content, user.getAvata());
+			}
 
 			likeService.save(like);
 		}

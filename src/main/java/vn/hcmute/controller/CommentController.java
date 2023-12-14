@@ -1,6 +1,7 @@
 package vn.hcmute.controller;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import jakarta.servlet.http.HttpSession;
 import vn.hcmute.entities.CommentEntity;
+import vn.hcmute.entities.PostEntity;
 import vn.hcmute.entities.UserInfoEntity;
+import vn.hcmute.model.CommentModel;
 import vn.hcmute.model.CommentRequestModel;
 import vn.hcmute.service.ICommentService;
 import vn.hcmute.service.ILikeService;
@@ -43,26 +46,28 @@ public class CommentController {
 	@Autowired
 	INotificationService notificationService;
 
-
 	@GetMapping("/comment/{postId}")
-    public ResponseEntity<List<CommentEntity>> getComments(@PathVariable long postId) {
-        System.out.print("Post id nha: " + postId);
+	public ResponseEntity<List<CommentModel>> getComments(@PathVariable long postId) {
+		System.out.print("Post id nha: " + postId);
 
-        // Lấy danh sách bình luận
-        List<CommentEntity> listComment = commentService.findCommentByPost(postId);
-        System.out.print(listComment);
+		// Lấy danh sách bình luận
+		List<CommentEntity> listComment = commentService.findCommentByPost(postId);
+		List<CommentModel> listCommentModel = new ArrayList<CommentModel>();
+		for (CommentEntity comment:listComment) {
+			listCommentModel.add(commentService.convertEntityToModel(comment));
+		}
+		System.out.print(listComment);
 
-        // Đếm số lượng bình luận
-        Long commentCount = commentService.countCommentsByPostId(postId);
+		// Đếm số lượng bình luận
+		Long commentCount = commentService.countCommentsByPostId(postId);
 
-        // Gán số lượng bình luận vào danh sách và trả về
-        for (CommentEntity comment : listComment) {
-            comment.setCommentCount(commentCount);
-        }
-        System.out.println("cmt =" + commentCount);
-        return new ResponseEntity<>(listComment, HttpStatus.OK);
-    }
-
+		// Gán số lượng bình luận vào danh sách và trả về
+		for (CommentEntity comment : listComment) {
+			comment.setCommentCount(commentCount);
+		}
+		System.out.println("cmt =" + commentCount);
+		return new ResponseEntity<>(listCommentModel, HttpStatus.OK);
+	}
 
 	@PostMapping(value = "/create/{postId}", consumes = "application/json")
 	public ResponseEntity<String> createComment(@PathVariable long postId, @RequestBody Map<String, String> commentData,
@@ -71,7 +76,7 @@ public class CommentController {
 		LocalDate currentDate = LocalDate.now();
 		java.sql.Date utilDate = java.sql.Date.valueOf(currentDate);
 		Long userid = (long) session.getAttribute("userInfoID");
-
+		//UserInfoEntity curent_user = userInfoService.findById(userid).get();
 		// Tạo mới một CommentEntity và thiết lập giá trị
 		CommentEntity newComment = new CommentEntity(0, // Hoặc giá trị mặc định tùy thuộc vào cách bạn xử lý ID trong
 														// cơ sở dữ liệu
@@ -84,12 +89,15 @@ public class CommentController {
 		// Lưu CommentEntity mới tạo
 		commentService.save(newComment);
 
-		// Xử lí thông báo 
-		UserInfoEntity user = userInfoService.findById(userid).get();
-		UserInfoEntity userNotice = postservice.findById(postId).get().getUser();
-		String link = "Chưa có gì";
-		String contentNotice = user.getFullName() + " đã bình luận về bài viết của bạn";
-		notificationService.createNotification(userNotice, link, contentNotice, user.getAvata());
+		// Xử lí thông báo
+		PostEntity post = postService.findById(postId).get();
+		if (post.getUser().getUserID() == userid) {
+			UserInfoEntity user = userInfoService.findById(userid).get();
+			UserInfoEntity userNotice = postservice.findById(postId).get().getUser();
+			String link = "/post/detail/"+postId;
+			String contentNotice = user.getFullName() + " đã bình luận về bài viết của bạn";
+			notificationService.createNotification(userNotice, link, contentNotice, user.getAvata());
+		}
 
 		Long commentCount = commentService.countCommentsByPostId(postId);
 		String commentCountString1 = String.valueOf(commentCount);

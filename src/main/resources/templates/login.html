@@ -3,59 +3,104 @@
 
 
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="" />
-	<meta name="keywords" content="" />
-	<link rel="stylesheet" href="/fontawesome-free-6.5.1-web/css/style2.css">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="" />
+<meta name="keywords" content="" />
+<link rel="stylesheet" href="/fontawesome-free-6.5.1-web/css/style2.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+	integrity="sha512-REHdZZjR1P1i6yoY3SDr6vAM5OAv/MtdZq5i44lqkiLZwE5aAdbXh9ZLrcaM1Mbp3o/xmCwL/5qlbCoI60V+8A=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<title>Login with Google</title>
+<!--<style>
+		body {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			height: 100vh;
+			margin: 0;
+		}
+
+		.google-login-btn {
+			text-decoration: none;
+		}
+
+		.google-login-btn:hover {
+			text-decoration: none;
+		}
+
+		.google-icon {
+			font-size: 24px;
+			/* Điều chỉnh kích thước theo nhu cầu */
+			margin-right: 8px;
+			/* Khoảng cách giữa biểu tượng và văn bản */
+		}
+	</style>-->
 </head>
 
 <body>
 	<section>
-		<div class="bg-image" style="background-image:url(/images/ALOHCMUTE.png)"></div>
+		<div class="bg-image"
+			style="background-image: url(/images/ALOHCMUTE.png)"></div>
 		<div class="container">
 			<div class="col-lg-8">
 				<div class="big-ad">
 					<figure class="logo-container">
-						<img src="photo/LogoHCMUTE.png" alt="" class="logo" loading="lazy" type="image/webp">
+						<img src="photo/LogoHCMUTE.png" alt="" class="logo" loading="lazy"
+							type="image/webp">
 					</figure>
 					<h1>Welcome to ALOHCMUTE</h1>
-					<p>
-						ALOHCMUTE là một trang web dành riêng cho sinh viên Trường Đại học Sư Phạm Kỹ Thuật. Mục đích
-						của trang web là kết nối và hỗ trợ sinh viên trong nhiều lĩnh vực khác nhau. Trang web này cho
-						phép sinh viên tìm kiếm việc làm, tạo kết nối xã hội, đăng bài viết và viết blog, cùng với nhiều
-						tính năng khác. Hãy tham gia ngay để kết nối và tham gia vào cộng đồng sinh viên sôi động này
-						nhé!
-					</p>
+					<p>ALOHCMUTE là một trang web dành riêng cho sinh viên Trường
+						Đại học Sư Phạm Kỹ Thuật. Mục đích của trang web là kết nối và hỗ
+						trợ sinh viên trong nhiều lĩnh vực khác nhau. Trang web này cho
+						phép sinh viên tìm kiếm việc làm, tạo kết nối xã hội, đăng bài
+						viết và viết blog, cùng với nhiều tính năng khác. Hãy tham gia
+						ngay để kết nối và tham gia vào cộng đồng sinh viên sôi động này
+						nhé!</p>
 				</div>
 			</div>
 			<div class="col-lg-4" style="padding: 0;">
 				<div class="we-login-register">
-					<div class="form-title" style="padding-bottom: 30px;">
-						Đăng nhập
-					</div>
+					<div class="form-title" style="padding-bottom: 30px;">Đăng
+						nhập</div>
 					<form class="we-form" action='checklogin' method="post">
 						<div th:if="${param.false}">
-							<div class="alert alert-info">Tài khoản chưa được kích hoạt <a href="/verify">Kích hoạt</a>
+							<div class="alert alert-info">
+								Tài khoản chưa được kích hoạt <a href="/verify">Kích hoạt</a>
 							</div>
 						</div>
 						<div th:if="${param.wrong}">
 							<div class="alert alert-info">Wrong password</div>
 						</div>
 						<div th:if="${param.account}">
-							<div class="alert alert-info">Tài khoản không tồn tại
-							</div>
+							<div class="alert alert-info">Tài khoản không tồn tại</div>
 						</div>
-						<input type="text" placeholder="Email" th:value="${emailcookie != null ? emailcookie : ''}"
-							name="email">
-						<input type="password" placeholder="Password" th:value="${passcookie != null ? passcookie : ''}"
-							name="password">
-						<input type="checkbox" name="remember"><label>Lưu mật khẩu</label>
+						<input type="text" placeholder="Email"
+							th:value="${emailcookie != null ? emailcookie : ''}" name="email">
+						<input type="password" placeholder="Password"
+							th:value="${passcookie != null ? passcookie : ''}"
+							name="password"> <input type="checkbox" name="remember"><label>Lưu
+							mật khẩu</label>
 						<button type="submit" data-ripple="">Đăng nhập</button>
-						<a class="forgot underline" href="forgot" title="">Quên mật khẩu?</a>
+						<a class="forgot underline" href="forgot" title="">Quên mật
+							khẩu?</a>
 					</form>
-					<span>Bạn chưa có tài khoản <a class="we-account underline" href="/registerOrFail" title="">Hãy đăng
-							ký ngay!</a></span>
+					<span>Bạn chưa có tài khoản <a class="we-account underline"
+						href="/registerOrFail" title="">Hãy đăng ký ngay!</a></span> <a
+						href="https://accounts.google.com/o/oauth2/auth?scope=openid%20profile%20email&redirect_uri=http://localhost:8088/LoginGoogle&response_type=code
+					&client_id=123838352882-sai9m7cs513nsq30phl3f4mptce2sttj.apps.googleusercontent.com&approval_prompt=force"
+						class="google-login-btn">
+						<button type="button"
+							class="btn btn-outline-dark btn-floating mx-1">
+							<i class="fab fa-google google-icon"></i>
+						</button>
+					</a>
 				</div>
 			</div>
 		</div>

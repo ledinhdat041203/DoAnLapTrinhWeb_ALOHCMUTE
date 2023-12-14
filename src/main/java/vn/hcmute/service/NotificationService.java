@@ -1,10 +1,10 @@
 package vn.hcmute.service;
 
-import java.sql.Date;
-import java.time.LocalDate;
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import vn.hcmute.Responsitory.NotificationRepository;
@@ -27,11 +27,11 @@ public class NotificationService implements INotificationService {
 
 	@Override
 	public void createNotification(UserInfoEntity user2, String link, String content, String image) {
-		LocalDate localDate = LocalDate.now();
-		Date currentDate = Date.valueOf(localDate);
+		long currentSQLDate = System.currentTimeMillis();
+		Timestamp currentTimestamp = new Timestamp(currentSQLDate);
 
 		NotificationEntity newNotification = new NotificationEntity();
-		newNotification.setTimeNotify(currentDate);
+		newNotification.setTimeNotify(currentTimestamp);
 		newNotification.setUser(user2);
 		newNotification.setStatus(false);
 
@@ -44,6 +44,9 @@ public class NotificationService implements INotificationService {
 
 	@Override
 	public List<NotificationEntity> findByUserUserID(long userid) {
-		return notificationRepository.findByUserUserID(userid);
+		Sort sortByTimeDesc = Sort.by(Sort.Direction.DESC, "timeNotify");
+		return notificationRepository.findByUserUserID(userid, sortByTimeDesc);
 	}
+	
+	
 }

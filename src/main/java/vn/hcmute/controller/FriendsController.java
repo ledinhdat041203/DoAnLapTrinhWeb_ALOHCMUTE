@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import vn.hcmute.entities.FriendsEntity;
 import vn.hcmute.entities.UserInfoEntity;
@@ -33,42 +34,42 @@ public class FriendsController {
 	@Autowired
 	INotificationService notificationService;
 
-	// Xuất danh sách những user mà current user đang theo dõi
-	@GetMapping("/following-list")
-	public String list(ModelMap model, HttpSession session) {
+	// Xuất danh sách follower và following
+	@GetMapping({"/following-list/{userID}", "/follower-list/{userID}"})
+	public String list(ModelMap model, HttpSession session, @PathVariable long userID, HttpServletRequest req) {
 		Long idUsercurrent = (long) session.getAttribute("userInfoID");
-		List<FriendsEntity> listFollowing = friendsService.findByuser1userID(idUsercurrent);
-		List<UserInfoEntity> listUser2 = new ArrayList<>();
-
-		for (FriendsEntity following : listFollowing) {
-			if (following.isStatus()) {
-				UserInfoEntity user2 = following.getUser2();
-				listUser2.add(user2);
+		String url = req.getRequestURL().toString();
+		List<FriendsEntity> listFollow;
+		List<UserInfoEntity> listUser = new ArrayList<>();
+		UserInfoEntity user = userInfoService.findById(idUsercurrent).get();
+		UserInfoEntity userSearch = userInfoService.findById(userID).get();
+		
+		boolean checkMe = false;
+		
+		if (url.contains("following")) {
+			model.addAttribute("pageTitle", userSearch.getFullName() + " are following");
+			listFollow = friendsService.findByuser1userID(userID);
+			for (FriendsEntity follow : listFollow) {
+				if (follow.isStatus() && (follow.getUser2().getUserID() != idUsercurrent)) {
+					UserInfoEntity user2 = follow.getUser2();
+					listUser.add(user2);
+				}
+				if (follow.getUser2().getUserID() == idUsercurrent) {checkMe = true;}
+			}
+		} else {
+			model.addAttribute("pageTitle", "Following " + userSearch.getFullName());
+			listFollow = friendsService.findByuser2userID(userID);
+			for (FriendsEntity follow : listFollow) {
+				if (follow.isStatus() && (follow.getUser1().getUserID() != idUsercurrent)) {
+					UserInfoEntity user1 = follow.getUser1();
+					listUser.add(user1);
+				}
+				if (follow.getUser1().getUserID() == idUsercurrent) {checkMe = true;}
 			}
 		}
-
-		model.addAttribute("listUser2", listUser2);
-		return "listFollowing";
-	}
-
-	// Xuất danh sách những user đang theo dõi current user
-	@GetMapping("/follower-list")
-	public String listFollower(ModelMap model, HttpSession session) {
-		Long idUsercurrent = (long) session.getAttribute("userInfoID");
-		List<FriendsEntity> listFollower = friendsService.findByuser2userID(idUsercurrent);
-
-		// Danh sách những người đang follow user current
-		List<UserInfoEntity> listUserFollower = new ArrayList<>();
-		for (FriendsEntity follower : listFollower) {
-			if (follower.isStatus()) {
-				UserInfoEntity user1 = follower.getUser1();
-				listUserFollower.add(user1);
-			}
-		}
-
-		// Tìm danh sách những user follow qua lại vs user current
+		
 		List<UserInfoEntity> listFriend = new ArrayList<>();
-		Iterator<UserInfoEntity> iterator = listUserFollower.iterator();
+		Iterator<UserInfoEntity> iterator = listUser.iterator();
 
 		while (iterator.hasNext()) {
 			UserInfoEntity follower = iterator.next();
@@ -80,10 +81,12 @@ public class FriendsController {
 				iterator.remove(); // Sử dụng Iterator để xoá phần tử an toàn
 			}
 		}
-
-		model.addAttribute("listUserFollower", listUserFollower);
+		
+		model.addAttribute("userInfoCurrent", user);
+		model.addAttribute("checkMe", checkMe);
 		model.addAttribute("listFriend", listFriend);
-		return "listFollower";
+		model.addAttribute("listUser", listUser);
+		return "listFollow";
 	}
 
 	// Xử lý theo dõi
@@ -108,7 +111,7 @@ public class FriendsController {
 			friendsService.createFriendsByUser1AndUser2(user1, user2, true);
 
 			// Xử lí thông báo
-			String link = "friends/follower-list";
+			String link = "/profile/"+user1;
 			String content = user1.getFullName() + " đã follow bạn";
 			notificationService.createNotification(user2, link, content, user1.getAvata());
 		}
@@ -119,14 +122,21 @@ public class FriendsController {
 	// Đề xuất theo dõi
 	@GetMapping("/suggest-follow-up")
 	public String suggestFollowUp(ModelMap model, HttpSession session) {
+
+		Long idUsercurrent = (long) session.getAttribute("userInfoID");
+		List<UserInfoEntity> userList = suggest(idUsercurrent, 20);
+		model.addAttribute("userList", userList);
+		return "suggestFollowUp";
+	}
+
+	public List<UserInfoEntity> suggest(long idUsercurrent, long sizeList) {
 		Random random = new Random();
 		List<UserInfoEntity> userList = new ArrayList<>();
-		long sizeList = 20; // cần kiểm tra hệ thống có đủ bạn cho usercurrent hay không
 
 		// Kiểm tra xem hệ thống có còn đủ 20 user để đề xuất hay không
 		long numberUser = userService.count();
 		long numberFollowing = 0;
-		Long idUsercurrent = (long) session.getAttribute("userInfoID");
+
 		List<FriendsEntity> listFollowing = friendsService.findByuser1userID(idUsercurrent);
 		for (FriendsEntity following : listFollowing) {
 			if (following.isStatus())
@@ -159,8 +169,7 @@ public class FriendsController {
 			UserInfoEntity user = userInfoService.findById(userid).get();
 			userList.add(user);
 		}
-
-		model.addAttribute("userList", userList);
-		return "suggestFollowUp";
+		return userList;
 	}
+
 }

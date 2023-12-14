@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>ALOHCMUTE</title>
+
+	<link rel="stylesheet" href="/fontawesome-free-6.5.1-web/css/all.min.css" />
+	<link rel="stylesheet" href="/fontawesome-free-6.5.1-web/css/styleAll.css" />
+	<link rel="stylesheet" href="/css/style.css" />
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<style>
+		.unread {
+			font-weight: bold;
+			cursor: pointer;
+		}
+
+		.unread:hover {
+			background-color: #f6f8fc;
+		}
+
+		.avatar-container {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			height: 40px;
+		}
+
+		.avatar {
+			width: 40px;
+			height: 40px;
+			border-radius: 50%;
+		}
+
+		.height-notification {
+			vertical-align: middle;
+			line-height: 40px;
+		}
+
+		.truncate-text {
+			max-width: 200px;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+
+		.read-row {
+			background-color: #f2f6fc;
+			cursor: pointer;
+		}
+
+		.read-row:hover {
+			background-color: #e1e8f5;
+		}
+	</style>
+</head>
+
+<body>
+
+	<div style="display: flex">
+		<div th:replace="~{menu::menu}"></div>
+		<main class="suggest-main" style="padding-top: 30px; margin: 0 150px;">
+			<h2 style="padding-bottom: 30px;">Notification</h2>
+
+			<table class="table">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Content</th>
+						<th>Date</th>
+					</tr>
+				</thead>
+				<tbody>
+					<div th:each="notification : ${listNotification}">
+						<tr th:class=" ${notification.status==false} ? 'unread' : 'read-row'" th:attr="onclick='sendNotify(\'' + ${notification.link} + '\')'">
+							<td class="avatar-container">
+									<img th:src="${notification.image}" class="avatar">
+								</td>
+							<td class="height-notification truncate-text" th:text="${notification.content}"></td>
+							<td class="height-notification" th:text="${notification.timeNotify}"></td>
+						</tr>
+					</div>
+				</tbody>
+			</table>
+
+		</main>
+	</div>
+	<script>
+		function sendNotify(link) {
+			window.location.href = link;
+		}
+	</script>
+</body>
+
+</html>

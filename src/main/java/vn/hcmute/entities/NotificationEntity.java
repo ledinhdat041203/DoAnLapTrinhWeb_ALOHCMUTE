@@ -1,6 +1,6 @@
 package vn.hcmute.entities;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,8 +29,8 @@ public class NotificationEntity {
 	@Column(name = "content", columnDefinition =  "nvarchar(MAX)")
 	private String content;
 	
-	@Column(name = "time", columnDefinition = "Date")
-	private Date timeNotify;
+	@Column(name = "time", columnDefinition = "DateTime")
+	private Timestamp timeNotify;
 	
 	@ManyToOne
     @JoinColumn(name = "userid")

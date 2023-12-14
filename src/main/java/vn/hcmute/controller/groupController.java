@@ -104,33 +104,36 @@ public class groupController {
 	}
 
 	@PostMapping("modifyGroup")
-		public String modifyGroup(@ModelAttribute("group") GroupEntity group, HttpSession session, Model model) {
-			GroupEntity groupOld = groupService.findById(group.getGroupID()).get();
-			Long userid = (long) session.getAttribute("userInfoID");
-			if(checkIsAdminGroup(group.getGroupID(), userid)==1) {
-				groupOld.setGroupName(group.getGroupName());
-				groupOld.setAvataGroup(group.getAvataGroup());
-				groupOld.setDescription(group.getDescription());
-				groupService.save(groupOld);
-				model.addAttribute("message", "Sửa thành công");
-			}
-			else {
-				model.addAttribute("message", "Bạn không là quản trị viên!");
+	public String modifyGroup(@ModelAttribute("group") GroupEntity group, HttpSession session, Model model) {
+		GroupEntity groupOld = groupService.findById(group.getGroupID()).get();
+		Long userid = (long) session.getAttribute("userInfoID");
+		if (checkIsAdminGroup(group.getGroupID(), userid) == 1) {
+			groupOld.setGroupName(group.getGroupName());
+			groupOld.setAvataGroup(group.getAvataGroup());
+			groupOld.setDescription(group.getDescription());
+			groupService.save(groupOld);
+			model.addAttribute("message", "Sửa thành công");
+		} else {
+			model.addAttribute("message", "Bạn không là quản trị viên!");
 		}
-		return"redirect:/group/"+group.getGroupID();
-
+		return "redirect:/group/" + group.getGroupID();
 	}
 
+
 	@GetMapping("group/{groupID}")
-	public String GroupDetail(ModelMap model, @PathVariable long groupID, HttpSession session, ModelMap post, Model listpost) {
+	public String GroupDetail(ModelMap model, @PathVariable long groupID, HttpSession session, ModelMap post,
+			Model listpost) {
 		Long userid = (long) session.getAttribute("userInfoID");
-		
+		UserInfoEntity user = userInfo.findById(userid).get();
 		GroupMembersEntity groupMember = groupMemberService.findByUserMemberUserIDAndGroupGroupID(userid, groupID);
 		if (groupMember != null) {
 			GroupEntity group = groupService.findById(groupID).get();
 			model.addAttribute("group", group);
 			post.addAttribute("post", new PostEntity());
-			
+			List<GroupEntity> listgroup = groupService.findGroupsByUserId(userid);
+			model.addAttribute("listgroup", listgroup);
+			model.addAttribute("userInfo", user);
+
 			List<PostModel> posts = postService.getPostsByGroupId(groupID, 0, 2, userid);
 			listpost.addAttribute("list", posts);
 			return "Group";
@@ -227,9 +230,10 @@ public class groupController {
 	}
 
 	@GetMapping("/listpost/postgroup/{page}")
-	public String getPostsByGroupId(@PathVariable int page, @RequestParam(defaultValue = "1") int groupID, Model model,HttpSession session) {
+	public String getPostsByGroupId(@PathVariable int page, @RequestParam(defaultValue = "1") int groupID, Model model,
+			HttpSession session) {
 		Long userid = (long) session.getAttribute("userInfoID");
-		List<PostModel> posts = postService.getPostsByGroupId(groupID, page, 2,userid);
+		List<PostModel> posts = postService.getPostsByGroupId(groupID, page, 2, userid);
 		System.out.println(page);
 		model.addAttribute("list", posts);
 		model.addAttribute("fragment", "post_template");
@@ -241,24 +245,23 @@ public class groupController {
 	@Transactional
 	public String deleteGroup(@PathVariable("groupID") Long groupID, HttpSession session, Model model) {
 		Long userid = (long) session.getAttribute("userInfoID");
-		if(checkIsAdminGroup(groupID, userid)==1) {
-			//Xóa bài viết khỏi nhóm
+		if (checkIsAdminGroup(groupID, userid) == 1) {
+			// Xóa bài viết khỏi nhóm
 			List<PostEntity> listPost = postService.findByGroupPostGroupID(groupID);
-			for(PostEntity post: listPost) {
+			for (PostEntity post : listPost) {
 				if (postService.existsById(post.getPostID())) {
 					commentService.deleteAllByPostId(post.getPostID());
 					likeService.deleteAllByPostPostId(post.getPostID());
 					postService.deleteById(post.getPostID());
 				}
 			}
-			//Xóa thành viên của nhóm
+			// Xóa thành viên của nhóm
 			groupMemberService.deleteByGroupGroupID(groupID);
-			
-			//Xóa nhóm
+
+			// Xóa nhóm
 			groupService.deleteById(groupID);
 			model.addAttribute("message", "Đã xóa nhóm!");
-		}
-		else {
+		} else {
 			model.addAttribute("message", "Bạn đang vi phạm điều khoản");
 		}
 		model.addAttribute("list", groupService.findAll());
