@@ -30,9 +30,9 @@
 	<dependencies>
 
 		<dependency>
-		<groupId>com.google.cloud.sql</groupId>
-		<artifactId>cloud-sql-connector-jdbc-sqlserver</artifactId>
-		<version>1.2.0</version>
+			<groupId>com.google.cloud.sql</groupId>
+			<artifactId>cloud-sql-connector-jdbc-sqlserver</artifactId>
+			<version>1.2.0</version>
 		</dependency>
 
 		<!--
@@ -188,6 +188,18 @@
 					</excludes>
 				</configuration>
 			</plugin>
+
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.11.0</version>
+				<configuration>
+					<!-- put your configurations here -->
+					<release>17</release>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
 
