@@ -1,6 +1,4 @@
 package vn.hcmute.entities;
-
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -22,7 +20,7 @@ public class PostEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "postid", columnDefinition = "BIGINT")
-	private long postID;
+	private Long postID;
 
 	@ManyToOne
     @JoinColumn(name = "userid")
@@ -33,7 +31,7 @@ public class PostEntity {
     private GroupEntity groupPost;
 	
 	@JsonProperty("content")
-	@Column(name = "content", columnDefinition = "NTEXT")
+	@Column(name = "content", columnDefinition = "TEXT")
 
 	private String content;
 	@Column(name = "image", columnDefinition = "nvarchar(255)")

@@ -22,7 +22,7 @@ public class ImageEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "imageID", columnDefinition = "BIGINT")
 	private long imageID;
-	@Column(name = "pathimage", columnDefinition = "nvarchar(MAX)", nullable = false)
+	@Column(name = "pathimage", columnDefinition = "nvarchar(1000)", nullable = false)
 	private String pathimage;
 	public ImageEntity(String pathimage) {
 		super();

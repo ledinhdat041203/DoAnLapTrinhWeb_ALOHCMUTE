@@ -26,7 +26,7 @@ public class CommentEntity {
 	private long commentidID;
 
 	@JsonProperty("content")
-	@Column(name = "content", columnDefinition = "ntext")
+	@Column(name = "content", columnDefinition = "TEXT")
 	private String content;
 
 	@ManyToOne

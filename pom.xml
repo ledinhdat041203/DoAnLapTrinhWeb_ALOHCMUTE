@@ -29,6 +29,42 @@
 
 	<dependencies>
 
+
+
+<!-- https://mvnrepository.com/artifact/com.google.apis/google-api-services-sqladmin -->
+<dependency>
+    <groupId>com.google.apis</groupId>
+    <artifactId>google-api-services-sqladmin</artifactId>
+    <version>v1-rev20230831-2.0.0</version>
+</dependency>
+
+
+
+		<!-- https://mvnrepository.com/artifact/com.google.api-client/google-api-client -->
+<dependency>
+    <groupId>com.google.api-client</groupId>
+    <artifactId>google-api-client</artifactId>
+    <version>2.2.0</version>
+</dependency>
+
+
+			<!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
+<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+<!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
+		<dependency>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+
+		<dependency>
+			<groupId>com.google.cloud.sql</groupId>
+			<artifactId>mysql-socket-factory-connector-j-8</artifactId>
+			<version>1.1.0</version>
+		</dependency>
+
+
 		<!--
 		https://mvnrepository.com/artifact/org.thymeleaf.extras/thymeleaf-extras-java8time -->
 		<dependency>
@@ -149,13 +185,13 @@
 			<scope>test</scope>
 		</dependency>
 
-		<dependency>
+	<!--	<dependency>
 
 			<groupId>com.h2database</groupId>
 
 			<artifactId>h2</artifactId>
 
-		</dependency>
+		</dependency> -->
 		<!--template sitemesh decorator-->
 
 		<dependency>
@@ -195,6 +231,16 @@
 					</excludes>
 				</configuration>
 			</plugin>
+
+			<plugin>
+        <groupId>com.google.cloud.tools</groupId>
+        <artifactId>appengine-maven-plugin</artifactId>
+        <version>2.4.4</version>
+        <configuration>
+          <version>1</version>
+          <projectId>GCLOUD_CONFIG</projectId>
+        </configuration>
+      </plugin>
 		</plugins>
 	</build>
 

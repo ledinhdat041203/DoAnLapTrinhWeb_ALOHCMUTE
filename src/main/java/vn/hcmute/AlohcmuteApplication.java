@@ -4,13 +4,14 @@ import java.util.Properties;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import vn.hcmute.model.UserAcountModel;
 
 @SpringBootApplication
+@EntityScan(basePackages = "vn.hcmute.entities")
 @EnableScheduling
 public class AlohcmuteApplication {
 

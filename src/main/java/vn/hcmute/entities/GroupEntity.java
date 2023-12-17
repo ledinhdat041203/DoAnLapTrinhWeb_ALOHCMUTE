@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 
 @Entity
-@Table(name = "Groups")
+@Table(name = "ListGroups")
 public class GroupEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +21,7 @@ public class GroupEntity {
 	private long groupID;
 	@Column(name = "groupname", columnDefinition = "nvarchar(255)")
 	private String groupName;
-	@Column(name = "description", columnDefinition = "ntext")
+	@Column(name = "description", columnDefinition = "text")
 	private String description;
 	@Column (name = "avataGroup", columnDefinition = "nvarchar(255)")
 	private String avataGroup;
