@@ -21,7 +21,6 @@
 
 	<version>1.0</version>
 
-	<packaging>war</packaging>
 
 	<name>DemoSpring</name>
 
@@ -232,13 +231,13 @@
 				</configuration>
 			</plugin>
 
-			<plugin>
+	<plugin>
         <groupId>com.google.cloud.tools</groupId>
         <artifactId>appengine-maven-plugin</artifactId>
         <version>2.4.4</version>
         <configuration>
           <version>1</version>
-          <projectId>GCLOUD_CONFIG</projectId>
+          <projectId>final-project-406512</projectId>
         </configuration>
       </plugin>
 		</plugins>

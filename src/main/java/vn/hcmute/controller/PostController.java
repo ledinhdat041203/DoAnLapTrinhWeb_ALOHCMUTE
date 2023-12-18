@@ -63,7 +63,7 @@ public class PostController {
 		}
 		List<PostModel> listPost = new ArrayList<>();
 		for (UserInfoEntity user : listFriend) {
-			List<PostModel> postFriend = postService.findByUserUserID(user.getUserID()); 
+			List<PostModel> postFriend = postService.findByUserUserID(user.getUserID(),userid); 
 			for (PostModel post : postFriend) {
 				listPost.add(post);
 			}
@@ -76,16 +76,6 @@ public class PostController {
 		model.addAttribute("list", listPost);
 		return "listPostFriend";
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	

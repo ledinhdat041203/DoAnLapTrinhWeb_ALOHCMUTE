@@ -13,8 +13,8 @@ import vn.hcmute.model.PostModel;
 
 public interface IPostService {
 
+	List<PostModel> findByUserUserID(long userId,long session);
 	List<PostModel> findByUserUserID(long userId);
-
 	<S extends PostEntity> S save(S entity);
 	
 	Optional<PostEntity> findById(Long id);

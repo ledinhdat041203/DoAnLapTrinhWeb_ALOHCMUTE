@@ -69,7 +69,7 @@ public class UserController {
 	IMailService imail;
 	// lưu trữ cookie cho đăng nhập đợt sau
 
-	@GetMapping("/login")
+	@GetMapping("/")
 	public String Showlogin(ModelMap model, HttpServletRequest request) {
 		Cookie[] cookies = request.getCookies();
 		if (cookies != null) {

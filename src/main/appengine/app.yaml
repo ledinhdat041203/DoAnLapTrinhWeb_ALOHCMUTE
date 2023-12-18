@@ -1,0 +1,6 @@
+runtime: java17
+instance_class: F1
+
+# env_variables:
+#   FIREBASE_CONFIG: 'static/chatrealtime-7e7e8-firebase-adminsdk-512k7-6a7ab2885d.json'
+
