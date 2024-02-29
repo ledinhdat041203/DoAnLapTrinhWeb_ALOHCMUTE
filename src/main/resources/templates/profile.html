@@ -27,7 +27,7 @@
 					<i class="fa-regular fa-images" style="padding-right: 10px"></i>
 					<span>POST</span>
 				</div>
-				<div class="flex-container">
+				<div class="flex-container img-container">
 					<div th:each="post : ${list}">
 						<div th:replace="~{PostBriefTemplate::post(${post})}"></div>
 					</div>
@@ -347,6 +347,11 @@
 				console.error('Error uploading to Firebase Storage:', error);
 			}
 
+		}
+	</script>
+	<script>
+		function detailpost(postid){
+			window.location.href = "/post/detail/"+postid;
 		}
 	</script>
 </body>

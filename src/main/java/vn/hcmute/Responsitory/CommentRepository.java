@@ -23,7 +23,7 @@ public interface CommentRepository extends JpaRepository<CommentEntity, Long> {
 	 * ) LikeEntity findByPostAndUserLike(@Param("conId") Long
 	 * receiverId, @Param("postId") Long postId);
 	 */
-	@Query(value = "SELECT * FROM comments c WHERE c.postid = :postId", nativeQuery = true)
+	@Query(value = "SELECT * FROM comments c WHERE c.postid = :postId ORDER BY c.commentDate DESC", nativeQuery = true)
 	List<CommentEntity> findByPostIDContaining(@Param("postId") long postId);
 
 	@Modifying

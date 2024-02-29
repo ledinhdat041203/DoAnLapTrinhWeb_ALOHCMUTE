@@ -1,19 +1,16 @@
 package vn.hcmute.controller;
 
-import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,6 +24,7 @@ import vn.hcmute.entities.PostEntity;
 import vn.hcmute.entities.UserInfoEntity;
 import vn.hcmute.model.PostModel;
 import vn.hcmute.service.ICommentService;
+import vn.hcmute.service.IFriendsService;
 import vn.hcmute.service.ILikeService;
 import vn.hcmute.service.IPostService;
 import vn.hcmute.service.IUserInfoService;
@@ -46,8 +44,40 @@ public class PostController {
 	IUserInfoService userInfoService;
 	@Autowired
 	FriendsController friendController;
-
+	@Autowired
+	IFriendsService friendsService;
+	
+	
+	
 	@GetMapping("/listpost")
+	public String postFriend(Model model, HttpSession session) {
+		Long userid = (long) session.getAttribute("userInfoID");
+		UserInfoEntity userInfo = userInfoService.findById(userid).get();
+		List<FriendsEntity> listFollow = friendsService.findByuser1userID(userid);
+		List<UserInfoEntity> listFriend = new ArrayList<>();
+		for (FriendsEntity follow : listFollow) {
+			if (follow.isStatus()) {
+				UserInfoEntity user2 = follow.getUser2();
+				listFriend.add(user2);
+			}
+		}
+		List<PostModel> listPost = new ArrayList<>();
+		for (UserInfoEntity user : listFriend) {
+			List<PostModel> postFriend = postService.findByUserUserID(user.getUserID()); 
+			for (PostModel post : postFriend) {
+				listPost.add(post);
+			}
+		}
+		
+		List<UserInfoEntity> listSuggest = friendController.suggest(userid, 5);
+		
+		model.addAttribute("listSuggest", listSuggest);
+		model.addAttribute("userInfo",userInfo);
+		model.addAttribute("list", listPost);
+		return "listPostFriend";
+	}
+	
+	@GetMapping("/explore")
 	public String post(Model model, HttpSession session) {
 		Long userid = (long) session.getAttribute("userInfoID");
 		UserInfoEntity userInfo = userInfoService.findById(userid).get();
@@ -60,7 +90,10 @@ public class PostController {
 		model.addAttribute("demo", posts.get(1));
 		return "listpost";
 	}
-
+	
+	
+	
+	
 	@GetMapping("/post")
 	public String post(ModelMap model) {
 		model.addAttribute("post", new PostEntity());

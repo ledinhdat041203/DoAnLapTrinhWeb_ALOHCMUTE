@@ -102,7 +102,8 @@ public class PostService implements IPostService {
 
 	@Override
 	public List<PostModel> findByUserUserID(long userId) {
-		List<PostEntity> posts = postRepo.findByUserUserID(userId);
+		Sort sortByDateDesc = Sort.by("postDate").descending();
+		List<PostEntity> posts = postRepo.findByUserUserID(userId,sortByDateDesc);
 
 		List<PostModel> listPostModel = new ArrayList<>();
 		for (PostEntity post : posts) {

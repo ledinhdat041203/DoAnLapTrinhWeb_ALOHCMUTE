@@ -112,7 +112,7 @@ public class UserController {
 			session.setAttribute("userFullName",
 					user_service.findByemailContaining(Email).get().getUserInfo().getFullName());
 
-			return "home";
+			return "redirect:/listpost";
 		} else if (user_service.checkLogin(Email, pass) && status.get().getStatus() == false) {
 			session.setAttribute("email", Email);
 			return "redirect:login?false";

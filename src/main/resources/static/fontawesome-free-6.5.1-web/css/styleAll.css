@@ -17,18 +17,13 @@ h5 {
 
 
 .logo {
-	width: 100px;
-	height: 100px;
+	width: 250px;
+	height: 125px;
 	margin-left: auto;
 	margin-right: auto;
 }
 
-.logo {
-	width: 100px;
-	height: 100px;
-	margin-left: auto;
-	margin-right: auto;
-}
+
 
 .logo>img {
 	width: 100%;
@@ -52,7 +47,8 @@ h5 {
 
 .list-Menu {
 	list-style: none;
-	margin: 0;
+	margin-left: auto;
+	margin-right: auto;
 	padding: 0;
 }
 
@@ -884,6 +880,7 @@ textarea:focus {
 }
 
 .img-w {
+	position: relative;
 	width: 260px;
 	height: 260px;
 }
@@ -1494,4 +1491,75 @@ button:focus {
 	/* Màu nền nút */
 	color: #fff;
 	/* Màu chữ */
+}
+/*Wellcome*/
+
+.wellcome-background {
+    background-image: url("../photo/wellcom2.jpg");
+    width: 100%;
+    height: 100vh;
+    filter: blur(5px);
+    -webkit-filter: blur(5px);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.wellcome-header {
+    background-color: white;
+    height: 100px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 20px 20px 20px white;
+    padding: 10px 0;
+}
+
+.wellcom-link {
+    text-decoration: none;
+    padding: 10px;
+    color: black;
+    list-style: none;
+    margin-right: 20px;
+    font-size: 20px;
+}
+
+.wellcom-link:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+}
+
+.wellcom-slogan {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+    font-size: 50px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    width: 80%;
+    padding: 20px;
+    text-align: center;
+}
+
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.img-w:hover .overlay {
+    opacity: 1;
 }
